@@ -13,8 +13,11 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 
 public class RegisterType extends JDialog {
 	private JLabel lbllogo,lbllogo1;
@@ -36,7 +39,8 @@ public class RegisterType extends JDialog {
 	 * Create the dialog.
 	 */
 	public RegisterType() {
-		setTitle("Choose Register Type");
+		getContentPane().setBackground(Color.WHITE);
+		setTitle("Register Type");
 		setBounds(350, 50, 700, 600);
 		setResizable(false);
 		getContentPane().setLayout(null);
@@ -48,7 +52,7 @@ public class RegisterType extends JDialog {
 		
 		JLabel lblSeeker = new JLabel("Seeker");
 		lblSeeker.setFont(new Font("Arial", Font.PLAIN, 18));
-		lblSeeker.setBounds(496, 229, 93, 33);
+		lblSeeker.setBounds(489, 229, 93, 33);
 		getContentPane().add(lblSeeker);
 		
 		JLabel lblNewLabel = new JLabel("<html><center>Owner can register for hostel information and management for room</center></html>");
@@ -61,7 +65,39 @@ public class RegisterType extends JDialog {
 		lblNewLabel_1.setBounds(399, 289, 250, 72);
 		getContentPane().add(lblNewLabel_1);
 		
+		
+		
+		//for owner btn
+		//  Default colors
+		Color defaultBg = new Color(10, 255, 0);
+		Color defaultFg = new Color(255, 255, 255);
+
+		//  Hover colors
+		Color hoverBg = new Color(230, 230, 250);
+		Color hoverFg = new Color(10, 255, 0);
+		
 		JButton btnOwner = new JButton("Owner Register");
+		btnOwner.setOpaque(true);                      // allow background painting
+		btnOwner.setContentAreaFilled(true);           // MUST be true to fill background
+		btnOwner.setBorderPainted(false);              // optional: remove border
+		btnOwner.setFocusPainted(false);               // optional: remove focus outline
+		btnOwner.setBackground(new Color(10, 255, 0));  // green
+		btnOwner.setForeground(new Color(255, 255, 255));
+		
+		btnOwner.addMouseListener(new MouseAdapter() {
+		    
+		    public void mouseEntered(MouseEvent e) {
+		    	btnOwner.setBackground(hoverBg);    // Change background
+		    	btnOwner.setForeground(hoverFg);    // Change text color
+		    }
+
+		    
+		    public void mouseExited(MouseEvent e) {
+		    	btnOwner.setBackground(defaultBg);  // Reset background
+		    	btnOwner.setForeground(defaultFg);  // Reset text color
+		    }
+		});
+		
 		btnOwner.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UserRegistration owner = new UserRegistration("3");
@@ -72,7 +108,33 @@ public class RegisterType extends JDialog {
 		btnOwner.setBounds(61, 401, 145, 38);
 		getContentPane().add(btnOwner);
 		
+		
+		
+		//for Seeker btn
+		
 		JButton btnSeeker = new JButton("Seeker Register");
+		btnSeeker.setOpaque(true);                      // allow background painting
+		btnSeeker.setContentAreaFilled(true);           // MUST be true to fill background
+		btnSeeker.setBorderPainted(false);              // optional: remove border
+		btnSeeker.setFocusPainted(false);               // optional: remove focus outline
+		btnSeeker.setBackground(new Color(10, 255, 0));  // green
+		btnSeeker.setForeground(new Color(255, 255, 255));
+		
+		btnSeeker.addMouseListener(new MouseAdapter() {
+		    
+		    public void mouseEntered(MouseEvent e) {
+		    	btnSeeker.setBackground(hoverBg);    // Change background
+		    	btnSeeker.setForeground(hoverFg);    // Change text color
+		    }
+
+		    
+		    public void mouseExited(MouseEvent e) {
+		    	btnSeeker.setBackground(defaultBg);  // Reset background
+		    	btnSeeker.setForeground(defaultFg);  // Reset text color
+		    }
+		});
+		
+
 		btnSeeker.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UserRegistration seeker = new UserRegistration("2");
@@ -84,15 +146,15 @@ public class RegisterType extends JDialog {
 		getContentPane().add(btnSeeker);
 		
 		lbllogo = new JLabel("");
-		Image img=new ImageIcon(this.getClass().getResource("/owner.png")).getImage();
+		Image img=new ImageIcon(this.getClass().getResource("/hostel.png")).getImage();
 		lbllogo.setIcon(new ImageIcon(img));
-		lbllogo.setBounds(101, 129, 86, 84);
+		lbllogo.setBounds(101, 122, 72, 91);
 		getContentPane().add(lbllogo);
 		
 		lbllogo1 = new JLabel("");
-		Image img1=new ImageIcon(this.getClass().getResource("/seeker.png")).getImage();
+		Image img1=new ImageIcon(this.getClass().getResource("/hostelrenter.png")).getImage();
 		lbllogo1.setIcon(new ImageIcon(img1));
-		lbllogo1.setBounds(496, 134, 78, 84);
+		lbllogo1.setBounds(467, 122, 86, 91);
 		getContentPane().add(lbllogo1);
 
 	}

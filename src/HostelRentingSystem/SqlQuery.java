@@ -28,7 +28,7 @@ public class SqlQuery {
 		if(tableName.equals("hostel")) {
 			query = "insert into hostel(hostelname,buildingno,roomno,smroomcount,state,city,street,userid,gendertype) values('"+data[0]+"','"+data[1]+"','"+data[2]+"',"+data[3]+",'"+data[4]+"','"+data[5]+"','"+data[6]+"',"+data[7]+",'"+data[8]+"')";
 		} else if(tableName.equals("room")) {
-			query = "insert into room(smroomno,available,price,hostelid) values('"+data[0]+"',"+true+","+data[1]+","+data[2]+")";
+			query = "insert into room(smroomno,available,price,hostelid,description,image_url,file_name) values('"+data[0]+"',"+true+","+data[1]+","+data[2]+",'"+data[3]+"','"+data[4]+"','"+data[5]+"')";
 		} else if(tableName.equals("user")) {
 			query = "insert into user(username,phoneno,nrc,state,city,street,password,roleid,status,gender) values('"+data[0]+"','"+data[1]+"','"+data[2]+"','"+data[3]+"','"+data[4]+"','"+data[5]+"','"+data[6]+"',"+data[7]+",'"+data[8]+"','"+data[9]+"')";
 		} else if(tableName.equals("renting")) {
@@ -224,7 +224,6 @@ public class SqlQuery {
 				String[] str = new String[5];
 				ste = con.createStatement();
 				query = "select * from user where phoneno='"+phoneNo+"' and password='"+password+"' and status='active'";
-				System.out.println(query);
 				rs = ste.executeQuery(query);
 				
 				if(rs.next()) {
@@ -277,11 +276,11 @@ public class SqlQuery {
 		try {
 			ArrayList<String[]> hostelList = new ArrayList<String[]>();
 			ste = con.createStatement();
-			query = "select hostelname,smroomno,hostel.street,hostel.city,hostel.state,price,gendertype,username,phoneno,room.roomid from hostel,room,user where hostel.hostelid=room.hostelid and hostel.userid=user.userid and available=true";
+			query = "select hostelname,smroomno,hostel.street,hostel.city,hostel.state,price,gendertype,username,phoneno,room.roomid,room.file_name,room.image_url from hostel,room,user where hostel.hostelid=room.hostelid and hostel.userid=user.userid and available=true";
 			rs = ste.executeQuery(query);
 			
 			while(rs.next()) {
-				String[] str = new String[8];
+				String[] str = new String[10];
 				str[0] = rs.getString(1);//hostelname
 				str[1] = rs.getString(2);//smroomno
 				str[2] = rs.getString(3) +" Street/"+ rs.getString(4) +"/"+ rs.getString(5);//street/city/state
@@ -290,6 +289,8 @@ public class SqlQuery {
 				str[5] = rs.getString(8);//owner username
 				str[6] = rs.getString(9);//owner password
 				str[7] = rs.getString(10);//roomid
+				str[8] = rs.getString(11); //room file name
+				str[9] = rs.getString(12); //room image_url
 				hostelList.add(str);
 				//System.out.println("ResultSet => "+ rs.getString(2));
 			}

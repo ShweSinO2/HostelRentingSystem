@@ -1,8 +1,10 @@
 package HostelRentingSystem;
 
+import javax.swing.SwingUtilities;
+
 class Hostel {
 	
-	private String hostelName,roomNo,address,genderType,ownerName,ownerPhone,roomid; 
+	private String hostelName,roomNo,address,genderType,ownerName,ownerPhone,roomid,imageUrl,fileName; 
 	private int price;
 	
 	public Hostel() {
@@ -14,9 +16,11 @@ class Hostel {
 		this.ownerPhone = null;
 		this.roomid = null;
 		this.price = 0;
+		this.imageUrl = null;
+		this.fileName = null;
 	}
 	
-    public Hostel(String hostelName,String roomNo,String address,String gendertype,String ownerName,String ownerPhone,int price,String roomid) {
+    public Hostel(String hostelName,String roomNo,String address,String gendertype,String ownerName,String ownerPhone,int price,String roomid, String imageUrl, String fileName) {
         this.hostelName = hostelName;
         this.roomNo = roomNo;
         this.address = address;
@@ -25,6 +29,8 @@ class Hostel {
 		this.ownerPhone = ownerPhone;
 		this.roomid = roomid;
         this.price = price;
+        this.imageUrl = imageUrl;
+        this.fileName = fileName;
     }
 
     public String getHostelName() {
@@ -91,8 +97,35 @@ class Hostel {
     	this.roomid = roomid;
     }
     
+    public String getImageUrl() {
+    	return imageUrl;
+    }
+    
+    public void setImageUrl(String imageUrl) {
+    	this.imageUrl = imageUrl;
+    }
+    
+    public String getFileName() {
+    	return fileName;
+    }
+    
+    public void setFileName(String fileName) {
+    	this.fileName = fileName;
+    }
+    
     @Override
     public String toString() {
-        return "<html><h4>Hostel Name = "+hostelName+"</h4><h4>Room No = "+roomNo+"</h4><h4>Address ="+address+"</h4><h4>Price ="+price+"</h4></html>";
+//      return "<html><h4>Hostel Name = "+hostelName+"</h4><h4>Room No = "+roomNo+"</h4><h4>Address ="+address+"</h4><h4>Price ="+price+"</h4><h4>Image ="+imageUrl+"</h4></html>";
+
+        String imagePath = (imageUrl != null && !imageUrl.isEmpty()) ? imageUrl : "uploaded_images/no-image.jpg"; 
+        String imageHtmlSrc = "file:///" + new java.io.File(imagePath).getAbsolutePath().replace("\\", "/");
+    	return "<html>" +
+        "<h4>Hostel Name = " + (hostelName != null ? hostelName : "N/A") + "</h4>" +
+        "<h4>Room No = " + (roomNo != null ? roomNo : "N/A") + "</h4>" +
+        "<h4>Address = " + (address != null ? address : "N/A") + "</h4>" +
+        "<h4>Price = " + price + "</h4>" +
+//        "<h4>Image URL (Text) = " + (imageUrl != null ? imageUrl : "N/A") + "</h4>" + 
+        "<h4>Image <br><br> <img src='" + imageHtmlSrc + "' width='120' height='120'></h4>" +
+        "</html>";
     }
 }

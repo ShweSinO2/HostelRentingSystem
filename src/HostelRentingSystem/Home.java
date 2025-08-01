@@ -31,7 +31,7 @@ public class Home extends JFrame {
  
 	private JPanel contentPane;
 	SqlQuery sqlquery = new SqlQuery();
-	String hostelName,roomno,address,genderType,ownerName,ownerPhone,roomId;
+	String hostelName,roomno,address,genderType,ownerName,ownerPhone,roomId,imageFileName,imageUrl;
 	int price;
 	private JComboBox comboBox;
 	
@@ -93,8 +93,11 @@ public class Home extends JFrame {
 		    			ownerName = selectedHostel.getOwnerName();
 		    			ownerPhone = selectedHostel.getOwnerPhone();
 		    			roomId = selectedHostel.getRoomId();
+		    			imageFileName = selectedHostel.getFileName();
+		    			imageUrl = selectedHostel.getImageUrl();
+		    			
 		    		
-		    			HostelDetail detail = new HostelDetail(hostelName,roomno,address,genderType,price,ownerName,ownerPhone,roomId);
+		    			HostelDetail detail = new HostelDetail(hostelName,roomno,address,genderType,price,ownerName,ownerPhone,roomId,imageFileName,imageUrl);
 		    			detail.setVisible(true);
 	    			}
 	    			
@@ -186,6 +189,12 @@ public class Home extends JFrame {
 			Hostel hostel = new Hostel();
 			String[] data = strQuery.get(i);
 			
+			System.out.println("This is hostel data");
+			for(int d=0; d<data.length; d++) {
+				System.out.println("Data "+d+"is =>" + data[d]);
+			}
+			
+			
 			hostel.setHostelName(data[0]);
 			hostel.setRoomNo(data[1]);
 			hostel.setAddress(data[2]);
@@ -194,6 +203,8 @@ public class Home extends JFrame {
 			hostel.setOwnerName(data[5]);
 			hostel.setOwnerPhone(data[6]);
 			hostel.setRoomId(data[7]);
+			hostel.setFileName(data[8]);
+			hostel.setImageUrl(data[9]);
 			hostelArrList.add(hostel);
 		}
 		

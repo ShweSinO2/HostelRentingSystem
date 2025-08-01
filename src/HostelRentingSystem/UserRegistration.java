@@ -16,6 +16,8 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.border.EtchedBorder;
 import java.util.ArrayList;
@@ -24,6 +26,8 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
+
+
 
 
 public class UserRegistration extends JDialog {
@@ -61,28 +65,32 @@ public class UserRegistration extends JDialog {
 	 * Create the dialog.
 	 */
 	public UserRegistration(String roleId) {
-		setTitle("User Registration Form");
-		setBounds(350, 50, 700, 600);
+		setTitle("");
+		setBounds(350, 50, 700, 616);
+		getContentPane().setBackground(Color.WHITE);
 		setResizable(false);
 		getContentPane().setLayout(null);
 		//int roleId = id;
 		panel = new JPanel();
 		panel.setForeground(new Color(0, 191, 255));
-		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Sign In Form", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(135, 206, 235)));
-		panel.setBounds(10, 11, 664, 539);
+		panel.setBackground(new Color(255,255,255));
+		
+		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Register Form", TitledBorder.CENTER, TitledBorder.TOP, new Font("Arial", Font.PLAIN, 20), new Color(135, 206, 235)));
+		//panel.setFont((new Font("Arial", Font.PLAIN, 20)));
+		panel.setBounds(10, 0, 664, 561);
 		getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		lblNewLabel = new JLabel("Name:");
 		lblNewLabel.setFont(new Font("Arial", Font.PLAIN, 15));
 		lblNewLabel.setForeground(new Color(0, 191, 255));
-		lblNewLabel.setBounds(22, 32, 46, 21);
+		lblNewLabel.setBounds(22, 61, 46, 21);
 		panel.add(lblNewLabel);
 		
 		lblPhone = new JLabel("Phone:");
 		lblPhone.setFont(new Font("Arial", Font.PLAIN, 15));
 		lblPhone.setForeground(new Color(0, 191, 255));
-		lblPhone.setBounds(22, 86, 46, 14);
+		lblPhone.setBounds(22, 109, 46, 14);
 		panel.add(lblPhone);
 		
 		lblPassowrd = new JLabel("Password:");
@@ -90,60 +98,60 @@ public class UserRegistration extends JDialog {
 		lblPassowrd.setForeground(new Color(0, 191, 255));
 		lblPhone.setFont(new Font("Arial", Font.PLAIN, 15));
 		lblPhone.setForeground(new Color(0, 191, 255));
-		lblPassowrd.setBounds(22, 140, 82, 14);
+		lblPassowrd.setBounds(22, 160, 82, 14);
 		panel.add(lblPassowrd);
 		
 		lblNrc = new JLabel("NRC:");
 		lblNrc.setFont(new Font("Arial", Font.PLAIN, 15));
 		lblNrc.setForeground(new Color(0, 191, 255));
-		lblNrc.setBounds(22, 195, 46, 14);
+		lblNrc.setBounds(22, 216, 46, 14);
 		panel.add(lblNrc);
 		
 		lblState = new JLabel("State:");
 		lblState.setFont(new Font("Arial", Font.PLAIN, 15));
 		lblState.setForeground(new Color(0, 191, 255));
-		lblState.setBounds(22, 248, 46, 14);
+		lblState.setBounds(22, 268, 46, 14);
 		panel.add(lblState);
 		
 		lblCity = new JLabel("City:");
 		lblCity.setFont(new Font("Arial", Font.PLAIN, 15));
 		lblCity.setForeground(new Color(0, 191, 255));
-		lblCity.setBounds(22, 304, 46, 21);
+		lblCity.setBounds(22, 319, 46, 21);
 		panel.add(lblCity);
 		
 		lblStreet = new JLabel("Street:");
 		lblStreet.setFont(new Font("Arial", Font.PLAIN, 15));
 		lblStreet.setForeground(new Color(0, 191, 255));
-		lblStreet.setBounds(22, 369, 46, 14);
+		lblStreet.setBounds(22, 382, 46, 14);
 		panel.add(lblStreet);
 		
 		txtName = new JTextField();
-		txtName.setBounds(213, 28, 424, 31);
+		txtName.setBounds(213, 58, 424, 31);
 		panel.add(txtName);
 		txtName.setColumns(10);
 		
 		txtPhone = new JTextField();
-		txtPhone.setBounds(213, 79, 424, 31);
+		txtPhone.setBounds(213, 103, 424, 31);
 		panel.add(txtPhone);
 		txtPhone.setColumns(10);
 		
 		txtPass = new JPasswordField();
-		txtPass.setBounds(213, 133, 424, 31);
+		txtPass.setBounds(213, 154, 424, 31);
 		panel.add(txtPass);
 		txtPass.setColumns(10);
 		
 		txtState = new JTextField();
-		txtState.setBounds(213, 241, 424, 31);
+		txtState.setBounds(213, 262, 424, 31);
 		panel.add(txtState);
 		txtState.setColumns(10);
 		
 		txtCity = new JTextField();
-		txtCity.setBounds(213, 300, 424, 31);
+		txtCity.setBounds(213, 316, 424, 31);
 		panel.add(txtCity);
 		txtCity.setColumns(10);
 		
 		txtStreet = new JTextField();
-		txtStreet.setBounds(213, 362, 424, 31);
+		txtStreet.setBounds(213, 376, 424, 31);
 		panel.add(txtStreet);
 		txtStreet.setColumns(10);
 		
@@ -153,27 +161,66 @@ public class UserRegistration extends JDialog {
 				fillCode();				
 			}
 		});
-		cboCode.setModel(new DefaultComboBoxModel(new String[] {"---Select---","1/", "2/", "3/", "4/", "5/", "6/", "7/", "8/", "9/", "10/", "11/", "12/", "13/", "14/"}));
-		cboCode.setBounds(213, 188, 82, 31);
+		cboCode.setModel(new DefaultComboBoxModel(new String[] {"","1/", "2/", "3/", "4/", "5/", "6/", "7/", "8/", "9/", "10/", "11/", "12/", "13/", "14/"}));
+		cboCode.setMaximumRowCount(5);
+		cboCode.setBackground(Color.WHITE);
+		cboCode.setForeground(Color.BLACK);
+		cboCode.setFont(new Font("Arial", Font.PLAIN, 14));
+		cboCode.setBounds(214, 208, 82, 31);
 		panel.add(cboCode);
 		
 		cboCity = new JComboBox();
-		cboCity.setModel(new DefaultComboBoxModel(new String[] {"---Select---"}));
-		cboCity.setBounds(321, 188, 95, 31);
+		cboCity.setModel(new DefaultComboBoxModel(new String[] {""}));
+		cboCity.setMaximumRowCount(5);
+		cboCity.setBackground(Color.WHITE);
+		cboCity.setForeground(Color.BLACK);
+		cboCity.setFont(new Font("Arial", Font.PLAIN, 14));
+		cboCity.setBounds(320, 208, 95, 31);
 		panel.add(cboCity);
 		
 		cboNation = new JComboBox();
-		cboNation.setModel(new DefaultComboBoxModel(new String[] {"---Select---", "N", "E", "P"}));
-		cboNation.setBounds(439, 188, 93, 31);
+		cboNation.setModel(new DefaultComboBoxModel(new String[] {"", "N", "E", "P"}));
+		cboNation.setMaximumRowCount(5);
+		cboNation.setBackground(Color.WHITE);
+		cboNation.setForeground(Color.BLACK);
+		cboNation.setFont(new Font("Arial", Font.PLAIN, 14));
+		cboNation.setBounds(439, 208, 93, 31);
 		panel.add(cboNation);
 		
 		txtNRCno = new JTextField();
-		txtNRCno.setBounds(542, 188, 95, 31);
+		txtNRCno.setBounds(542, 210, 95, 31);
 		panel.add(txtNRCno);
 		txtNRCno.setColumns(10);
 		
+	//  Default colors
+			Color defaultBg = new Color(0, 191, 255);
+			Color defaultFg = new Color(255, 255, 255);
+
+			//  Hover colors
+			Color hoverBg = new Color(230, 230, 250);
+			Color hoverFg = new Color(0, 191, 255);
+		
 		
 		btnRegister = new JButton("Register");
+		btnRegister.setOpaque(true);                      // allow background painting
+		btnRegister.setContentAreaFilled(true);           // MUST be true to fill background
+		btnRegister.setBorderPainted(false);              // optional: remove border
+		btnRegister.setFocusPainted(false);               // optional: remove focus outline
+		btnRegister.setBackground(new Color(0, 191, 255));  // green
+		btnRegister.setForeground(new Color(255, 255, 255));
+		
+		btnRegister.addMouseListener(new MouseAdapter() {
+		    
+		    public void mouseEntered(MouseEvent e) {
+		    	btnRegister.setBackground(hoverBg);    // Change background
+		    	btnRegister.setForeground(hoverFg);    // Change text color
+		    }
+
+		    public void mouseExited(MouseEvent e) {
+		    	btnRegister.setBackground(defaultBg);  // Reset background
+		    	btnRegister.setForeground(defaultFg);  // Reset text color
+		    }
+		});
 		btnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				boolean duplicate = sqlquery.isPhonenoDuplicate(txtPhone.getText());
@@ -276,20 +323,64 @@ public class UserRegistration extends JDialog {
 				return null;
 			}
 		});
-		btnRegister.setBounds(305, 472, 97, 36);
+		btnRegister.setBounds(305, 492, 97, 36);
 		panel.add(btnRegister);
 		
+		//for cancel btn
 		btnCancel = new JButton("Cancel");
+		
+		btnCancel.setOpaque(true);                      // allow background painting
+		btnCancel.setContentAreaFilled(true);           // MUST be true to fill background
+		btnCancel.setBorderPainted(false);              // optional: remove border
+		btnCancel.setFocusPainted(false);               // optional: remove focus outline
+		btnCancel.setBackground(new Color(0, 191, 255));  // green
+		btnCancel.setForeground(new Color(255, 255, 255));
+		
+		btnCancel.addMouseListener(new MouseAdapter() {
+		    
+		    public void mouseEntered(MouseEvent e) {
+		    	btnCancel.setBackground(hoverBg);    // Change background
+		    	btnCancel.setForeground(hoverFg);    // Change text color
+		    }
+
+		    public void mouseExited(MouseEvent e) {
+		    	btnCancel.setBackground(defaultBg);  // Reset background
+		    	btnCancel.setForeground(defaultFg);  // Reset text color
+		    }
+		});
+		
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clear();
 				
 			}
 		});
-		btnCancel.setBounds(108, 472, 97, 36);
+		btnCancel.setBounds(108, 492, 97, 36);
 		panel.add(btnCancel);
 		
+		
+		//for close btn
 		btnClose = new JButton("Close");
+		
+		btnClose.setOpaque(true);                      // allow background painting
+		btnClose.setContentAreaFilled(true);           // MUST be true to fill background
+		btnClose.setBorderPainted(false);              // optional: remove border
+		btnClose.setFocusPainted(false);               // optional: remove focus outline
+		btnClose.setBackground(new Color(0, 191, 255));  // green
+		btnClose.setForeground(new Color(255, 255, 255));
+		
+		btnClose.addMouseListener(new MouseAdapter() {
+		    
+		    public void mouseEntered(MouseEvent e) {
+		    	btnClose.setBackground(hoverBg);    // Change background
+		    	btnClose.setForeground(hoverFg);    // Change text color
+		    }
+
+		    public void mouseExited(MouseEvent e) {
+		    	btnClose.setBackground(defaultBg);  // Reset background
+		    	btnClose.setForeground(defaultFg);  // Reset text color
+		    }
+		});
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(JOptionPane.showConfirmDialog(null,"Are you sure you want to exit?","Confrim",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==JOptionPane.YES_OPTION)
@@ -298,16 +389,21 @@ public class UserRegistration extends JDialog {
 				}
 			}
 		});
-		btnClose.setBounds(495, 472, 89, 36);
+		btnClose.setBounds(493, 492, 89, 36);
 		panel.add(btnClose);
 		
 		JLabel lblGender = new JLabel("Gender:");
 		lblGender.setForeground(new Color(0, 191, 255));
 		lblGender.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblGender.setBounds(22, 413, 82, 14);
+		lblGender.setBounds(22, 432, 82, 14);
 		panel.add(lblGender);
 		
 		rdoMale = new JRadioButton("Male");
+		rdoMale.setOpaque(true);                      // allow background painting
+		rdoMale.setContentAreaFilled(true);           // MUST be true to fill background
+		rdoMale.setBorderPainted(false);              // optional: remove border
+		rdoMale.setFocusPainted(false);               // optional: remove focus outline
+		rdoMale.setBackground(new Color(255, 255, 255));
 		rdoMale.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(rdoMale.isSelected()) {
@@ -316,10 +412,15 @@ public class UserRegistration extends JDialog {
 				}
 			}
 		});
-		rdoMale.setBounds(258, 410, 82, 23);
+		rdoMale.setBounds(259, 430, 82, 23);
 		panel.add(rdoMale);
 		
 		rdoFemale = new JRadioButton("Female");
+		rdoFemale.setOpaque(true);                      // allow background painting
+		rdoFemale.setContentAreaFilled(true);           // MUST be true to fill background
+		rdoFemale.setBorderPainted(false);              // optional: remove border
+		rdoFemale.setFocusPainted(false);               // optional: remove focus outline
+		rdoFemale.setBackground(new Color(255, 255, 255));
 		rdoFemale.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(rdoFemale.isSelected()) {
@@ -328,7 +429,7 @@ public class UserRegistration extends JDialog {
 				}
 			}
 		});
-		rdoFemale.setBounds(464, 410, 82, 23);
+		rdoFemale.setBounds(465, 430, 82, 23);
 		panel.add(rdoFemale);
 		
 		
