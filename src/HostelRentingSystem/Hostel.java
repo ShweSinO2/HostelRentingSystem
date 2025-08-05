@@ -1,10 +1,13 @@
 package HostelRentingSystem;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import javax.swing.SwingUtilities;
 
 class Hostel {
 	
-	private String hostelName,roomNo,address,genderType,ownerName,ownerPhone,roomid,imageUrl,fileName; 
+	private String hostelName,roomNo,address,genderType,ownerName,ownerPhone,roomid,imageUrl,fileName,description; 
 	private int price;
 	
 	public Hostel() {
@@ -113,18 +116,25 @@ class Hostel {
     	this.fileName = fileName;
     }
     
+    public String getDescription() {
+    	return description;
+    }
+    
+    public void setDescription(String description) {
+    	this.description = description;
+    }
+    
     @Override
     public String toString() {
-//      return "<html><h4>Hostel Name = "+hostelName+"</h4><h4>Room No = "+roomNo+"</h4><h4>Address ="+address+"</h4><h4>Price ="+price+"</h4><h4>Image ="+imageUrl+"</h4></html>";
-
+    	NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+    	String formattedPrice = numberFormat.format(price);
         String imagePath = (imageUrl != null && !imageUrl.isEmpty()) ? imageUrl : "uploaded_images/no-image.jpg"; 
         String imageHtmlSrc = "file:///" + new java.io.File(imagePath).getAbsolutePath().replace("\\", "/");
     	return "<html>" +
         "<h4>Hostel Name = " + (hostelName != null ? hostelName : "N/A") + "</h4>" +
         "<h4>Room No = " + (roomNo != null ? roomNo : "N/A") + "</h4>" +
         "<h4>Address = " + (address != null ? address : "N/A") + "</h4>" +
-        "<h4>Price = " + price + "</h4>" +
-//        "<h4>Image URL (Text) = " + (imageUrl != null ? imageUrl : "N/A") + "</h4>" + 
+        "<h4>Price = " + formattedPrice + " Kyats</h4>" +
         "<h4>Image <br><br> <img src='" + imageHtmlSrc + "' width='120' height='120'></h4>" +
         "</html>";
     }
