@@ -10,7 +10,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
-
 import HostelRentingSystem.Checking;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -126,7 +125,6 @@ public class HostelRegistration extends JDialog {
 		txtStreet.setBounds(261, 357, 357, 37);
 		getContentPane().add(txtStreet);
 		
-		System.out.println("User ID in Hostel Registration=> " + userId);
 		JButton btnNext = new JButton("Next");
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -138,7 +136,6 @@ public class HostelRegistration extends JDialog {
 				arr[4] = txtMainRoom.getText();
 				
 				boolean duplicate = sqlquery.isDuplicateRoomno(arr);
-				System.out.println("Room Duplicate => "+duplicate);
 				
 				if(Checking.IsNull(txtHostelName.getText()) || !Checking.IsLetter(txtHostelName.getText())) {
 					JOptionPane.showMessageDialog(null, "You must enter valid Hostel Name");
@@ -152,8 +149,12 @@ public class HostelRegistration extends JDialog {
 					JOptionPane.showMessageDialog(null, "You must enter valid Main Room No:");
 					txtMainRoom.requestFocus();
 					txtMainRoom.selectAll();
-				} else if(Checking.IsNull(txtRoomCount.getText()) || Checking.IsLetter(txtRoomCount.getText()) || Integer.parseInt(txtRoomCount.getText())==0) {
+				} else if(Checking.IsNull(txtRoomCount.getText()) || Checking.IsLetter(txtRoomCount.getText())) {
 					JOptionPane.showMessageDialog(null, "You must enter valid Room Count");
+					txtRoomCount.requestFocus();
+					txtRoomCount.selectAll();
+				} else if(Integer.parseInt(txtRoomCount.getText())==0|| Integer.parseInt(txtRoomCount.getText()) > 5 ) {
+					JOptionPane.showMessageDialog(null, "Romm count should be between 1 and 10");
 					txtRoomCount.requestFocus();
 					txtRoomCount.selectAll();
 				} else if(Checking.IsNull(txtState.getText()) || !Checking.IsLetter(txtState.getText())) {
@@ -197,7 +198,7 @@ public class HostelRegistration extends JDialog {
 		cboGender.setBounds(261, 418, 357, 37);
 		getContentPane().add(cboGender);
 		
-		JButton btnCancel = new JButton("Cancel");
+		JButton btnCancel = new JButton("Clear");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clear();
@@ -206,7 +207,7 @@ public class HostelRegistration extends JDialog {
 		btnCancel.setBounds(382, 480, 102, 42);
 		getContentPane().add(btnCancel);
 		
-		JButton btnClose = new JButton("Close");
+		JButton btnClose = new JButton("Logout");
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?","Confirm Existing",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
@@ -217,7 +218,7 @@ public class HostelRegistration extends JDialog {
 		btnClose.setBounds(45, 480, 102, 42);
 		getContentPane().add(btnClose);
 		
-		JButton btnSkip = new JButton("Skip");
+		JButton btnSkip = new JButton("HostelList");
 		btnSkip.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Owner owner = new Owner(userId);

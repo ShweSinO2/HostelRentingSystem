@@ -29,6 +29,8 @@ import javax.swing.ImageIcon;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.awt.event.ActionEvent;
 
 public class HostelDetail extends JDialog {
@@ -37,7 +39,7 @@ public class HostelDetail extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public HostelDetail(String hostelName,String roomno,String address,String genderType,int price,String ownerName,String ownerPhone,String roomId,String fileName,String imageUrl) {
+	public HostelDetail(String hostelName,String roomno,String address,String genderType,int price,String ownerName,String ownerPhone,String roomId,String fileName,String imageUrl, String description) {
 		System.out.println("Data => "+hostelName+roomno+address+genderType+price+ownerName+ownerPhone);
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 	    Dimension screenSize = toolkit.getScreenSize();
@@ -54,7 +56,7 @@ public class HostelDetail extends JDialog {
         
 		getContentPane().setBackground(new Color(192, 192, 192));
 		setTitle("Hostel Detail Form");
-		setBounds(350, 50, 700, 650);
+		setBounds(350, 50, 700, 707);
 //		setBounds(frameX, frameY, frameWidth, frameHeight);
 		setResizable(true);
 		getContentPane().setLayout(null);
@@ -91,8 +93,13 @@ public class HostelDetail extends JDialog {
 		
 		JLabel lblImage = new JLabel("Image");
 		lblImage.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblImage.setBounds(43, 480, 102, 30);
+		lblImage.setBounds(43, 540, 102, 30);
 		getContentPane().add(lblImage);
+		
+		JLabel lblDescription = new JLabel("Description");
+		lblDescription.setFont(new Font("Arial", Font.PLAIN, 15));
+		lblDescription.setBounds(43, 480, 102, 30);
+		getContentPane().add(lblDescription);
 		
 		JButton btnRent = new JButton("Rent");
 		btnRent.addActionListener(new ActionListener() {
@@ -102,7 +109,7 @@ public class HostelDetail extends JDialog {
 				setVisible(false);
 			}
 		});
-		btnRent.setBounds(408, 550, 102, 35);
+		btnRent.setBounds(408, 610, 102, 35);
 		getContentPane().add(btnRent);
 		
 		JButton btnClose = new JButton("Close");
@@ -113,7 +120,7 @@ public class HostelDetail extends JDialog {
 				}
 			}
 		});
-		btnClose.setBounds(165, 550, 102, 35);
+		btnClose.setBounds(165, 610, 102, 35);
 		getContentPane().add(btnClose);
 		
 		JLabel lblOwnerName = new JLabel(ownerName);
@@ -131,7 +138,11 @@ public class HostelDetail extends JDialog {
 		lblRoomNo.setBounds(280, 215, 357, 30);
 		getContentPane().add(lblRoomNo);
 		
-		JLabel lblPrice = new JLabel(price+"");
+		// add comma and kyats to price
+		NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+    	String formattedPrice = numberFormat.format(price);
+    	
+		JLabel lblPrice = new JLabel(formattedPrice+" Kyats");
 		lblPrice.setBorder(blackline);
 		lblPrice.setBounds(280, 275, 357, 35);
 		getContentPane().add(lblPrice);
@@ -147,7 +158,7 @@ public class HostelDetail extends JDialog {
 		getContentPane().add(lblGender);
 		
 		JLabel imageLabel = new JLabel("Loading Image...");
-		imageLabel.setBounds(280, 487, 150, 23);
+		imageLabel.setBounds(280, 547, 150, 23);
 		File imageFile = new File(imageUrl);
 		if (imageFile.exists() && imageFile.isFile()) {
 			
@@ -158,17 +169,22 @@ public class HostelDetail extends JDialog {
             
             imageLabel.setIcon(scaledIcon);
             imageLabel.setText("");
-    		imageLabel.setBounds(280, 487, 130, 100);
+    		imageLabel.setBounds(280, 547, 130, 100);
     		
     		//If there is image change y dimension
     		setBounds(350, 50, 700, 727);
-    		btnRent.setBounds(408, 617, 102, 35);
-    		btnClose.setBounds(165, 617, 102, 35);
+    		btnRent.setBounds(408, 677, 102, 35);
+    		btnClose.setBounds(165, 677, 102, 35);
         } else {
             imageLabel.setText("Image not found: " + imageUrl);
             imageLabel.setForeground(Color.RED);
         }
 		getContentPane().add(imageLabel, BorderLayout.CENTER);
+		
+		JLabel desc = new JLabel(description);
+		desc.setBorder(blackline);
+		desc.setBounds(280, 480, 357, 30);
+		getContentPane().add(desc);
 		
 		JLabel lblHostelName = new JLabel(hostelName);
 		lblHostelName.setBorder(blackline);

@@ -32,7 +32,7 @@ public class Home extends JFrame {
  
 	private JPanel contentPane;
 	SqlQuery sqlquery = new SqlQuery();
-	String hostelName,roomno,address,genderType,ownerName,ownerPhone,roomId,imageFileName,imageUrl;
+	String hostelName,roomno,address,genderType,ownerName,ownerPhone,roomId,imageFileName,imageUrl,description;
 	int price;
 	private JComboBox comboBox;
 	
@@ -50,10 +50,7 @@ public class Home extends JFrame {
 			public void run() {
 				try {
 					Home frame = new Home();
-					//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					frame.setResizable(false);
-					//frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-					//frame.getContentPane().setLayout(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -66,13 +63,11 @@ public class Home extends JFrame {
 	 * Create the frame.
 	 */
 	public Home() {
-		
 		try {
             UIManager.setLookAndFeel(new FlatIntelliJLaf());
         } catch (Exception ex) {
             System.err.println("Failed to initialize FlatLaf");
-        }
-		setTitle("Hostel Renting System");
+        }		setTitle("Hostel Renting System");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//setBounds(350, 50, 700, 600);
 		setBounds(0, 0, 1700, 745);
@@ -92,8 +87,7 @@ public class Home extends JFrame {
 	    		if(!e.getValueIsAdjusting()) {
 	    			JList<Hostel> list = (JList<Hostel>) e.getSource();
 	    			int selectedIndex = list.getSelectedIndex();
-	    			//System.out.println("selectedIndex => " + selectedIndex);
-	    			//System.out.println("hostelArrList.size() => " +  hostelArrList.size());
+	    			
 	    			if(selectedIndex < hostelArrList.size() && selectedIndex >= 0) {
 	    				Hostel selectedHostel = hostelArrList.get(selectedIndex);
 	    				hostelName = selectedHostel.getHostelName();
@@ -106,9 +100,10 @@ public class Home extends JFrame {
 		    			roomId = selectedHostel.getRoomId();
 		    			imageFileName = selectedHostel.getFileName();
 		    			imageUrl = selectedHostel.getImageUrl();
+		    			description = selectedHostel.getDescription();
 		    			
 		    		
-		    			HostelDetail detail = new HostelDetail(hostelName,roomno,address,genderType,price,ownerName,ownerPhone,roomId,imageFileName,imageUrl);
+		    			HostelDetail detail = new HostelDetail(hostelName,roomno,address,genderType,price,ownerName,ownerPhone,roomId,imageFileName,imageUrl,description);
 		    			detail.setVisible(true);
 	    			}
 	    			
@@ -148,25 +143,27 @@ public class Home extends JFrame {
 		btnSearch.setBounds(334, 7, 35, 27);
 		contentPane.add(btnSearch);
  
-		JButton btnSignin = new JButton("Sign In");
+		JButton btnSignin = new JButton("Login");
 		btnSignin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SignIn signin = new SignIn("","","",0,"","");
 				signin.setVisible(true);
 			}
 		});
+		//btnSignin.setBounds(578, 9, 87, 25);
 		btnSignin.setBounds(1106, 8, 87, 25);
 		contentPane.add(btnSignin);
  
-		JButton btnSignup = new JButton("Sign Up");
-		btnSignup.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				RegisterType type = new RegisterType();
-				type.setVisible(true);
-			}
-		});
-		btnSignup.setBounds(1214, 8, 87, 25);
-		contentPane.add(btnSignup);
+//		JButton btnSignup = new JButton("Sign Up");
+//		btnSignup.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				RegisterType type = new RegisterType();
+//				type.setVisible(true);
+//			}
+//		});
+//		btnSignup.setBounds(578, 9, 87, 25);
+//		btnSignup.setBounds(1214, 8, 87, 25);
+//		contentPane.add(btnSignup);
 		
 		btnR = new JButton("Refresh");
 		btnR.addActionListener(new ActionListener() {
@@ -177,7 +174,8 @@ public class Home extends JFrame {
 				fillAddress();
 			}
 		});
-		btnR.setBounds(1007, 8, 87, 25);
+		//btnR.setBounds(490, 9, 87, 25);
+		btnR.setBounds(1007, 8, 87, 25)
 		contentPane.add(btnR);
 				
 		fillAddress();
@@ -193,19 +191,12 @@ public class Home extends JFrame {
 	}
 	
 	public void bindListView(ArrayList<String[]> strQuery) {
-		System.out.println("Bind List View => " + strQuery.size());
 		
 		hostelArrList = new ArrayList<Hostel>();
 		
 		for(int i=0;i<strQuery.size();i++) {
 			Hostel hostel = new Hostel();
 			String[] data = strQuery.get(i);
-			
-			System.out.println("This is hostel data");
-			for(int d=0; d<data.length; d++) {
-				System.out.println("Data "+d+"is =>" + data[d]);
-			}
-			
 			
 			hostel.setHostelName(data[0]);
 			hostel.setRoomNo(data[1]);
@@ -217,10 +208,10 @@ public class Home extends JFrame {
 			hostel.setRoomId(data[7]);
 			hostel.setFileName(data[8]);
 			hostel.setImageUrl(data[9]);
+			hostel.setDescription(data[10]);
 			hostelArrList.add(hostel);
 		}
 		
-		System.out.println("hostelArrList => " + hostelArrList);
 		listModel.clear();
 		
 		for(Hostel hostelData : hostelArrList) {

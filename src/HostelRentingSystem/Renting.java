@@ -214,7 +214,7 @@ public class Renting extends JDialog {
 								try {
 									boolean updateRoom = sqlquery.updateRoom(roomId,false);
 									if(updateRoom) {
-										System.out.println("Update Available at "+ roomId);
+//										System.out.println("Update Available at "+ roomId);
 									}
 								} catch (SQLException e1) {
 									// TODO Auto-generated catch block
@@ -223,7 +223,6 @@ public class Renting extends JDialog {
 								clear();
 								setVisible(false);
 							}
-							System.out.println("ID => "+seekerId+rentId+"Room=>"+roomId+paymentId+ownerId);
 							
 						}
 					}
