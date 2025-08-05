@@ -26,7 +26,7 @@ import javax.swing.JComboBox;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-
+import com.formdev.flatlaf.FlatIntelliJLaf;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.awt.event.ActionEvent;
@@ -46,7 +46,7 @@ public class HostelDetail extends JDialog {
         Insets insets = toolkit.getScreenInsets(getGraphicsConfiguration());
         int contentPaneHeight = screenHeight - insets.top - insets.bottom;
 
-        // Frame ရဲ့ အကျယ်နဲ့ x, y နေရာကို သတ်မှတ်မယ်။
+        // Frame á€›á€²á€· á€¡á€€á€»á€šá€ºá€”á€²á€· x, y á€”á€±á€›á€¬á€€á€­á€¯ á€žá€�á€ºá€™á€¾á€�á€ºá€™á€šá€ºá�‹
         int frameWidth = 700;
         int frameX = 350;
         int frameY = 50;

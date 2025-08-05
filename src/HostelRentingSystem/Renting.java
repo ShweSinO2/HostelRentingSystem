@@ -4,17 +4,22 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
-
+import com.formdev.flatlaf.FlatIntelliJLaf;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+
+import com.formdev.flatlaf.FlatIntelliJLaf;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -38,6 +43,13 @@ public class Renting extends JDialog {
 	 * Create the dialog.
 	 */
 	public Renting(String seekerName,String ownerName,String roomno,int price,String seekerPhone,String ownerPhone,String roomId) {
+		
+		try {
+            UIManager.setLookAndFeel(new FlatIntelliJLaf());
+        } catch (Exception ex) {
+            System.err.println("Failed to initialize FlatLaf");
+        }
+		
 		setTitle("Renting");
 		setBounds(350, 50, 700, 600);
 		setResizable(false);

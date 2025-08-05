@@ -3,7 +3,7 @@ package HostelRentingSystem;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
-
+//import com.formdev.flatlaf.FlatIntelliJLaf;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -11,8 +11,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.border.TitledBorder;
+
+import com.formdev.flatlaf.FlatIntelliJLaf;
+
 import java.awt.Color;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
@@ -65,6 +69,13 @@ public class UserRegistration extends JDialog {
 	 * Create the dialog.
 	 */
 	public UserRegistration(String roleId) {
+		
+		try {
+            UIManager.setLookAndFeel(new FlatIntelliJLaf());
+        } catch (Exception ex) {
+            System.err.println("Failed to initialize FlatLaf");
+        }
+		
 		setTitle("");
 		setBounds(350, 50, 700, 616);
 		getContentPane().setBackground(Color.WHITE);

@@ -10,12 +10,16 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+
+import com.formdev.flatlaf.FlatIntelliJLaf;
+
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
-
+import com.formdev.flatlaf.FlatIntelliJLaf;
 public class Seeker extends JDialog {
 	Border blackline=BorderFactory.createLineBorder(Color.black);
 	SqlQuery sqlquery = new SqlQuery();
@@ -25,6 +29,12 @@ public class Seeker extends JDialog {
 	 */
 
 	public Seeker(String phoneno,String password) {
+		try {
+            UIManager.setLookAndFeel(new FlatIntelliJLaf());
+        } catch (Exception ex) {
+            System.err.println("Failed to initialize FlatLaf");
+        }
+		
 		System.out.println("Data in Seeker => "+phoneno+"\n"+password);
 		setTitle("Seeker Profile");
 		setBounds(350, 50, 700, 600);
@@ -163,5 +173,20 @@ public class Seeker extends JDialog {
 		lblNew_6_1_2.setFont(new Font("Arial", Font.PLAIN, 15));
 		lblNew_6_1_2.setBounds(48, 273, 114, 30);
 		getContentPane().add(lblNew_6_1_2);
+		
+		JButton btnNewButton = new JButton("Acc info");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UserUpdateForm userallinfo;
+				
+					userallinfo = new UserUpdateForm(userId);
+					userallinfo.setVisible(true);
+				
+			}
+		});
+		btnNewButton.setBounds(28, 24, 87, 16);
+		getContentPane().add(btnNewButton);
+		
+		//JButton
 	}
 }

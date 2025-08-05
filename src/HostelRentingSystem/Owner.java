@@ -5,7 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
+import com.formdev.flatlaf.FlatIntelliJLaf;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,17 +16,23 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+
+import com.formdev.flatlaf.FlatIntelliJLaf;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Owner extends JDialog {
 	private JTable tblHostel;
@@ -43,8 +49,15 @@ public class Owner extends JDialog {
 	List<String[]> allDataList = new ArrayList<>();
 	
     public Owner(String userId) {
+    	try {
+            UIManager.setLookAndFeel(new FlatIntelliJLaf());
+        } catch (Exception ex) {
+            System.err.println("Failed to initialize FlatLaf");
+        }
+    	
         setTitle("Owner Panel");
-        setSize(900, 500);
+        //setSize(900, 500);
+        setSize(1200,600);
         try {
 			con = connect.getConnection();
 		} catch (SQLException e) {
@@ -55,18 +68,17 @@ public class Owner extends JDialog {
         JTabbedPane tabbedPane = new JTabbedPane();
 
         JPanel panel1 = new JPanel();
-
         JPanel panel3 = new JPanel();
         
         JPanel panel4 = new JPanel();
-
         tabbedPane.addTab("All", null, panel1, "All");
         panel1.setLayout(null);
         
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(10, 11, 859, 411);
+        //scrollPane.setBounds(10, 11, 859, 411);
+        scrollPane.setBounds(10, 11, 1147, 411);
         panel1.add(scrollPane);
-        
+         
         tblHostel = new JTable();
         scrollPane.setViewportView(tblHostel);
         
@@ -74,16 +86,30 @@ public class Owner extends JDialog {
         panel3.setLayout(null);
         
         JScrollPane scrollPane_2 = new JScrollPane();
-        scrollPane_2.setBounds(10, 11, 859, 411);
+        //scrollPane_2.setBounds(10, 11, 859, 411);
+        scrollPane_2.setBounds(10, 11, 1147, 411);
         panel3.add(scrollPane_2);
         
         tblRent = new JTable();
         scrollPane_2.setViewportView(tblRent);
+        
+        //for btn for Rent
+        JButton btnNewButton_2 = new JButton("Back");
+        btnNewButton_2.setBounds(20, 488, 87, 27);
+        btnNewButton_2.addActionListener(e -> {
+        	 HostelRegistration hostelregistration ;
+			
+        	 hostelregistration = new HostelRegistration(userId);
+        	 hostelregistration.setVisible(true);
+        });
+        panel3.add(btnNewButton_2);
+        
         tabbedPane.addTab("Free", null, panel4, "Free");
         panel4.setLayout(null);
         
         JScrollPane scrollPane_3 = new JScrollPane();
-        scrollPane_3.setBounds(10, 11, 859, 411);
+        //scrollPane_3.setBounds(10, 11, 859, 411);
+        scrollPane_3.setBounds(10, 11, 1147, 411);
         panel4.add(scrollPane_3);
         
         tblFree = new JTable();
@@ -114,6 +140,18 @@ public class Owner extends JDialog {
         });
         scrollPane_3.setViewportView(tblFree);
         
+        //for button on free table
+        JButton btnNewButton_1 = new JButton("Back");
+        btnNewButton_1.setBounds(20, 488, 87, 27);
+        btnNewButton_1.addActionListener(e -> {
+        	 HostelRegistration hostelregistration ;
+			
+        	 hostelregistration = new HostelRegistration(userId);
+        	 hostelregistration.setVisible(true);
+        });
+      panel4.add(btnNewButton_1);
+
+        
         tabbedPane.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                int index = tabbedPane.getSelectedIndex();
@@ -126,6 +164,18 @@ public class Owner extends JDialog {
          });
         
         getContentPane().add(tabbedPane);
+        
+        //for button for All
+        JButton btnNewButton = new JButton("Back");
+        btnNewButton.setBounds(20, 488, 87, 27);
+        btnNewButton.addActionListener(e -> {
+	        HostelRegistration hostelregistration ;
+                			
+	        hostelregistration = new HostelRegistration(userId);
+	        hostelregistration.setVisible(true);
+      	});
+                      
+       panel1.add(btnNewButton);
 
         setLocationRelativeTo(null);
         setVisible(true);
@@ -329,5 +379,11 @@ public class Owner extends JDialog {
 	       }
 	       
 	    }
+	}
+	
+	public static void main(String[] args) {
+    	/// TODO Auto-generated method stub
+    	Owner up = new Owner("24");
+    			up.setVisible(true);
 	}
 }

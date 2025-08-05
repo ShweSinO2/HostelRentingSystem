@@ -5,7 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
-
+import com.formdev.flatlaf.FlatIntelliJLaf;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
+import javax.swing.UIManager;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
@@ -39,6 +41,12 @@ public class RegisterType extends JDialog {
 	 * Create the dialog.
 	 */
 	public RegisterType() {
+		try {
+            UIManager.setLookAndFeel(new FlatIntelliJLaf());
+        } catch (Exception ex) {
+            System.err.println("Failed to initialize FlatLaf");
+        }
+		
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("Register Type");
 		setBounds(350, 50, 700, 600);

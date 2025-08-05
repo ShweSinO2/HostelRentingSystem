@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
-
+import com.formdev.flatlaf.FlatIntelliJLaf;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -15,6 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -31,6 +33,13 @@ public class Reversion extends JDialog {
 	 * Create the dialog.
 	 */
 	public Reversion(String roomNo,String endDate,String roomId,String userId) {
+		
+		try {
+            UIManager.setLookAndFeel(new FlatIntelliJLaf());
+        } catch (Exception ex) {
+            System.err.println("Failed to initialize FlatLaf");
+        }
+		
 		setTitle("Reservation");
 		setBounds(450, 180, 497, 371);
 		getContentPane().setLayout(null);

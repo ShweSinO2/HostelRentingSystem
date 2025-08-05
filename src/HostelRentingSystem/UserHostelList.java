@@ -6,7 +6,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
@@ -17,10 +16,12 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.JTable;
+import javax.swing.UIManager;
 import javax.swing.JScrollPane;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import com.formdev.flatlaf.FlatIntelliJLaf;
 
 public class UserHostelList extends JDialog {
 	
@@ -41,6 +42,12 @@ public class UserHostelList extends JDialog {
 	 * @throws SQLException 
 	 */
 	public UserHostelList(String userId) throws SQLException {
+		
+		try {
+            UIManager.setLookAndFeel(new FlatIntelliJLaf());
+        } catch (Exception ex) {
+            System.err.println("Failed to initialize FlatLaf");
+        }
 		
 		setTitle("Hostel List");
 		setBounds(155, 120, 1000, 500);

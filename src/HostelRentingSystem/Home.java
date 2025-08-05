@@ -21,12 +21,13 @@ import javax.swing.AbstractListModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
 import javax.swing.JLabel;
 
 import HostelRentingSystem.Hostel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
+import com.formdev.flatlaf.FlatIntelliJLaf;
 public class Home extends JFrame {
  
 	private JPanel contentPane;
@@ -49,7 +50,10 @@ public class Home extends JFrame {
 			public void run() {
 				try {
 					Home frame = new Home();
+					//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					frame.setResizable(false);
+					//frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+					//frame.getContentPane().setLayout(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -62,9 +66,16 @@ public class Home extends JFrame {
 	 * Create the frame.
 	 */
 	public Home() {
+		
+		try {
+            UIManager.setLookAndFeel(new FlatIntelliJLaf());
+        } catch (Exception ex) {
+            System.err.println("Failed to initialize FlatLaf");
+        }
 		setTitle("Hostel Renting System");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(350, 50, 700, 600);
+		//setBounds(350, 50, 700, 600);
+		setBounds(0, 0, 1700, 745);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -107,7 +118,8 @@ public class Home extends JFrame {
 	    });
 	    
 		scrollPane = new JScrollPane(hostelList);
-		scrollPane.setBounds(10, 45, 664, 505);
+		//scrollPane.setBounds(10, 45, 664, 505);
+		scrollPane.setBounds(10, 45, 1000, 652);
 		getContentPane().add(scrollPane);
  
 		ArrayList<String[]> strQuery = sqlquery.getHostelData();
@@ -143,7 +155,7 @@ public class Home extends JFrame {
 				signin.setVisible(true);
 			}
 		});
-		btnSignin.setBounds(490, 9, 87, 25);
+		btnSignin.setBounds(1106, 8, 87, 25);
 		contentPane.add(btnSignin);
  
 		JButton btnSignup = new JButton("Sign Up");
@@ -153,7 +165,7 @@ public class Home extends JFrame {
 				type.setVisible(true);
 			}
 		});
-		btnSignup.setBounds(578, 9, 87, 25);
+		btnSignup.setBounds(1214, 8, 87, 25);
 		contentPane.add(btnSignup);
 		
 		btnR = new JButton("Refresh");
@@ -165,7 +177,7 @@ public class Home extends JFrame {
 				fillAddress();
 			}
 		});
-		btnR.setBounds(402, 9, 87, 25);
+		btnR.setBounds(1007, 8, 87, 25);
 		contentPane.add(btnR);
 				
 		fillAddress();

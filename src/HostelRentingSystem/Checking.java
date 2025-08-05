@@ -26,7 +26,7 @@ public class Checking {
 	}
 	
 	public static boolean IsPhoneNo(String str) {
-		if(str.length() <= 12) {
+		if(str.length() <= 11 && str.length() >= 6) {
 			return true;
 		} else {
 			return false;
@@ -39,7 +39,7 @@ public class Checking {
 	    Matcher matcher = pattern.matcher(str);
 	    boolean matchFound = matcher.find();
 		
-		if(str.length() >= 8 && matchFound) {
+		if(matchFound) {
 			return true;
 		} else {
 			return false;

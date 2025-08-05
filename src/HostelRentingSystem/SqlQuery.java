@@ -72,12 +72,51 @@ public class SqlQuery {
 		}
 	}
 	
+	//Check PhoneNo Duplicate profile
+	public boolean isPhonenoDuplicateProfile(String phoneno,String userid) {
+		query = "select * from user where phoneno='"+phoneno+"' and userid!='"+userid+"'"; 
+		try {
+			ste = con.createStatement();
+			rs = ste.executeQuery(query);
+			if(rs.next()) {
+				return true;
+			} else {
+				return false;
+			}
+		}catch(SQLException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(),"SQL Exception",JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 	//Check NRC Duplicate
 	public boolean isNrcDuplicate(String code,String city,String nation,String nrcno) {
 		
 		String nrc = code + city + "(" + nation + ")" + nrcno;
 		System.out.println("NRC => "+nrc);
 		query = "select * from user where nrc='"+nrc+"'"; 
+		try {
+			ste = con.createStatement();
+			rs = ste.executeQuery(query);
+			if(rs.next()) {
+				return true;
+			} else {
+				return false;
+			}
+		}catch(SQLException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(),"SQL Exception",JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	//Check NRC Duplicate User Profile
+	public boolean isNrcDuplicateProfile(String code,String city,String nation,String nrcno,String userid) {
+		
+		String nrc = code + city + "(" + nation + ")" + nrcno;
+		System.out.println("NRC => "+nrc);
+		query = "select * from user where nrc='"+nrc+"' and userid!='"+userid+"'"; 
 		try {
 			ste = con.createStatement();
 			rs = ste.executeQuery(query);
@@ -217,7 +256,37 @@ public class SqlQuery {
 			return null;
 		}
 	}
- 
+	//Get User of all Information
+		public String[] getUserallInfo(String userid) {
+			try {
+				String[] str = new String[8];
+				ste = con.createStatement();
+				query = "select * from user where userid='"+userid+"' and status='active'";
+				rs = ste.executeQuery(query);
+				
+				if(rs.next()) {
+					str[0] = rs.getString(2);//Name
+					str[1] = rs.getString(3);//Phone
+					str[2] = rs.getString(4);//NRC
+					str[3] = rs.getString(5);//State
+					str[4] = rs.getString(6);//City
+					str[5] = rs.getString(7);//Street
+					str[6] = rs.getString(8);//Password
+					str[7] = rs.getString(11);//Gender
+					//str[0] = rs.getString(1);
+				}
+				return str;
+			}
+			catch(SQLException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage());
+				return null;
+			}
+			
+		}
+	
+	
+	
+	
 	//Get User Info
 		public String[] getUserInfo(String phoneNo,String password) {
 			try {
@@ -487,4 +556,28 @@ public class SqlQuery {
 			return null;
 		}
 	}
+	
+	//////////////////////////
+	
+	public boolean updateUser(String userid, String[] userData) {
+	    String query = "UPDATE user SET username=?, phoneno=?, nrc=?, state=?, city=?, street=?, password=?, gender=? WHERE userid=?";
+	    try (PreparedStatement pst = con.prepareStatement(query)) {
+	        pst.setString(1, userData[0]);  // name
+	        pst.setString(2, userData[1]);  // phoneno
+	        pst.setString(3, userData[2]);  // nrc
+	        pst.setString(4, userData[3]);  // state
+	        pst.setString(5, userData[4]);  // city
+	        pst.setString(6, userData[5]);  // street
+	        pst.setString(7, userData[6]);  // password
+	        pst.setString(8, userData[7]);  // gender
+	        pst.setString(9, userid);       // WHERE id = ?
+
+	        int rowsAffected = pst.executeUpdate();
+	        return rowsAffected > 0;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+
 }
