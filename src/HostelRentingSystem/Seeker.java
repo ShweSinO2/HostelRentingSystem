@@ -17,7 +17,12 @@ import javax.swing.border.EmptyBorder;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.awt.event.ActionEvent;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 public class Seeker extends JDialog {
@@ -127,6 +132,7 @@ public class Seeker extends JDialog {
 		});
 		btnStay.setBounds(287, 490, 114, 39);
 		getContentPane().add(btnStay);
+		checkDateAndSetButtonState(btnStay,querySeeker[6]);
 		
 		JButton btnList = new JButton("Hostel List");
 		btnList.addActionListener(new ActionListener() {
@@ -158,6 +164,8 @@ public class Seeker extends JDialog {
 		btnReserve.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Reversion reserve = new Reversion(lblRoomNo.getText(),lblEndDate.getText(),roomId,userId);
+//				sqlquery.updateStatus(status,roomId,bol);
+				sqlquery.updateRentAndRentingDetail(roomId,userId,"Reverse","Accept");
 				reserve.setVisible(true);
 			}
 		});
@@ -189,4 +197,28 @@ public class Seeker extends JDialog {
 		
 		//JButton
 	}
+	
+	 private void checkDateAndSetButtonState(JButton myButton, String endDateString) {
+		 LocalDate today = LocalDate.now();
+
+		    try {
+		        LocalDate localEndDate = LocalDate.parse(endDateString);
+
+		        long daysUntilEnd = ChronoUnit.DAYS.between(today, localEndDate);
+
+		        System.out.println("Days until end date: " + daysUntilEnd);
+
+		        if (daysUntilEnd <= 7 && daysUntilEnd >= 0) {
+		            myButton.setEnabled(true);
+		            System.out.println("Button is ENABLED.");
+		        } else {
+		            myButton.setEnabled(false);
+		            System.out.println("Button is DISABLED.");
+		        }
+		    } catch (DateTimeParseException e) {
+		        System.err.println("Error: The end date string is not in 'YYYY-MM-DD' format.");
+		        myButton.setEnabled(false); // Date format မှားရင် button ကို disable လုပ်ထားမယ်
+		    }
+
+	    }
 }

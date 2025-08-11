@@ -115,7 +115,7 @@ public class Reversion extends JDialog {
 						JOptionPane.showMessageDialog(null, "Reservation is Successful");
 						btnReserve.setEnabled(false);
 						try {
-							boolean updateRoom = sqlquery.updateRoom(roomId,true);
+							boolean updateRoom = sqlquery.updateRoomFree(roomId,true);
 							if(updateRoom) {
 								System.out.println("Update Available at "+ roomId);
 							}

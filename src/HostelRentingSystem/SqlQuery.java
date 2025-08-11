@@ -1,6 +1,9 @@
 package HostelRentingSystem;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -36,7 +39,7 @@ public class SqlQuery {
 		} else if(tableName.equals("payment")) {
 			query = "insert into payment(amount,paymenttype) values("+data[0]+",'"+data[1]+"')";
 		} else if(tableName.equals("rentingdetail")) {
-			query = "insert into rentingdetail values("+data[0]+","+data[1]+","+data[2]+","+data[3]+",'"+data[4]+"','"+data[5]+"')";
+			query = "insert into rentingdetail values("+data[0]+","+data[1]+","+data[2]+","+data[3]+",'"+data[4]+"','"+data[5]+"','"+data[6]+"')";
 		} else if(tableName.equals("reversion")) {
 			query = "insert into reversion(roomid,userid,announcedate,reversedate) values('"+data[0]+"','"+data[1]+"','"+data[2]+"','"+data[3]+"')";
 		}
@@ -318,9 +321,9 @@ public class SqlQuery {
 	//Get Data for Seeker Profile
 	public String[] getSeekerProfile(String phoneno,String password) {
 		try {
-			String[] seekerData = new String[9];
+			String[] seekerData = new String[11];
 			ste = con.createStatement();
-			query = "select hostelname,buildingno,roomno,smroomno,hostel.state,hostel.city,hostel.street,startdate,enddate,rentingdetail.userid,price from renting,rentingdetail,hostel,room,user where rentingdetail.roomid=room.roomid and room.hostelid=hostel.hostelid and renting.rentid=rentingdetail.rentid and renting.userid=user.userid and phoneno='"+phoneno+"' and password='"+password+"'";
+			query = "select hostelname,buildingno,roomno,smroomno,hostel.state,hostel.city,hostel.street,startdate,enddate,rentingdetail.userid,price,rentingdetail.renting_status,room.roomid from renting,rentingdetail,hostel,room,user where rentingdetail.roomid=room.roomid and room.hostelid=hostel.hostelid and renting.rentid=rentingdetail.rentid and renting.userid=user.userid and phoneno='"+phoneno+"' and password='"+password+"'";
 			rs = ste.executeQuery(query);
 			if(rs.last()) {
 				seekerData[0] = rs.getString(1);//hostelname
@@ -332,6 +335,8 @@ public class SqlQuery {
 				seekerData[6] = rs.getString(9);//enddate
 				seekerData[7] = rs.getString(10);//owner id
 				seekerData[8] = rs.getString(11);//price
+				seekerData[9] = rs.getString(12);//renting status
+				seekerData[10] = rs.getString(13);//roomid
 			} 
 			return seekerData;
 		}catch(SQLException e) {
@@ -340,12 +345,64 @@ public class SqlQuery {
 		}
 	}
 	
+	//Get Data for Reversion
+	public boolean getReverseData(String userId,String roomId,String reverseDate) {
+		LocalDate localEndDate = LocalDate.parse(reverseDate);
+		LocalDate sevenDaysBefore = localEndDate.minusDays(7);
+        
+		try {
+			ste = con.createStatement();
+			query = "select * from reversion where userId='"+userId+"' and roomId='"+roomId+"' and announcedate='"+sevenDaysBefore+"'";
+			rs = ste.executeQuery(query);
+			if(rs.next()) {
+				return true;
+			} else {
+				return false;
+			}
+		}catch(SQLException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			return false;
+		}
+	}
+	
+//public boolean getReverseData(String userId, String roomId, String reverseDate) {
+//        
+//        LocalDate localEndDate;
+//        try {
+//            localEndDate = LocalDate.parse(reverseDate);
+//        } catch (DateTimeParseException e) {
+//            System.err.println("Error parsing reverseDate: " + e.getMessage());
+//            return false;
+//        }
+//        
+//        LocalDate sevenDaysBefore = localEndDate.minusDays(7);
+//        
+//        String query = "SELECT * FROM reversion WHERE userId = ? AND roomId = ? AND announcedate = ?";
+//        
+//        try (Connection con = connect.getConnection();
+//             PreparedStatement pstmt = con.prepareStatement(query)) {
+//            
+//            pstmt.setString(1, userId);
+//            pstmt.setString(2, roomId);
+//            pstmt.setDate(3, java.sql.Date.valueOf(sevenDaysBefore));
+//            
+//            try (ResultSet rs = pstmt.executeQuery()) {
+//                return rs.next();
+//            }
+//            
+//        } catch (SQLException e) {
+//            System.err.println("Database error occurred while checking reversion data.");
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
+	
 	//Get Hostel Data
 	public ArrayList<String[]> getHostelData() {
 		try {
 			ArrayList<String[]> hostelList = new ArrayList<String[]>();
 			ste = con.createStatement();
-			query = "select hostelname,smroomno,hostel.street,hostel.city,hostel.state,price,gendertype,username,phoneno,room.roomid,room.file_name,room.image_url,room.description from hostel,room,user where hostel.hostelid=room.hostelid and hostel.userid=user.userid and available=true";
+			query = "select hostelname,smroomno,hostel.street,hostel.city,hostel.state,price,gendertype,username,phoneno,room.roomid,room.file_name,room.image_url,room.description from hostel,room,user where hostel.hostelid=room.hostelid and hostel.userid=user.userid and room.status = 'Free' and available=true";
 			rs = ste.executeQuery(query);
 			
 			while(rs.next()) {
@@ -420,6 +477,21 @@ public class SqlQuery {
 		}		
 	}
 	
+	//Update Room Free
+		public boolean updateRoomFree(String roomId,boolean flag) throws SQLException {
+			try {
+				String query = "update room set available="+flag+", status = 'Free' where roomid="+roomId+"";
+				boolean update = connect.executeSql(query);
+				if(update) {
+					System.out.println("Room Update Success");
+				}
+				return update;
+			} catch(Exception e) {
+				System.out.print(e);
+				return false;
+			}		
+		}
+	
 	//Update Status when admin approved
 	public boolean updateUserStatus(String userId) throws SQLException {
 		try {
@@ -452,10 +524,60 @@ public class SqlQuery {
 		}
 		
 		//Update Room Status 
-		public boolean updateStatus(String status,String roomid) {
+		public boolean updateRentAndRentingDetail(String roomid,String userid,String updateStatus,String findStatus) {
 			try {
 				ste = con.createStatement();
-				query = "update room set available=true, status='"+status+"'where roomid='"+roomid+"'";
+//				query = "update rentingdetail set renting_status='Accept' where roomid='"+roomid+"' and renting_status='Pending'";
+				query = "update rentingdetail set renting_status='"+updateStatus+"' where roomid='"+roomid+"' and renting_status='"+findStatus+"'";
+				if(ste.executeUpdate(query) == 1) {
+					return true;
+				} else {
+					return false;
+				}
+			}catch(SQLException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage());
+				return false;
+			}
+		}
+		
+		public boolean deleteRentAndRentingDetail(String roomid, String userid){
+			try {
+				ste = con.createStatement();
+				
+				String[] str = new String[1];
+				String query = "select rentid from rentingdetail where roomid='"+roomid+"' and renting_status='Pending'";
+				rs = ste.executeQuery(query);
+				
+				if(rs.next()) {
+					str[0] = rs.getString(1);//rentid
+				}
+				
+				//delete rent data
+				String queryDeleteRent = "delete from renting where rentid='"+str[0]+"'";
+				if(ste.executeUpdate(queryDeleteRent) == 1) {
+					System.out.println("Delete Rent");					
+				}
+				
+				//delete renting data
+				String queryDeleteRentingDetail = "delete from rentingdetail where roomid='"+roomid+"' and renting_status='Pending'";
+				if(ste.executeUpdate(queryDeleteRentingDetail) == 1) {
+					System.out.println("Delete Renting detail");	
+					return true;
+				} else {
+					return false;
+				}
+
+			}catch(SQLException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage());
+				return false;
+			}
+		}
+		
+		//Update Room Status 
+		public boolean updateStatus(String status,String roomid,Boolean bol) {
+			try {
+				ste = con.createStatement();
+				query = "update room set available="+bol+", status='"+status+"'where roomid='"+roomid+"'";
 				if(ste.executeUpdate(query) == 1) {
 					return true;
 				} else {

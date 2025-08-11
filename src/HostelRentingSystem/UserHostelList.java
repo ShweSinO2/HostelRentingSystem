@@ -100,6 +100,7 @@ public class UserHostelList extends JDialog {
 		userHostelModel.addColumn("Street");
 		userHostelModel.addColumn("Start Date");
 		userHostelModel.addColumn("End Date");
+		userHostelModel.addColumn("Renting Status");
 
 	   	table.setModel(userHostelModel);
 	   	setColumnWidth(0,30);
@@ -112,6 +113,7 @@ public class UserHostelList extends JDialog {
 	   	setColumnWidth(7,40);
 		setColumnWidth(8,40);
 		setColumnWidth(9,40);
+		setColumnWidth(9,40);
 	               
 	}
 	
@@ -119,10 +121,10 @@ public class UserHostelList extends JDialog {
 		userHostelList.clear();
 		try {
 			Statement ste = con.createStatement();
-			String query = "select hostelname,buildingno,roomno,smroomno,price,state,city,street,startdate,enddate  from renting,rentingdetail,room,hostel where renting.rentid=rentingdetail.rentid and rentingdetail.roomid=room.roomid and room.hostelid=hostel.hostelid and renting.userid='"+userId+"'";
+			String query = "select hostelname,buildingno,roomno,smroomno,price,state,city,street,startdate,enddate,renting_status  from renting,rentingdetail,room,hostel where renting.rentid=rentingdetail.rentid and rentingdetail.roomid=room.roomid and room.hostelid=hostel.hostelid and renting.userid='"+userId+"'";
 			ResultSet rs = ste.executeQuery(query);
 			while(rs.next()) {
-				String[] userhostel=new String[10];
+				String[] userhostel=new String[11];
 				
 				userhostel[0] = rs.getString(1);//hostelname
 				userhostel[1] = rs.getString(2);//buildingno
@@ -134,6 +136,7 @@ public class UserHostelList extends JDialog {
 				userhostel[7] = rs.getString(8);//price
 				userhostel[8] = rs.getString(9);//startdate
 				userhostel[9] = rs.getString(10);//enddate
+				userhostel[10] = rs.getString(11);//renting status
 				
 				userHostelList.add(userhostel);
 				

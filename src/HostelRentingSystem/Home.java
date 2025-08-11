@@ -175,7 +175,7 @@ public class Home extends JFrame {
 			}
 		});
 		//btnR.setBounds(490, 9, 87, 25);
-		btnR.setBounds(1007, 8, 87, 25)
+		btnR.setBounds(1007, 8, 87, 25);
 		contentPane.add(btnR);
 				
 		fillAddress();

@@ -3,6 +3,9 @@ package HostelRentingSystem;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
+import java.time.LocalDate;
+
 import com.formdev.flatlaf.FlatIntelliJLaf;
 
 public class SignIn extends JDialog {
@@ -142,22 +145,97 @@ public class SignIn extends JDialog {
                 queryData = sqlquery.getUserInfo(phoneno, password);
 
                 if (queryData[0] != null && queryData[1] != null) {
-                    if (queryData[2].equals("2")) {
+                    if (queryData[2].equals("2")) { // role seeker
                         if (route.equals("rent")) {
+                            String[] querySeeker = sqlquery.getSeekerProfile(phoneno, password);
+                        	if(querySeeker[0] != null && "Pending".equals(querySeeker[9])) {
+                        	  	int result = JOptionPane.showConfirmDialog(
+                    		            null, 
+                    		            "Your renting room is currently pending. You want to view your room list?",
+                    		            "Pending Status",
+                    		            JOptionPane.OK_CANCEL_OPTION,
+                    		            JOptionPane.INFORMATION_MESSAGE
+                    		        );
+                    		        if (result == JOptionPane.OK_OPTION) {
+                    		            System.out.println("User clicked OK.");
+                    		            String userId = sqlquery.getUserId(phoneno);
+                    		        	UserHostelList userhostellist;
+                    					try {
+                    						userhostellist = new UserHostelList(userId);
+                    						userhostellist.setVisible(true);
+                    					} catch (SQLException e1) {
+                    						// TODO Auto-generated catch block
+                    						e1.printStackTrace();
+                    					}
+                    		        } else {
+                    		            System.out.println("User clicked Cancel or closed the dialog.");
+                    		        }
+                    		        return;
+                        	}
                             new Renting(queryData[4], ownername, roomno, price, phoneno, ownerPhone, roomId).setVisible(true);
                         } else {
                             String[] querySeeker = sqlquery.getSeekerProfile(phoneno, password);
+                            
                             if (querySeeker[0] == null) {
                                 JOptionPane.showMessageDialog(null, "Please rent a hostel to view your profile.");
+                            } else if ("Pending".equals(querySeeker[9])) {
+                            	int result = JOptionPane.showConfirmDialog(
+                    		            null, 
+                    		            "Your renting room is currently pending. You want to view your room list?",
+                    		            "Pending Status",
+                    		            JOptionPane.OK_CANCEL_OPTION,
+                    		            JOptionPane.INFORMATION_MESSAGE
+                    		        );
+                    		        if (result == JOptionPane.OK_OPTION) {
+                    		            System.out.println("User clicked OK.");
+                    		            String userId = sqlquery.getUserId(phoneno);
+                    		        	UserHostelList userhostellist;
+                    					try {
+                    						userhostellist = new UserHostelList(userId);
+                    						userhostellist.setVisible(true);
+                    					} catch (SQLException e1) {
+                    						// TODO Auto-generated catch block
+                    						e1.printStackTrace();
+                    					}
+                    		        } else {
+                    		            System.out.println("User clicked Cancel or closed the dialog.");
+                    		        }
                             } else {
-                                new Seeker(phoneno, password).setVisible(true);
+                            	String userId = sqlquery.getUserId(phoneno);
+                                Boolean reverseRoom = sqlquery.getReverseData(userId,querySeeker[10],querySeeker[6]);
+                                
+                            	if (reverseRoom) {
+                                   	int result = JOptionPane.showConfirmDialog(
+                        		            null, 
+                        		            "Your not renting any room. You want to view your room list?",
+                        		            "No Renting Room",
+                        		            JOptionPane.OK_CANCEL_OPTION,
+                        		            JOptionPane.INFORMATION_MESSAGE
+                        		        );
+                        		        if (result == JOptionPane.OK_OPTION) {
+                        		            System.out.println("User clicked OK.");
+//                        		            String userId = sqlquery.getUserId(phoneno);
+                        		        	UserHostelList userhostellist;
+                        					try {
+                        						userhostellist = new UserHostelList(userId);
+                        						userhostellist.setVisible(true);
+                        					} catch (SQLException e1) {
+                        						// TODO Auto-generated catch block
+                        						e1.printStackTrace();
+                        					}
+                        		        } else {
+                        		            System.out.println("User clicked Cancel or closed the dialog.");
+                        		        }
+                            	} else {
+                                    new Seeker(phoneno, password).setVisible(true);
+                            	}
                             }
                         }
                         setVisible(false);
-                    } else if (queryData[2].equals("3")) {
+                    } else if (queryData[2].equals("3")) { // role owner
                         new HostelRegistration(queryData[3]).setVisible(true);
                         setVisible(false);
-                    } else if (queryData[2].equals("1")) {
+                    } else if (queryData[2].equals("1")) { // role administrator
                         new Admin().setVisible(true);
                         setVisible(false);
                     }

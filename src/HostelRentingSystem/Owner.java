@@ -198,14 +198,16 @@ public class Owner extends JDialog {
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                 if (result == JOptionPane.YES_OPTION) {
-                   	if(JOptionPane.showConfirmDialog(null, "Are you sure you want to delete accept room?","Confirm Accept",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) { 	
-                   		updateStatus(roomId,userId,"Accept");
+                   	if(JOptionPane.showConfirmDialog(null, "Are you sure you want to accept room?","Confirm Accept",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) { 	
+                   		updateStatus(roomId,userId,"Accept",false);
+                   		updateRentAndRentingDetail(roomId,userId);
     				}
                 	
                 } else if (result == JOptionPane.NO_OPTION) {
                 	System.out.println("You click Reject");
                 	if(JOptionPane.showConfirmDialog(null, "Are you sure you want to reject room?","Confirm Reject",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                		updateStatus(roomId,userId,"Free");
+                		updateStatus(roomId,userId,"Free",true);
+                		deleteRentAndRentingDetail(roomId,userId);
     				}
                 }
         	}
@@ -492,10 +494,19 @@ public class Owner extends JDialog {
 	    }
 	}
 	
-	public void updateStatus(String roomId,String userId,String status) {
-		sqlquery.updateStatus(status,roomId);
+	public void updateStatus(String roomId,String userId,String status,Boolean bol) {
+		sqlquery.updateStatus(status,roomId,bol);
   	   	fillPendingData(userId);
   	   	fillFreeData(userId);
+  	   	fillRentData(userId);
+	}
+	
+	public void deleteRentAndRentingDetail(String roomId,String userId) {	
+		sqlquery.deleteRentAndRentingDetail(roomId,userId);
+	}
+	
+	public void updateRentAndRentingDetail(String roomId,String userId) {
+		sqlquery.updateRentAndRentingDetail(roomId,userId,"Accept","Pending");
 	}
 	
 //	public static void main(String[] args) {

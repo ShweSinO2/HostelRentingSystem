@@ -86,64 +86,64 @@ public class Renting extends JDialog {
 		lblOwner.setBounds(291, 106, 355, 30);
 		getContentPane().add(lblOwner);
 		
-		JLabel lblNew_6 = new JLabel("Payment Type");
-		lblNew_6.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblNew_6.setBounds(67, 256, 102, 30);
-		getContentPane().add(lblNew_6);
+//		JLabel lblNew_6 = new JLabel("Payment Type");
+//		lblNew_6.setFont(new Font("Arial", Font.PLAIN, 15));
+//		lblNew_6.setBounds(67, 256, 102, 30);
+//		getContentPane().add(lblNew_6);
 		
-		rdoCb = new JRadioButton("CB Pay");
-		rdoCb.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(rdoCb.isSelected()) {
-					rdoKbz.setSelected(false);
-					rdoWave.setSelected(false);
-					payment = "CB Pay";
-				}
-			}
-		});
-		rdoCb.setBounds(291, 261, 66, 23);
-		getContentPane().add(rdoCb);
+//		rdoCb = new JRadioButton("CB Pay");
+//		rdoCb.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				if(rdoCb.isSelected()) {
+//					rdoKbz.setSelected(false);
+//					rdoWave.setSelected(false);
+//					payment = "CB Pay";
+//				}
+//			}
+//		});
+//		rdoCb.setBounds(291, 261, 66, 23);
+//		getContentPane().add(rdoCb);
 		
-		rdoKbz = new JRadioButton("KBZ Pay");
-		rdoKbz.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(rdoKbz.isSelected()) {
-					rdoCb.setSelected(false);
-					rdoWave.setSelected(false);
-					payment = "KBZ Pay";
-				}
-			}
-		});
-		rdoKbz.setBounds(419, 261, 89, 23);
-		getContentPane().add(rdoKbz);
+//		rdoKbz = new JRadioButton("KBZ Pay");
+//		rdoKbz.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				if(rdoKbz.isSelected()) {
+//					rdoCb.setSelected(false);
+//					rdoWave.setSelected(false);
+//					payment = "KBZ Pay";
+//				}
+//			}
+//		});
+//		rdoKbz.setBounds(419, 261, 89, 23);
+//		getContentPane().add(rdoKbz);
 		
-		rdoWave = new JRadioButton("Wave Pay");
-		rdoWave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(rdoWave.isSelected()) {
-					rdoKbz.setSelected(false);
-					rdoCb.setSelected(false);
-					payment = "Wave Pay";
-				}
-			}
-		});
-		rdoWave.setBounds(547, 261, 99, 23);
-		getContentPane().add(rdoWave);
+//		rdoWave = new JRadioButton("Wave Pay");
+//		rdoWave.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				if(rdoWave.isSelected()) {
+//					rdoKbz.setSelected(false);
+//					rdoCb.setSelected(false);
+//					payment = "Wave Pay";
+//				}
+//			}
+//		});
+//		rdoWave.setBounds(547, 261, 99, 23);
+//		getContentPane().add(rdoWave);
 		
-		JLabel lblNew_5 = new JLabel("Amount");
-		lblNew_5.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblNew_5.setBounds(67, 311, 102, 30);
-		getContentPane().add(lblNew_5);
+//		JLabel lblNew_5 = new JLabel("Amount");
+//		lblNew_5.setFont(new Font("Arial", Font.PLAIN, 15));
+//		lblNew_5.setBounds(67, 311, 102, 30);
+//		getContentPane().add(lblNew_5);
 		
-		txtAmount = new JTextField();
-		txtAmount.setBounds(291, 311, 301, 32);
-		getContentPane().add(txtAmount);
-		txtAmount.setColumns(10);
+//		txtAmount = new JTextField();
+//		txtAmount.setBounds(291, 311, 301, 32);
+//		getContentPane().add(txtAmount);
+//		txtAmount.setColumns(10);
 		
-		JLabel lblNew_7 = new JLabel("Kyats");
-		lblNew_7.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblNew_7.setBounds(602, 311, 44, 30);
-		getContentPane().add(lblNew_7);
+//		JLabel lblNew_7 = new JLabel("Kyats");
+//		lblNew_7.setFont(new Font("Arial", Font.PLAIN, 15));
+//		lblNew_7.setBounds(602, 311, 44, 30);
+//		getContentPane().add(lblNew_7);
 		
 		JLabel lblNew_3 = new JLabel("Start Date");
 		lblNew_3.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -174,24 +174,27 @@ public class Renting extends JDialog {
 		JButton btnConfirm = new JButton("Confirm");
 		btnConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(Checking.IsNull(txtAmount.getText()) || !Checking.IsAllDigit(txtAmount.getText()) || (Integer.parseInt(txtAmount.getText()) <= 0) || (Integer.parseInt(txtAmount.getText()) < Integer.parseInt(lblPrice.getText()))) {
-					JOptionPane.showMessageDialog(null, "You must enter valid Amount");
-					txtAmount.requestFocus();
-					txtAmount.selectAll();
-				} else if(payment == null) {
-					JOptionPane.showMessageDialog(null, "You must choose Payment Type");
-					rdoCb.requestFocus();
-				} else {
+//				if(Checking.IsNull(txtAmount.getText()) || !Checking.IsAllDigit(txtAmount.getText()) || (Integer.parseInt(txtAmount.getText()) <= 0) || (Integer.parseInt(txtAmount.getText()) < Integer.parseInt(lblPrice.getText()))) {
+//					JOptionPane.showMessageDialog(null, "You must enter valid Amount");
+//					txtAmount.requestFocus();
+//					txtAmount.selectAll();
+//				} else if(payment == null) {
+//					JOptionPane.showMessageDialog(null, "You must choose Payment Type");
+//					rdoCb.requestFocus();
+//				} else {
+//				if {
 					String[] rentData = new String[2];
 					String[] paymentData = new String[2];
-					String[] rentDetailData = new String[6];
+					String[] rentDetailData = new String[7];
 					
 					String seekerId = sqlquery.getUserId(seekerPhone);
 					rentData[0] = seekerId;
 					rentData[1] = lblDate.getText();
 					boolean save = sqlquery.insertData("renting", rentData);
 					if(save) {
-						paymentData[0] = txtAmount.getText();
+//						paymentData[0] = txtAmount.getText();
+//						paymentData[1] = payment;
+						paymentData[0] = "0";
 						paymentData[1] = payment;
 						boolean savePayment = sqlquery.insertData("payment", paymentData);
 						if(savePayment) {
@@ -207,10 +210,11 @@ public class Renting extends JDialog {
 							rentDetailData[3] = ownerId;
 							rentDetailData[4] = startDate;
 							rentDetailData[5] = endDate;
+							rentDetailData[6] = "Pending"; // Add Renting Detail Status
 							
 							boolean saveDetail = sqlquery.insertData("rentingdetail", rentDetailData);
 							if(saveDetail) {
-								JOptionPane.showMessageDialog(null, "Your Hostel Renting is Successful");
+								JOptionPane.showMessageDialog(null, "Thank You for Renting. Owner will contact you!");
 								try {
 									boolean updateRoom = sqlquery.updateRoom(roomId,false);
 									if(updateRoom) {
@@ -227,7 +231,7 @@ public class Renting extends JDialog {
 						}
 					}
 				}
-			}
+//			}
 		});
 		btnConfirm.setBounds(419, 488, 99, 45);
 		getContentPane().add(btnConfirm);
@@ -265,9 +269,9 @@ public class Renting extends JDialog {
 		lblOwner.setText("");
 		lblRoom.setText("");
 		lblPrice.setText("");
-		rdoCb.setSelected(false);
-		rdoKbz.setSelected(false);
-		rdoWave.setSelected(false);
-		txtAmount.setText("");		
+//		rdoCb.setSelected(false);
+//		rdoKbz.setSelected(false);
+//		rdoWave.setSelected(false);
+//		txtAmount.setText("");		
 	}
 }
