@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
 
 import java.awt.Color;
 import java.awt.Dimension;
-
+import javax.swing.*;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.BorderFactory;
@@ -28,6 +28,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -54,54 +56,81 @@ public class HostelDetail extends JDialog {
         int frameY = 50;
         int frameHeight = screenHeight;
         
-		getContentPane().setBackground(new Color(192, 192, 192));
+		getContentPane().setBackground(Color.WHITE);
 		setTitle("Hostel Detail Form");
-		setBounds(350, 50, 700, 707);
+		setBounds(350, 50, 700, 534);
 //		setBounds(frameX, frameY, frameWidth, frameHeight);
 		setResizable(true);
 		getContentPane().setLayout(null);
 		
 		JLabel lblNew = new JLabel("Owner Name");
-		lblNew.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblNew.setBounds(43, 90, 102, 30);
+		lblNew.setFont(new Font("Arial", Font.PLAIN, 13));
+		lblNew.setBounds(42, 66, 102, 30);
 		getContentPane().add(lblNew);
 		
 		JLabel lblNew_1 = new JLabel("Owner PhoneNo");
-		lblNew_1.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblNew_1.setBounds(43, 157, 143, 30);
+		lblNew_1.setFont(new Font("Arial", Font.PLAIN, 13));
+		lblNew_1.setBounds(42, 93, 143, 30);
 		getContentPane().add(lblNew_1);
 		
 		JLabel lblNew_2 = new JLabel("Room No");
-		lblNew_2.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblNew_2.setBounds(43, 214, 102, 30);
+		lblNew_2.setFont(new Font("Arial", Font.PLAIN, 13));
+		lblNew_2.setBounds(42, 122, 102, 30);
 		getContentPane().add(lblNew_2);
 		
-		JLabel lblNew_3 = new JLabel("Price");
-		lblNew_3.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblNew_3.setBounds(43, 276, 143, 30);
+		JLabel lblNew_3 = new JLabel("Monthly Rental Fees");
+		lblNew_3.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNew_3.setForeground(Color.decode("#085f63"));
+		lblNew_3.setBounds(457, 33, 161, 30);
 		getContentPane().add(lblNew_3);
 		
 		JLabel lblNew_4 = new JLabel("Address");
-		lblNew_4.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblNew_4.setBounds(43, 344, 102, 30);
+		lblNew_4.setFont(new Font("Arial", Font.PLAIN, 13));
+		lblNew_4.setBounds(42, 181, 102, 30);
 		getContentPane().add(lblNew_4);
 		
 		JLabel lblGenderType = new JLabel("Gender Type");
-		lblGenderType.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblGenderType.setBounds(43, 412, 102, 30);
+		lblGenderType.setFont(new Font("Arial", Font.PLAIN, 13));
+		lblGenderType.setBounds(42, 150, 102, 30);
 		getContentPane().add(lblGenderType);
 		
-		JLabel lblImage = new JLabel("Image");
-		lblImage.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblImage.setBounds(43, 540, 102, 30);
-		getContentPane().add(lblImage);
+//		JLabel lblImage = new JLabel("Image");
+//		lblImage.setFont(new Font("Arial", Font.PLAIN, 15));
+//		lblImage.setBounds(42, 351, 102, 30);
+//		getContentPane().add(lblImage);
 		
-		JLabel lblDescription = new JLabel("Description");
-		lblDescription.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblDescription.setBounds(43, 480, 102, 30);
-		getContentPane().add(lblDescription);
+//		JLabel lblDescription = new JLabel("Description");
+//		lblDescription.setFont(new Font("Arial", Font.PLAIN, 15));
+//		lblDescription.setBounds(42, 225, 102, 30);
+//		getContentPane().add(lblDescription);
+		
+		
+		//for owner btn
+		//  Default colors
+		Color defaultBg = new Color(0, 120, 215);
+		Color defaultFg = Color.WHITE;
+
+		//  Hover colors
+		Color hoverBg = Color.decode("#f0f0f0");
+		Color hoverFg = new Color(0, 120, 215);
 		
 		JButton btnRent = new JButton("Rent");
+		btnRent.setBackground( new Color(0, 120, 215));  // green
+		btnRent.setForeground(Color.WHITE);
+		
+		btnRent.addMouseListener(new MouseAdapter() {
+		    
+		    public void mouseEntered(MouseEvent e) {
+		    	btnRent.setBackground(hoverBg);    // Change background
+		    	btnRent.setForeground(hoverFg);    // Change text color
+		    }
+
+		    
+		    public void mouseExited(MouseEvent e) {
+		    	btnRent.setBackground(defaultBg);  // Reset background
+		    	btnRent.setForeground(defaultFg);  // Reset text color
+		    }
+		});
 		btnRent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SignIn signin = new SignIn("rent",ownerName,roomno,price,ownerPhone,roomId);
@@ -109,10 +138,29 @@ public class HostelDetail extends JDialog {
 				setVisible(false);
 			}
 		});
-		btnRent.setBounds(408, 610, 102, 35);
+		btnRent.setBounds(371, 431, 102, 35);
 		getContentPane().add(btnRent);
 		
+		
+		
 		JButton btnClose = new JButton("Close");
+		
+		btnClose.setBackground( new Color(0, 120, 215));  // green
+		btnClose.setForeground(Color.WHITE);
+		
+		btnClose.addMouseListener(new MouseAdapter() {
+		    
+		    public void mouseEntered(MouseEvent e) {
+		    	btnClose.setBackground(hoverBg);    // Change background
+		    	btnClose.setForeground(hoverFg);    // Change text color
+		    }
+
+		    
+		    public void mouseExited(MouseEvent e) {
+		    	btnClose.setBackground(defaultBg);  // Reset background
+		    	btnClose.setForeground(defaultFg);  // Reset text color
+		    }
+		});
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?","Confirm Existing",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
@@ -120,22 +168,22 @@ public class HostelDetail extends JDialog {
 				}
 			}
 		});
-		btnClose.setBounds(165, 610, 102, 35);
+		btnClose.setBounds(151, 431, 102, 35);
 		getContentPane().add(btnClose);
 		
 		JLabel lblOwnerName = new JLabel(ownerName);
-		lblOwnerName.setBounds(280, 91, 357, 30);
-		lblOwnerName.setBorder(blackline);
+		lblOwnerName.setBounds(195, 67, 143, 30);
+		//lblOwnerName.setBorder(blackline);
 		getContentPane().add(lblOwnerName);
 		
 		JLabel lblPhoneNo = new JLabel(ownerPhone);
-		lblPhoneNo.setBorder(blackline);
-		lblPhoneNo.setBounds(280, 150, 357, 37);
+		//lblPhoneNo.setBorder(blackline);
+		lblPhoneNo.setBounds(195, 91, 143, 37);
 		getContentPane().add(lblPhoneNo);
 		
 		JLabel lblRoomNo = new JLabel(roomno);
-		lblRoomNo.setBorder(blackline);
-		lblRoomNo.setBounds(280, 215, 357, 30);
+		//lblRoomNo.setBorder(blackline);
+		lblRoomNo.setBounds(195, 123, 143, 30);
 		getContentPane().add(lblRoomNo);
 		
 		// add comma and kyats to price
@@ -143,57 +191,79 @@ public class HostelDetail extends JDialog {
     	String formattedPrice = numberFormat.format(price);
     	
 		JLabel lblPrice = new JLabel(formattedPrice+" Kyats");
-		lblPrice.setBorder(blackline);
-		lblPrice.setBounds(280, 275, 357, 35);
+		//lblPrice.setBorder(blackline);
+		lblPrice.setFont(new Font("Arial", Font.PLAIN, 15));
+		lblPrice.setForeground(Color.decode("#000000"));
+		lblPrice.setBounds(457, 90, 161, 35);
 		getContentPane().add(lblPrice);
 		
 		JLabel lblAddress = new JLabel(address);
-		lblAddress.setBorder(blackline);
-		lblAddress.setBounds(280, 339, 357, 42);
+		//lblAddress.setBorder(blackline);
+		lblAddress.setBounds(195, 176, 314, 42);
 		getContentPane().add(lblAddress);
 		
-		JLabel lblGender = new JLabel(genderType);
-		lblGender.setBorder(blackline);
-		lblGender.setBounds(280, 413, 357, 30);
+		JLabel lblGender = new JLabel(genderType+" Hostel");
+		//lblGender.setBorder(blackline);
+		lblGender.setBounds(195, 151, 143, 30);
 		getContentPane().add(lblGender);
 		
 		JLabel imageLabel = new JLabel("Loading Image...");
-		imageLabel.setBounds(280, 547, 150, 23);
+		imageLabel.setBounds(243, 357, 110, 23);
 		File imageFile = new File(imageUrl);
 		if (imageFile.exists() && imageFile.isFile()) {
 			
             ImageIcon originalIcon = new ImageIcon(imageFile.getAbsolutePath());
             Image image = originalIcon.getImage();
-            Image scaledImage = image.getScaledInstance(130, 100, Image.SCALE_SMOOTH);
+            Image scaledImage = image.getScaledInstance(230, 200, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(scaledImage);
             
             imageLabel.setIcon(scaledIcon);
             imageLabel.setText("");
-    		imageLabel.setBounds(280, 547, 130, 100);
+    		imageLabel.setBounds(212, 365, 230, 200);
     		
     		//If there is image change y dimension
-    		setBounds(350, 50, 700, 727);
-    		btnRent.setBounds(408, 677, 102, 35);
-    		btnClose.setBounds(165, 677, 102, 35);
+    		setBounds(350, 50, 700, 675);
+    		btnRent.setBounds(408, 595, 102, 35);
+    		btnClose.setBounds(165, 595, 102, 35);
         } else {
             imageLabel.setText("Image not found: " + imageUrl);
             imageLabel.setForeground(Color.RED);
         }
 		getContentPane().add(imageLabel, BorderLayout.CENTER);
 		
-		JLabel desc = new JLabel(description);
-		desc.setBorder(blackline);
-		desc.setBounds(280, 480, 357, 30);
-		getContentPane().add(desc);
+//		JLabel desc = new JLabel(description);
+//		desc.setBorder(blackline);
+//		desc.setBounds(196, 325, 357, 30);
+//		getContentPane().add(desc);
+		
+		//For description use JTextArea
+		JTextArea ltextdesc = new JTextArea(description);
+		ltextdesc.setEditable(false); // Not editable like JLabel
+		ltextdesc.setLineWrap(true);  // Wrap lines
+		ltextdesc.setWrapStyleWord(true); // Wrap at word boundaries
+		ltextdesc.setFont(new Font("Arial", Font.PLAIN, 14));
+		ltextdesc.setBackground(null); // Make background match panel (optional)
+		ltextdesc.setBorder(null);     // Remove border (optional)
+		ltextdesc.setBounds(42, 235, 340, 86); // Size and position
+		getContentPane().add(ltextdesc);
+
 		
 		JLabel lblHostelName = new JLabel(hostelName);
-		lblHostelName.setBorder(blackline);
-		lblHostelName.setBounds(280, 35, 357, 30);
+		//lblHostelName.setBorder(blackline);
+		lblHostelName.setBounds(196, 35, 143, 30);
 		getContentPane().add(lblHostelName);
 		
 		JLabel lblHostelName_1 = new JLabel("Hostel Name");
-		lblHostelName_1.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblHostelName_1.setBounds(43, 34, 102, 30);
+		lblHostelName_1.setFont(new Font("Arial", Font.PLAIN, 13));
+		lblHostelName_1.setBounds(42, 34, 102, 30);
 		getContentPane().add(lblHostelName_1);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(22, 216, 640, 2);
+		getContentPane().add(separator);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(22, 351, 640, 2);
+		getContentPane().add(separator_1);
 	}
 }

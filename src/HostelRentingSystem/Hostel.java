@@ -128,14 +128,18 @@ class Hostel {
     public String toString() {
     	NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
     	String formattedPrice = numberFormat.format(price);
-        String imagePath = (imageUrl != null && !imageUrl.isEmpty()) ? imageUrl : "uploaded_images/no-image.jpg"; 
+        String imagePath = (imageUrl != null && !imageUrl.isEmpty()) ? imageUrl : "uploaded_images/no-image.png"; 
         String imageHtmlSrc = "file:///" + new java.io.File(imagePath).getAbsolutePath().replace("\\", "/");
     	return "<html>" +
-        "<h4>Hostel Name = " + (hostelName != null ? hostelName : "N/A") + "</h4>" +
-        "<h4>Room No = " + (roomNo != null ? roomNo : "N/A") + "</h4>" +
-        "<h4>Address = " + (address != null ? address : "N/A") + "</h4>" +
-        "<h4>Price = " + formattedPrice + " Kyats</h4>" +
-        "<h4>Image <br><br> <img src='" + imageHtmlSrc + "' width='120' height='120'></h4>" +
+        //"<h4>Hostel Name &nbsp&nbsp  " + (hostelName != null ? hostelName : "N/A") + "</h4>" +
+    	//"<h4>Room No &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  " + (roomNo != null ? roomNo : "N/A") + "</h4>" +
+        //"<h4>Address &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + (address != null ? address : "N/A") + "</h4>" +
+        //"<h4>Price &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + formattedPrice + " Kyats</h4>" +
+        "<span style='color: #085f63; font-size: 10.5px;'>Hostel Name &nbsp;&nbsp;  </span>"+"<span style='display: inline;'>"+  (hostelName != null ? hostelName : "N/A") +"</span><br><br>" +
+        "<span style='color: #085f63; font-size: 10.5px;'>Room No &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>" +"<span style='display: inline;'>"+ (roomNo != null ? roomNo : "N/A") + "</span> <br><br>" +
+        "<span style='color: #085f63; font-size: 10.5px;'>Address &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </span>" +"<span style='display: inline;'>"+ (address != null ? address : "N/A") + "</span><br> <br>" +
+        "<span style='color: #085f63; font-size: 10.5px;'>Price &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>" +"<span style='display: inline;'>"+ formattedPrice + " Kyats</span> <br><br>" +
+        "<h4> <br><br> <img src='" + imageHtmlSrc + "' width='120' height='120'></h4>" +
         "</html>";
     }
 }

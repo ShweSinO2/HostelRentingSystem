@@ -26,7 +26,7 @@ public class Checking {
 	}
 	
 	public static boolean IsPhoneNo(String str) {
-		if(str.length() <= 11 && str.length() >= 6) {
+		if(str.length() >= 6 && str.length() <= 11 ) {
 			return true;
 		} else {
 			return false;

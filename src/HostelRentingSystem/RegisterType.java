@@ -77,20 +77,20 @@ public class RegisterType extends JDialog {
 		
 		//for owner btn
 		//  Default colors
-		Color defaultBg = new Color(10, 255, 0);
-		Color defaultFg = new Color(255, 255, 255);
+		Color defaultBg = new Color(0, 120, 215);
+		Color defaultFg = Color.WHITE;
 
 		//  Hover colors
-		Color hoverBg = new Color(230, 230, 250);
-		Color hoverFg = new Color(10, 255, 0);
+		Color hoverBg = Color.decode("#f0f0f0");
+		Color hoverFg = new Color(0, 120, 215);
 		
 		JButton btnOwner = new JButton("Owner Register");
 		btnOwner.setOpaque(true);                      // allow background painting
 		btnOwner.setContentAreaFilled(true);           // MUST be true to fill background
 		btnOwner.setBorderPainted(false);              // optional: remove border
 		btnOwner.setFocusPainted(false);               // optional: remove focus outline
-		btnOwner.setBackground(new Color(10, 255, 0));  // green
-		btnOwner.setForeground(new Color(255, 255, 255));
+		btnOwner.setBackground( new Color(0, 120, 215));  // green
+		btnOwner.setForeground(Color.WHITE);
 		
 		btnOwner.addMouseListener(new MouseAdapter() {
 		    
@@ -125,8 +125,8 @@ public class RegisterType extends JDialog {
 		btnSeeker.setContentAreaFilled(true);           // MUST be true to fill background
 		btnSeeker.setBorderPainted(false);              // optional: remove border
 		btnSeeker.setFocusPainted(false);               // optional: remove focus outline
-		btnSeeker.setBackground(new Color(10, 255, 0));  // green
-		btnSeeker.setForeground(new Color(255, 255, 255));
+		btnSeeker.setBackground(new Color(0, 120, 215));  // green
+		btnSeeker.setForeground(Color.WHITE);
 		
 		btnSeeker.addMouseListener(new MouseAdapter() {
 		    

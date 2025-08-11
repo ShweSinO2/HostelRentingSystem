@@ -63,7 +63,7 @@ public class SignIn extends JDialog {
 
         btnSignIn = new JButton("Log In");
         btnSignIn.setFont(new Font("Arial", Font.BOLD, 16));
-        btnSignIn.setBounds(50, 300, 300, 40);
+        btnSignIn.setBounds(89, 300, 202, 40);
         btnSignIn.setBackground(new Color(0, 120, 215));
         btnSignIn.setForeground(Color.WHITE);
         btnSignIn.setFocusPainted(false);
@@ -72,10 +72,13 @@ public class SignIn extends JDialog {
 
         btnSignIn.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
-                btnSignIn.setBackground(new Color(0, 100, 190));
+            	//btnSignIn.setBackground(new Color(0, 100, 190));
+                btnSignIn.setBackground(Color.decode("#f0f0f0"));
+                btnSignIn.setForeground(new Color(0, 120, 215));
             }
             public void mouseExited(MouseEvent e) {
                 btnSignIn.setBackground(new Color(0, 120, 215));
+                btnSignIn.setForeground(Color.WHITE);
             }
         });
 
