@@ -8,5 +8,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="D:/EclipseIDE/mysql-connector-java-5.1.5-bin.jar"/>
+	<classpathentry kind="lib" path="lib/flatlaf-3.6.jar"/>
+	<classpathentry kind="lib" path="lib/swingx-all-1.6.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

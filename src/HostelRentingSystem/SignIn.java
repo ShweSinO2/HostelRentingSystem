@@ -1,6 +1,9 @@
 package HostelRentingSystem;
 
 import javax.swing.*;
+
+import org.jdesktop.swingx.prompt.PromptSupport;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
@@ -13,6 +16,8 @@ public class SignIn extends JDialog {
     private JPasswordField txtPass;
     private JButton btnSignIn;
     private JLabel lblRegister;
+    private ImageIcon eyeOpen;
+    private ImageIcon eyeClosed;
     SqlQuery sqlquery = new SqlQuery();
     String[] queryData = new String[3];
 
@@ -50,7 +55,9 @@ public class SignIn extends JDialog {
         panel.add(lblPhone);
 
         txtPhone = new JTextField();
-        txtPhone.setBounds(50, 190, 300, 30);
+        txtPhone.setBounds(50, 190, 275, 30);
+        PromptSupport.setPrompt("Enter your Phone Number(e.g.0754312/09777777777)", txtPhone);
+		PromptSupport.setForeground(Color.GRAY, txtPhone);
         panel.add(txtPhone);
 
         JLabel lblPass = new JLabel("Password");
@@ -58,16 +65,53 @@ public class SignIn extends JDialog {
         panel.add(lblPass);
 
         txtPass = new JPasswordField();
-        txtPass.setBounds(50, 250, 300, 30);
+        txtPass.setBounds(50, 250, 275, 30);
+        PromptSupport.setPrompt("Enter your Password(e.g.kyaw12345@)", txtPass);
+		PromptSupport.setForeground(Color.GRAY, txtPass);
         panel.add(txtPass);
+        
+     // Load Eye Icons
+         eyeOpen = new ImageIcon(getClass().getResource("/eye-open.png"));   // 👁 Show Icon
+         eyeClosed = new ImageIcon(getClass().getResource("/eye-closed.png")); // ❌ Hide Icon
 
+        // Scale Icons
+        Image eyeOpenImg = eyeOpen.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        Image eyeClosedImg = eyeClosed.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        eyeOpen = new ImageIcon(eyeOpenImg);
+        eyeClosed = new ImageIcon(eyeClosedImg);
+        
+     // Toggle Button
+        JButton btnToggle = new JButton(eyeClosed);
+        btnToggle.setBounds(330, 250, 30, 30);
+        btnToggle.setBorder(null);
+        btnToggle.setContentAreaFilled(false);
+        panel.add(btnToggle);
+
+        // Store Default Echo Char
+        char defaultEchoChar = txtPass.getEchoChar();
+
+        // Toggle Logic
+        btnToggle.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (txtPass.getEchoChar() != (char) 0) {
+                    txtPass.setEchoChar((char) 0);  // Show password
+                    btnToggle.setIcon(eyeOpen);
+                } else {
+                    txtPass.setEchoChar(defaultEchoChar);  // Hide password
+                    btnToggle.setIcon(eyeClosed);
+                }
+            }
+        });
+
+        //for btn signin
         btnSignIn = new JButton("Log In");
         btnSignIn.setFont(new Font("Arial", Font.BOLD, 16));
         btnSignIn.setBounds(89, 300, 202, 40);
         btnSignIn.setBackground(new Color(0, 120, 215));
         btnSignIn.setForeground(Color.WHITE);
         btnSignIn.setFocusPainted(false);
-        btnSignIn.setBorder(BorderFactory.createEmptyBorder());
+        //btnSignIn.setBorder(BorderFactory.createEmptyBorder());
+        btnSignIn.setBorderPainted(false);
         btnSignIn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         btnSignIn.addMouseListener(new MouseAdapter() {
@@ -118,17 +162,17 @@ public class SignIn extends JDialog {
                     txtPhone.requestFocus();
                     return;
                 }
-
-                if (!Checking.IsPhoneNo(phoneno)) {
-                    JOptionPane.showMessageDialog(null, "Phone Number should be at least 6 number");
-                    txtPhone.requestFocus();
-                    return;
-                }
-                if (Checking.IsLetter(phoneno)) {
+                if (!Checking.IsAllDigit(phoneno)) {
                     JOptionPane.showMessageDialog(null, "Phone Number must be Numbers");
                     txtPhone.requestFocus();
                     return;
                 }
+                if (!Checking.IsPhoneNo(phoneno)) {
+                    JOptionPane.showMessageDialog(null, "Phone Number should be between 6 and 11 numbers");
+                    txtPhone.requestFocus();
+                    return;
+                }
+                
                 if (password.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please enter your password.");
                     txtPass.requestFocus();
@@ -136,12 +180,12 @@ public class SignIn extends JDialog {
                 }
 
                 if (password.length() <= 8 || password.length()>=20) {
-                    JOptionPane.showMessageDialog(null, "Password must be at betweem 8 and 20 characters.");
+                    JOptionPane.showMessageDialog(null, "Password must be at between 8 and 20 characters.");
                     txtPass.requestFocus();
                     return;
                 }
                 if (!Checking.IsPassNo(txtPass.getText())) {
-                    JOptionPane.showMessageDialog(null, "Invalid password format.");
+                    JOptionPane.showMessageDialog(null, "Your password should be at least 8, 1 number,1 uppercase,1 lowercase and 1 special character");
                     txtPass.requestFocus();
                     return;
                 }
@@ -149,34 +193,70 @@ public class SignIn extends JDialog {
 
                 if (queryData[0] != null && queryData[1] != null) {
                     if (queryData[2].equals("2")) { // role seeker
+                    	
+                    	//for room renting login
                         if (route.equals("rent")) {
                             String[] querySeeker = sqlquery.getSeekerProfile(phoneno, password);
-                        	if(querySeeker[0] != null && "Pending".equals(querySeeker[9])) {
-                        	  	int result = JOptionPane.showConfirmDialog(
-                    		            null, 
-                    		            "Your renting room is currently pending. You want to view your room list?",
-                    		            "Pending Status",
-                    		            JOptionPane.OK_CANCEL_OPTION,
-                    		            JOptionPane.INFORMATION_MESSAGE
-                    		        );
-                    		        if (result == JOptionPane.OK_OPTION) {
-                    		            System.out.println("User clicked OK.");
-                    		            String userId = sqlquery.getUserId(phoneno);
-                    		        	UserHostelList userhostellist;
+                        	if(querySeeker[0] != null && ("Pending".equals(querySeeker[9])||"Accept".equals(querySeeker[9]))) {
+                        		int result = 0;
+                        		if("Pending".equals(querySeeker[9])){
+                        			result = JOptionPane.showConfirmDialog(
+                        		            null, 
+                        		            "Your renting room is currently pending. You want to view your room list?",
+                        		            "Pending Status",
+                        		            JOptionPane.OK_CANCEL_OPTION,
+                        		            JOptionPane.INFORMATION_MESSAGE
+                        		        );
+                        			
+                        			  if (result == JOptionPane.OK_OPTION) {
+                      		            System.out.println("User clicked OK.");
+                      		            String userId = sqlquery.getUserId(phoneno);
+//                      		        	UserHostelList userhostellist;
+//                      					try {
+//                      						userhostellist = new UserHostelList(userId,phoneno,password);
+//                      						userhostellist.setVisible(true);
+//                      					} catch (SQLException e1) {
+//                      						// TODO Auto-generated catch block
+//                      						e1.printStackTrace();
+//                      					}
+                      		          NoRoomUserHostelList noroomuserhostellist;
                     					try {
-                    						userhostellist = new UserHostelList(userId);
-                    						userhostellist.setVisible(true);
+                    						noroomuserhostellist = new NoRoomUserHostelList(userId);
+                    						noroomuserhostellist.setVisible(true);
+                    						dispose();
                     					} catch (SQLException e1) {
                     						// TODO Auto-generated catch block
                     						e1.printStackTrace();
                     					}
-                    		        } else {
-                    		            System.out.println("User clicked Cancel or closed the dialog.");
-                    		        }
+                      		        } else {
+                      		            System.out.println("User clicked Cancel or closed the dialog.");
+                      		        }
+                        	  	}else if("Accept".equals(querySeeker[9])) {
+                        	  		result = JOptionPane.showConfirmDialog(
+                        		            null, 
+                        		            "Your are currently renting can't rent other room. You want to view your room",
+                        		            "Pending Status",
+                        		            JOptionPane.OK_CANCEL_OPTION,
+                        		            JOptionPane.INFORMATION_MESSAGE
+                        		        );
+                        	  		
+                        	  	  if (result == JOptionPane.OK_OPTION) {
+                  		            System.out.println("User clicked OK.");
+                  		            dispose();
+                  		        	 new Seeker(phoneno, password).setVisible(true);
+
+	                  		        } else {
+	                  		            System.out.println("User clicked Cancel or closed the dialog.");
+	                  		        }
+                        	  	}
+                    		      
                     		        return;
                         	}
                             new Renting(queryData[4], ownername, roomno, price, phoneno, ownerPhone, roomId).setVisible(true);
-                        } else {
+                        } 
+                        //for direct login 
+                        
+                        else {
                             String[] querySeeker = sqlquery.getSeekerProfile(phoneno, password);
                             
                             if (querySeeker[0] == null) {
@@ -192,10 +272,19 @@ public class SignIn extends JDialog {
                     		        if (result == JOptionPane.OK_OPTION) {
                     		            System.out.println("User clicked OK.");
                     		            String userId = sqlquery.getUserId(phoneno);
-                    		        	UserHostelList userhostellist;
+//                    		        	UserHostelList userhostellist;
+//                    					try {
+//                    						userhostellist = new UserHostelList(userId,phoneno, password);
+//                    						userhostellist.setVisible(true);
+//                    					} catch (SQLException e1) {
+//                    						// TODO Auto-generated catch block
+//                    						e1.printStackTrace();
+//                    					}
+                    		            
+                    		            NoRoomUserHostelList noroomuserhostellist;
                     					try {
-                    						userhostellist = new UserHostelList(userId);
-                    						userhostellist.setVisible(true);
+                    						noroomuserhostellist = new NoRoomUserHostelList(userId);
+                    						noroomuserhostellist.setVisible(true);
                     					} catch (SQLException e1) {
                     						// TODO Auto-generated catch block
                     						e1.printStackTrace();
@@ -203,10 +292,18 @@ public class SignIn extends JDialog {
                     		        } else {
                     		            System.out.println("User clicked Cancel or closed the dialog.");
                     		        }
-                            } else {
+                            } 
+                            else if("Accept".equals(querySeeker[9])) {
+                            	new Seeker(phoneno, password).setVisible(true);
+                            }
+                            
+                            else {
                             	String userId = sqlquery.getUserId(phoneno);
                                 Boolean reverseRoom = sqlquery.getReverseData(userId,querySeeker[10],querySeeker[6]);
                                 
+                                System.out.println("user id is "+userId);
+                                System.out.println("room id is "+querySeeker[10]);
+                                System.out.println("end date is"+querySeeker[6]);
                             	if (reverseRoom) {
                                    	int result = JOptionPane.showConfirmDialog(
                         		            null, 
@@ -218,14 +315,23 @@ public class SignIn extends JDialog {
                         		        if (result == JOptionPane.OK_OPTION) {
                         		            System.out.println("User clicked OK.");
 //                        		            String userId = sqlquery.getUserId(phoneno);
-                        		        	UserHostelList userhostellist;
+//                        		        	UserHostelList userhostellist;
+//                        					try {
+//                        						userhostellist = new UserHostelList(userId,phoneno, password);
+//                        						userhostellist.setVisible(true);
+//                        					} catch (SQLException e1) {
+//                        						// TODO Auto-generated catch block
+//                        						e1.printStackTrace();
+//                        					}
+                        		            NoRoomUserHostelList noroomuserhostellist;
                         					try {
-                        						userhostellist = new UserHostelList(userId);
-                        						userhostellist.setVisible(true);
+                        						noroomuserhostellist = new NoRoomUserHostelList(userId);
+                        						noroomuserhostellist.setVisible(true);
                         					} catch (SQLException e1) {
                         						// TODO Auto-generated catch block
                         						e1.printStackTrace();
                         					}
+                        		            
                         		        } else {
                         		            System.out.println("User clicked Cancel or closed the dialog.");
                         		        }
@@ -239,11 +345,11 @@ public class SignIn extends JDialog {
                         new HostelRegistration(queryData[3]).setVisible(true);
                         setVisible(false);
                     } else if (queryData[2].equals("1")) { // role administrator
-                        new Admin().setVisible(true);
+                        new Admin(queryData[3]).setVisible(true);
                         setVisible(false);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Account not found. Please sign up.");
+                    JOptionPane.showMessageDialog(null, "Invalid Phone Number or Password !");
                     txtPhone.requestFocus();
                     txtPhone.selectAll();
                     txtPass.selectAll();

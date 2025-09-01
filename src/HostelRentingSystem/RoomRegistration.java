@@ -27,6 +27,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -49,7 +51,7 @@ public class RoomRegistration extends JFrame {
 	private JTextField txtPrice;
 	private JTextArea txtDescription;
 	
-	// RoomModel objects တွေကို သိမ်းဖို့ Array အသစ်
+	// RoomModel objects á€�á€½á€±á€€á€­á€¯ á€žá€­á€™á€ºá€¸á€–á€­á€¯á€· Array á€¡á€žá€…á€º
 	  private ArrayList<String[]> roomDataList = new ArrayList<>();
 
     private static final String UPLOAD_DIR = "uploaded_images"; 
@@ -72,6 +74,8 @@ public class RoomRegistration extends JFrame {
         	JScrollPane descScrollPane = new JScrollPane(txtDescription);
         	
         	JButton btnUploadImage = new JButton("Choose Image");
+        	btnUploadImage.setFont(new Font("Arial", Font.BOLD, 12));
+        	btnUploadImage.setForeground(Color.decode("#3f3b3b"));
             JLabel lblImagePreview = new JLabel("No Image", SwingConstants.CENTER);
             lblImagePreview.setPreferredSize(new Dimension(IMAGE_PREVIEW_SIZE, IMAGE_PREVIEW_SIZE));
             lblImagePreview.setBorder(BorderFactory.createEtchedBorder());
@@ -80,7 +84,7 @@ public class RoomRegistration extends JFrame {
             String[] roomData = new String[5];
             roomDataList.add(roomData);
             
-            // ပုံ path ကိုသိမ်းဖို့ String Array ထဲမှာ နေရာပေးထားပါမယ်
+            // á€•á€¯á€¶ path á€€á€­á€¯á€žá€­á€™á€ºá€¸á€–á€­á€¯á€· String Array á€‘á€²á€™á€¾á€¬ á€”á€±á€›á€¬á€•á€±á€¸á€‘á€¬á€¸á€•á€«á€™á€šá€º
             imagePathStorage.add("");
             
             final String[] imageInfo = new String[2]; // [path, fileName]
@@ -102,13 +106,13 @@ public class RoomRegistration extends JFrame {
                         File selectedFile = fileChooser.getSelectedFile();
                         if (selectedFile != null) {
                             try {
-                                // ပုံကို upload folder ထဲကို ကူးမယ်
+                                // á€•á€¯á€¶á€€á€­á€¯ upload folder á€‘á€²á€€á€­á€¯ á€€á€°á€¸á€™á€šá€º
                                 File uploadFolder = new File(UPLOAD_DIR);
                                 if (!uploadFolder.exists()) {
                                     uploadFolder.mkdirs();
                                 }
                                 
-                                // ပုံကို သိမ်းဖို့ ထူးခြားတဲ့နာမည်ပေး
+                                // á€•á€¯á€¶á€€á€­á€¯ á€žá€­á€™á€ºá€¸á€–á€­á€¯á€· á€‘á€°á€¸á€�á€¼á€¬á€¸á€�á€²á€·á€”á€¬á€™á€Šá€ºá€•á€±á€¸
                                 String originalFileName = selectedFile.getName();
 //                                String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
                                 String fileExtension = "";
@@ -121,16 +125,16 @@ public class RoomRegistration extends JFrame {
                                 File destinationFile = new File(uploadFolder.getAbsolutePath() + File.separator + newUniqueFileName);
                                 Files.copy(selectedFile.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-                                // ရွေးလိုက်တဲ့ပုံကို JLabel မှာ ပြသပါမယ်
+                                // á€›á€½á€±á€¸á€œá€­á€¯á€€á€ºá€�á€²á€·á€•á€¯á€¶á€€á€­á€¯ JLabel á€™á€¾á€¬ á€•á€¼á€žá€•á€«á€™á€šá€º
                                 ImageIcon originalIcon = new ImageIcon(destinationFile.getAbsolutePath());
                                 Image image = originalIcon.getImage();
                                 Image scaledImage = image.getScaledInstance(IMAGE_PREVIEW_SIZE, IMAGE_PREVIEW_SIZE, Image.SCALE_SMOOTH);
                                 lblImagePreviewArray.get(currentIndex).setIcon(new ImageIcon(scaledImage));
-                                lblImagePreviewArray.get(currentIndex).setText(""); // Icon ပြပြီးသားဖြစ်လို့ စာသားဖျက်
+                                lblImagePreviewArray.get(currentIndex).setText(""); // Icon á€•á€¼á€•á€¼á€®á€¸á€žá€¬á€¸á€–á€¼á€…á€ºá€œá€­á€¯á€· á€…á€¬á€žá€¬á€¸á€–á€»á€€á€º
                                 lblImagePreviewArray.get(currentIndex).setToolTipText(originalFileName);
                                 
                                 String relativeImagePath = UPLOAD_DIR + "/" + File.separator + newUniqueFileName;
-                                roomDataList.get(currentIndex)[3] = relativeImagePath; // image_url ကို relative path အဖြစ်သိမ်း
+                                roomDataList.get(currentIndex)[3] = relativeImagePath; // image_url á€€á€­á€¯ relative path á€¡á€–á€¼á€…á€ºá€žá€­á€™á€ºá€¸
                                 roomDataList.get(currentIndex)[4] = newUniqueFileName;
                                 
                             } catch (Exception ex) {
@@ -149,7 +153,7 @@ public class RoomRegistration extends JFrame {
         	btnImageUploadArray.add(btnUploadImage);
         	lblImagePreviewArray.add(lblImagePreview);
         	
-        	// Loop အစမှာ RoomModel အသစ်တစ်ခု ဖန်တီးပြီး ArrayList ထဲ ထည့်ထားပါမယ်
+        	// Loop á€¡á€…á€™á€¾á€¬ RoomModel á€¡á€žá€…á€ºá€�á€…á€ºá€�á€¯ á€–á€”á€ºá€�á€®á€¸á€•á€¼á€®á€¸ ArrayList á€‘á€² á€‘á€Šá€·á€ºá€‘á€¬á€¸á€•á€«á€™á€šá€º
 //            roomDataList.add(new RoomModel("", "", "", "", ""));
         	
     	   File uploadFolder = new File(UPLOAD_DIR);
@@ -160,29 +164,59 @@ public class RoomRegistration extends JFrame {
         
         for(int i=0;i<count;i++) {
         	JLabel lblNewLabel = new JLabel("Room No:");
-    		lblNewLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+    		lblNewLabel.setFont(new Font("Arial", Font.BOLD, 12));
+    		lblNewLabel.setForeground(Color.decode("#3f3b3b"));
     		lblNewLabel.setPreferredSize(new Dimension(140, 30));
     		panel.add(lblNewLabel);
     		panel.add(txtRoomArray.get(i));
     		
-    		JLabel lblNewLabel_1 = new JLabel("Price:");
-    		lblNewLabel_1.setFont(new Font("Arial", Font.PLAIN, 12));
+    		JLabel lblNewLabel_1 = new JLabel("Price:(kyats)");
+    		lblNewLabel_1.setFont(new Font("Arial", Font.BOLD, 12));
+    		lblNewLabel.setForeground(Color.decode("#3f3b3b"));
     		panel.add(lblNewLabel_1);
     		panel.add(txtPriceArray.get(i));
     		
     		JLabel lblDescription = new JLabel("Description:");
-    		lblDescription.setFont(new Font("Arial", Font.PLAIN, 12));
+    		lblDescription.setFont(new Font("Arial", Font.BOLD, 12));
+    		lblNewLabel.setForeground(Color.decode("#3f3b3b"));
     		panel.add(lblDescription);
     		panel.add(txtDescriptionArray.get(i));
     		
     		 // Image Upload Button
             panel.add(btnImageUploadArray.get(i));
             
-            // Image Preview (ပုံလေးပြမယ့် JLabel)
+            // Image Preview (á€•á€¯á€¶á€œá€±á€¸á€•á€¼á€™á€šá€·á€º JLabel)
             panel.add(lblImagePreviewArray.get(i));
         }
         
+        //for owner btn
+		//  Default colors
+		Color defaultBg = new Color(0, 120, 215);
+		Color defaultFg = Color.WHITE;
+	
+		//  Hover colors
+		Color hoverBg = Color.decode("#f0f0f0");
+		Color hoverFg = new Color(0, 120, 215);
+
 		JButton btnConfirm = new JButton("Confirm");
+		btnConfirm.setBackground( new Color(0, 120, 215));  // green
+		btnConfirm.setForeground(Color.WHITE);
+		
+		btnConfirm.addMouseListener(new MouseAdapter() {
+		    
+		    public void mouseEntered(MouseEvent e) {
+		    	btnConfirm.setBackground(hoverBg);    // Change background
+		    	btnConfirm.setForeground(hoverFg);    // Change text color
+		    }
+
+		    
+		    public void mouseExited(MouseEvent e) {
+		    	btnConfirm.setBackground(defaultBg);  // Reset background
+		    	btnConfirm.setForeground(defaultFg);  // Reset text color
+		    }
+		});
+		
+		
 		btnConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					String[] hostelData = new String[9];
@@ -214,7 +248,7 @@ public class RoomRegistration extends JFrame {
 						System.out.println("roomNo => "+ roomNo + "\tprice" + price);
 						System.out.println("desc => "+ description + "\tpath" + image_path);
 						
-						if(Checking.IsNull(roomNo) || Checking.IsLetter(roomNo)) {
+						if(Checking.IsNull(roomNo)) {
 							JOptionPane.showMessageDialog(null, "You must enter valid Room Number");
 							isValid = false;
 							break;
@@ -222,12 +256,24 @@ public class RoomRegistration extends JFrame {
 							isValid = true;
 						}
 						
-						if(Checking.IsNull(price) || !Checking.IsAllDigit(price) || Integer.parseInt(price)==0) {
+						if(Checking.IsNull(price) || Integer.parseInt(price)==0) {
 							JOptionPane.showMessageDialog(null, "You must enter valid Price");
 							isValid = false;
 							break;
-						} else if(!Checking.IsValidPrice(price)) {
-							JOptionPane.showMessageDialog(null, "Hostel Fee is Expensive!!");
+						}  else if(!Checking.IsAllDigit(price)) {
+							JOptionPane.showMessageDialog(null, "Price is only digit!!");
+							isValid = false;
+							break;
+						}else if(!Checking.IsValidPrice(price)) {
+							JOptionPane.showMessageDialog(null, "Room Fee is Expensive!!");
+							isValid = false;
+							break;
+						} else {
+							isValid = true;
+						}
+						
+						if(Checking.IsNull(description)) {
+							JOptionPane.showMessageDialog(null, "You must enter Description");
 							isValid = false;
 							break;
 						} else {
@@ -328,7 +374,7 @@ public class RoomRegistration extends JFrame {
        
         frame.getContentPane().add(panel);
         frame.setResizable(true);
-        frame.setBounds(380, 180, 550, 500);
+        frame.setBounds(250, 80, 850, 500);
         frame.pack();
         frame.setVisible(true);
 	}

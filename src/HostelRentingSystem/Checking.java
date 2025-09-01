@@ -19,7 +19,8 @@ public class Checking {
 	
 	public static boolean IsNull(String str)
 	{
-	    if(str.trim().equals("")||str.trim().equals(null))
+	    //if(str.trim().equals("")||str.trim().equals(null))
+		if(str.trim().equals("")||str.trim().isEmpty())
 	        return true;
 	    else
 	        return false;
@@ -34,7 +35,7 @@ public class Checking {
 	}
 	
 	public static boolean IsPassNo(String str) {	
-	    String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()�[{}]:;',?/*~$^+=<>]).{8,20}$";
+	    String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
 	    Pattern pattern = Pattern.compile(regex);
 	    Matcher matcher = pattern.matcher(str);
 	    boolean matchFound = matcher.find();
@@ -54,30 +55,62 @@ public class Checking {
 		}
 	}
 	
+//	public static boolean IsLetter(String str) {
+//		boolean bool = false;
+//		for(int i=0;i<str.length();i++) {
+//			if(Character.isLetter(str.charAt(i))) {
+//				bool = true;
+//			} else {
+//				bool = false;
+//			}
+//		}
+//		return bool;
+//	}
+	
 	public static boolean IsLetter(String str) {
-		boolean bool = false;
-		for(int i=0;i<str.length();i++) {
-			if(Character.isLetter(str.charAt(i))) {
-				bool = true;
-			} else {
-				bool = false;
-			}
-		}
-		return bool;
+	    if (str == null || str.isEmpty()) {
+	        return false; // null / ဗလာ string ဆိုရင် false
+	    }
+
+	    for (int i = 0; i < str.length(); i++) {
+	        if (!Character.isLetter(str.charAt(i))) {
+	            return false; // letter မဟုတ်တာ တစ်လုံးခုရှိရင် false
+	        }
+	    }
+
+	    return true; // အကုန် letter ဖြစ်မှသာ true
 	}
+
+	
+//	public static boolean IsAllDigit(String str) {
+//		boolean bool = false;
+//		for(int i=0;i<str.length();i++) {
+//			if(Character.isDigit(str.charAt(i))) {
+//				bool = true;
+//			} else {
+//				bool = false;
+//			}
+//		}
+//		return bool;
+//	}
+//	
 	
 	public static boolean IsAllDigit(String str) {
-		boolean bool = false;
-		for(int i=0;i<str.length();i++) {
-			if(Character.isDigit(str.charAt(i))) {
-				bool = true;
-			} else {
-				bool = false;
-			}
-		}
-		return bool;
+	    // null / ဗလာ string ဆိုရင် false
+	    if (str == null || str.isEmpty()) {
+	        return false;
+	    }
+
+	    // စာလုံးတိုင်း digit ဖြစ်မဖြစ် စစ်မယ်
+	    for (int i = 0; i < str.length(); i++) {
+	        if (!Character.isDigit(str.charAt(i))) {
+	            return false; // digit မဟုတ်တာတစ်လုံးခု တွေ့တာနဲ့ false
+	        }
+	    }
+
+	    return true; // အကုန် digit ဖြစ်မှသာ true
 	}
-	
+
 	public static boolean IsValidPrice(String str) {
 		if(str.length() < 7) {
 			return true;

@@ -22,6 +22,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -34,9 +38,9 @@ public class Admin extends JDialog {
 	List<String[]> ownerTableRowList = new ArrayList<>();
 	List<String[]> seekerTableRowList = new ArrayList<>();
 	
-    public Admin() {
+    public Admin(String userId) {
         setTitle("Admin Panel");
-        setSize(800, 500);
+        setSize(800, 560);
         try {
 			con = connect.getConnection();
 		} catch (SQLException e) {
@@ -46,36 +50,7 @@ public class Admin extends JDialog {
         
         JTabbedPane tabbedPane = new JTabbedPane();
 
-        JPanel panel1 = new JPanel();
-
         JPanel panel2 = new JPanel();
-
-        tabbedPane.addTab("Owner", null, panel1, "Owner");
-        panel1.setLayout(null);
-        
-        JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(10, 11, 759, 411);
-        panel1.add(scrollPane);
-        
-        tblOwner = new JTable();
-        tblOwner.addMouseListener(new MouseAdapter() {
-        	@Override
-        	public void mouseClicked(MouseEvent e) {
-        		int row = tblOwner.getSelectedRow();
-        		String status = (String) tblOwner.getValueAt(row, 4);
-        		
-        		String[] ownerData = ownerTableRowList.get(row);
-        		//System.out.println("selectedRowData => " + Arrays.toString(ownerData));	
-        		String userId = ownerData[5];
-        		//System.out.println("User ID => "+userId);
-        		     		
-        		if(status.equals("pending")) {        			
-        			getCustomDialog(userId);
-        		}
-        		
-        	}   
-        });
-        scrollPane.setViewportView(tblOwner);
         
         tabbedPane.addTab("Seeker", null, panel2, "Seeker");
         panel2.setLayout(null);
@@ -103,8 +78,169 @@ public class Admin extends JDialog {
         	}   
         });
         scrollPane_2.setViewportView(tblSeeker);      
+        
+        //for owner btn
+		//  Default colors
+		Color defaultBg = new Color(0, 120, 215);
+		Color defaultFg = Color.WHITE;
+	
+		//  Hover colors
+		Color hoverBg = Color.decode("#f0f0f0");
+		Color hoverFg = new Color(0, 120, 215);
+        
+        JButton lblprofile = new JButton("Acc Info");
+        
+        lblprofile.setBackground( new Color(0, 120, 215));  // green
+        lblprofile.setForeground(Color.WHITE);
+		
+        lblprofile.addMouseListener(new MouseAdapter() {
+		    
+		    public void mouseEntered(MouseEvent e) {
+		    	lblprofile.setBackground(hoverBg);    // Change background
+		    	lblprofile.setForeground(hoverFg);    // Change text color
+		    }
+
+		    
+		    public void mouseExited(MouseEvent e) {
+		    	lblprofile.setBackground(defaultBg);  // Reset background
+		    	lblprofile.setForeground(defaultFg);  // Reset text color
+		    }
+		});
+        
+        lblprofile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UserUpdateForm userallinfo;
+				
+					userallinfo = new UserUpdateForm(userId);
+					userallinfo.setVisible(true);
+					//dispose();
+				
+			}
+		});
+        
+        lblprofile.setBounds(20, 448, 87, 27);
+        panel2.add(lblprofile);
+        
+        JButton btnLogout1 = new JButton("Logout");
+        btnLogout1.setBackground( new Color(0, 120, 215));  // green
+        btnLogout1.setForeground(Color.WHITE);
+		
+        btnLogout1.addMouseListener(new MouseAdapter() {
+		    
+		    public void mouseEntered(MouseEvent e) {
+		    	btnLogout1.setBackground(hoverBg);    // Change background
+		    	btnLogout1.setForeground(hoverFg);    // Change text color
+		    }
+
+		    
+		    public void mouseExited(MouseEvent e) {
+		    	btnLogout1.setBackground(defaultBg);  // Reset background
+		    	btnLogout1.setForeground(defaultFg);  // Reset text color
+		    }
+		});
+		
+        btnLogout1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(JOptionPane.showConfirmDialog(null, "Are you sure you want to LogOut?","Confirm Exist",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+					dispose();
+				}
+			}
+		});
+        btnLogout1.setBounds(670, 448, 87, 27);
+        panel2.add(btnLogout1);
 
         getContentPane().add(tabbedPane);
+        
+                JPanel panel1 = new JPanel();
+                
+                        tabbedPane.addTab("Owner", null, panel1, "Owner");
+                        panel1.setLayout(null);
+                        
+                        JScrollPane scrollPane = new JScrollPane();
+                        scrollPane.setBounds(10, 11, 759, 411);
+                        panel1.add(scrollPane);
+                        
+                        tblOwner = new JTable();
+                        tblOwner.addMouseListener(new MouseAdapter() {
+                        	@Override
+                        	public void mouseClicked(MouseEvent e) {
+                        		int row = tblOwner.getSelectedRow();
+                        		String status = (String) tblOwner.getValueAt(row, 4);
+                        		
+                        		String[] ownerData = ownerTableRowList.get(row);
+                        		//System.out.println("selectedRowData => " + Arrays.toString(ownerData));	
+                        		String userId = ownerData[5];
+                        		//System.out.println("User ID => "+userId);
+                        		     		
+                        		if(status.equals("pending")) {        			
+                        			getCustomDialog(userId);
+                        		}
+                        		
+                        	}   
+                        });
+                        scrollPane.setViewportView(tblOwner);
+                        //btn for Acc Info
+                        JButton lblprofile1 = new JButton("Acc Info");
+                        lblprofile1.setBackground( new Color(0, 120, 215));  // green
+                        lblprofile1.setForeground(Color.WHITE);
+                		
+                        lblprofile1.addMouseListener(new MouseAdapter() {
+                		    
+                		    public void mouseEntered(MouseEvent e) {
+                		    	lblprofile1.setBackground(hoverBg);    // Change background
+                		    	lblprofile1.setForeground(hoverFg);    // Change text color
+                		    }
+
+                		    
+                		    public void mouseExited(MouseEvent e) {
+                		    	lblprofile1.setBackground(defaultBg);  // Reset background
+                		    	lblprofile1.setForeground(defaultFg);  // Reset text color
+                		    }
+                		});
+                        
+                        lblprofile1.addActionListener(new ActionListener() {
+                			public void actionPerformed(ActionEvent e) {
+                				UserUpdateForm userallinfo;
+                				
+                					userallinfo = new UserUpdateForm(userId);
+                					userallinfo.setVisible(true);
+                					//dispose();
+                				
+                			}
+                		});
+                        
+                        lblprofile1.setBounds(20, 448, 87, 27);
+                        panel1.add(lblprofile1);
+                        
+                        //For btn Logout
+                        JButton btnLogout = new JButton("Logout");
+                        btnLogout.setBackground( new Color(0, 120, 215));  // green
+                        btnLogout.setForeground(Color.WHITE);
+                		
+                        btnLogout.addMouseListener(new MouseAdapter() {
+                		    
+                		    public void mouseEntered(MouseEvent e) {
+                		    	btnLogout.setBackground(hoverBg);    // Change background
+                		    	btnLogout.setForeground(hoverFg);    // Change text color
+                		    }
+
+                		    
+                		    public void mouseExited(MouseEvent e) {
+                		    	btnLogout.setBackground(defaultBg);  // Reset background
+                		    	btnLogout.setForeground(defaultFg);  // Reset text color
+                		    }
+                		});
+                		
+                        btnLogout.addActionListener(new ActionListener() {
+                			public void actionPerformed(ActionEvent e) {
+                				if(JOptionPane.showConfirmDialog(null, "Are you sure you want to LogOut?","Confirm Exist",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                					dispose();
+                				}
+                			}
+                		});
+                        
+                        btnLogout.setBounds(670, 448, 87, 27);
+                    panel1.add(btnLogout);
 
         setLocationRelativeTo(null);
         setVisible(true);

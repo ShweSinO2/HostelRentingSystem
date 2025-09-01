@@ -19,10 +19,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
-
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.util.Locale;
 import java.awt.event.ActionEvent;
 
 public class Renting extends JDialog {
@@ -30,14 +35,14 @@ public class Renting extends JDialog {
 	MyDate myDate = new MyDate();
 	private JTextField txtAmount;
 	String payment;
-	private JRadioButton rdoWave;
-	private JRadioButton rdoKbz;
+	//private JRadioButton rdoWave;
+	//private JRadioButton rdoKbz;
 	SqlQuery sqlquery = new SqlQuery();
 	private JLabel lblSeeker;
 	private JLabel lblOwner;
 	private JLabel lblRoom;
 	private JLabel lblPrice;
-	private JRadioButton rdoCb;
+	//private JRadioButton rdoCb;
 
 	/**
 	 * Create the dialog.
@@ -50,40 +55,46 @@ public class Renting extends JDialog {
             System.err.println("Failed to initialize FlatLaf");
         }
 		
-		setTitle("Renting");
+		setTitle("Renting Detail");
 		setBounds(350, 50, 700, 600);
 		setResizable(false);
 		getContentPane().setLayout(null);
 		LocalDate date = LocalDate.now();
 		
 		JLabel lblNewLabel = new JLabel("Date");
-		lblNewLabel.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblNewLabel.setBounds(448, 11, 44, 32);
+		lblNewLabel.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNewLabel.setForeground(Color.decode("#3f3b3b"));
+		lblNewLabel.setBounds(492, 95, 44, 32);
 		getContentPane().add(lblNewLabel);
 		
 		JLabel lblDate = new JLabel(date.toString());
-		lblDate.setBorder(blackline);
-		lblDate.setBounds(525, 12, 121, 32);
+		lblDate.setFont(new Font("Arial", Font.PLAIN, 15));
+		//lblDate.setBorder(blackline);
+		lblDate.setBounds(572, 97, 102, 32);
 		getContentPane().add(lblDate);
 		
 		JLabel lblNew_1 = new JLabel("Seeker Name");
-		lblNew_1.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblNew_1.setBounds(67, 53, 102, 30);
+		lblNew_1.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNew_1.setForeground(Color.decode("#3f3b3b"));
+		lblNew_1.setBounds(124, 158, 102, 30);
 		getContentPane().add(lblNew_1);
 		
 		lblSeeker = new JLabel(seekerName);
-		lblSeeker.setBounds(291, 54, 355, 30);
-		lblSeeker.setBorder(blackline);
+		lblSeeker.setFont(new Font("Arial", Font.PLAIN, 15));
+		lblSeeker.setBounds(403, 160, 232, 30);
+		//lblSeeker.setBorder(blackline);
 		getContentPane().add(lblSeeker);
 		
 		JLabel lblNew_2 = new JLabel("Owner Name");
-		lblNew_2.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblNew_2.setBounds(67, 105, 102, 30);
+		lblNew_2.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNew_2.setForeground(Color.decode("#3f3b3b"));
+		lblNew_2.setBounds(124, 207, 102, 30);
 		getContentPane().add(lblNew_2);
 		
 		lblOwner = new JLabel(ownerName);
-		lblOwner.setBorder(blackline);
-		lblOwner.setBounds(291, 106, 355, 30);
+		lblOwner.setFont(new Font("Arial", Font.PLAIN, 15));
+		//lblOwner.setBorder(blackline);
+		lblOwner.setBounds(403, 209, 232, 30);
 		getContentPane().add(lblOwner);
 		
 //		JLabel lblNew_6 = new JLabel("Payment Type");
@@ -146,32 +157,71 @@ public class Renting extends JDialog {
 //		getContentPane().add(lblNew_7);
 		
 		JLabel lblNew_3 = new JLabel("Start Date");
-		lblNew_3.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblNew_3.setBounds(67, 365, 102, 30);
+		lblNew_3.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNew_3.setForeground(Color.decode("#3f3b3b"));
+		lblNew_3.setBounds(124, 339, 102, 30);
 		getContentPane().add(lblNew_3);
 		
 		//System.out.println("Date => "+lblDate.getText());
 		JLabel lblStart = new JLabel(myDate.getStartDate(date));
-		lblStart.setBorder(blackline);
-		lblStart.setBounds(291, 366, 355, 30);
+		lblStart.setFont(new Font("Arial", Font.PLAIN, 15));
+		//lblStart.setBorder(blackline);
+		lblStart.setBounds(403, 341, 232, 30);
 		getContentPane().add(lblStart);
 		
 		JLabel lblNew_4 = new JLabel("End Date");
-		lblNew_4.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblNew_4.setBounds(67, 420, 102, 30);
+		lblNew_4.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNew_4.setForeground(Color.decode("#3f3b3b"));
+		lblNew_4.setBounds(124, 383, 102, 30);
 		getContentPane().add(lblNew_4);
 		
 		JLabel lblEnd = new JLabel(myDate.getEndDate(lblStart.getText()));
-		lblEnd.setBorder(blackline);
-		lblEnd.setBounds(291, 421, 355, 30);
+		lblEnd.setFont(new Font("Arial", Font.PLAIN, 15));
+		//lblEnd.setBorder(blackline);
+		lblEnd.setBounds(403, 385, 232, 30);
 		getContentPane().add(lblEnd);
 		
-		lblPrice = new JLabel(price+"");
-		lblPrice.setBorder(blackline);
-		lblPrice.setBounds(291, 216, 355, 30);
+		// add comma and kyats to price
+		NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+    	String formattedPrice = numberFormat.format(price);
+		
+		lblPrice = new JLabel(formattedPrice+" kyats");
+		lblPrice.setFont(new Font("Arial", Font.PLAIN, 15));
+		//lblPrice.setBorder(blackline);
+		lblPrice.setBounds(403, 297, 232, 30);
 		getContentPane().add(lblPrice);
 		
+		
+		//for owner btn
+		//  Default colors
+		Color defaultBg = new Color(0, 120, 215);
+		Color defaultFg = Color.WHITE;
+
+		//  Hover colors
+		Color hoverBg = Color.decode("#f0f0f0");
+		Color hoverFg = new Color(0, 120, 215);
+		
+		
+		
 		JButton btnConfirm = new JButton("Confirm");
+		btnConfirm.setBackground( new Color(0, 120, 215));  // green
+		btnConfirm.setForeground(Color.WHITE);
+		
+		btnConfirm.addMouseListener(new MouseAdapter() {
+		    
+		    public void mouseEntered(MouseEvent e) {
+		    	btnConfirm.setBackground(hoverBg);    // Change background
+		    	btnConfirm.setForeground(hoverFg);    // Change text color
+		    }
+
+		    
+		    public void mouseExited(MouseEvent e) {
+		    	btnConfirm.setBackground(defaultBg);  // Reset background
+		    	btnConfirm.setForeground(defaultFg);  // Reset text color
+		    }
+		});
+		
+		
 		btnConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 //				if(Checking.IsNull(txtAmount.getText()) || !Checking.IsAllDigit(txtAmount.getText()) || (Integer.parseInt(txtAmount.getText()) <= 0) || (Integer.parseInt(txtAmount.getText()) < Integer.parseInt(lblPrice.getText()))) {
@@ -226,6 +276,8 @@ public class Renting extends JDialog {
 								}
 								clear();
 								setVisible(false);
+								dispose();
+//								new Home.setVisible(true);
 							}
 							
 						}
@@ -233,34 +285,63 @@ public class Renting extends JDialog {
 				}
 //			}
 		});
-		btnConfirm.setBounds(419, 488, 99, 45);
+		btnConfirm.setBounds(397, 477, 99, 45);
 		getContentPane().add(btnConfirm);
 		
-		JButton btnClose = new JButton("Close");
+		
+		
+		JButton btnClose = new JButton("Close");		
+		btnClose.setBackground( new Color(0, 120, 215));  // green
+		btnClose.setForeground(Color.WHITE);
+		
+		btnClose.addMouseListener(new MouseAdapter() {
+		    
+		    public void mouseEntered(MouseEvent e) {
+		    	btnClose.setBackground(hoverBg);    // Change background
+		    	btnClose.setForeground(hoverFg);    // Change text color
+		    }
+
+		    
+		    public void mouseExited(MouseEvent e) {
+		    	btnClose.setBackground(defaultBg);  // Reset background
+		    	btnClose.setForeground(defaultFg);  // Reset text color
+		    }
+		});
+		
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?","Confirm Existing",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+				//if(JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?","Confirm Existing",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
 					dispose();
-				}
+				//}
 			}
 		});
-		btnClose.setBounds(209, 488, 99, 45);
+		
+		btnClose.setBounds(194, 477, 99, 45);
 		getContentPane().add(btnClose);
 		
 		JLabel lblNew_2_1 = new JLabel("Room No");
-		lblNew_2_1.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblNew_2_1.setBounds(67, 158, 102, 30);
+		lblNew_2_1.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNew_2_1.setForeground(Color.decode("#3f3b3b"));
+		lblNew_2_1.setBounds(124, 251, 102, 30);
 		getContentPane().add(lblNew_2_1);
 		
 		JLabel lblNew_2_1_1 = new JLabel("Price");
-		lblNew_2_1_1.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblNew_2_1_1.setBounds(67, 215, 102, 30);
+		lblNew_2_1_1.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNew_2_1_1.setForeground(Color.decode("#3f3b3b"));
+		lblNew_2_1_1.setBounds(124, 295, 102, 30);
 		getContentPane().add(lblNew_2_1_1);
 		
 		lblRoom = new JLabel(roomno);
-		lblRoom.setBorder(blackline);
-		lblRoom.setBounds(291, 159, 355, 30);
+		lblRoom.setFont(new Font("Arial", Font.PLAIN, 15));
+		//lblRoom.setBorder(blackline);
+		lblRoom.setBounds(403, 253, 232, 30);
 		getContentPane().add(lblRoom);
+		
+		JLabel lblNewLabel_1 = new JLabel("Renting Detail");
+		lblNewLabel_1.setFont(new Font("Arial", Font.BOLD, 18));
+		lblNewLabel_1.setForeground(Color.decode("#085f63"));
+		lblNewLabel_1.setBounds(247, 29, 249, 32);
+		getContentPane().add(lblNewLabel_1);
 		
 	}
 	

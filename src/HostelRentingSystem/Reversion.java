@@ -18,6 +18,8 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.awt.event.ActionEvent;
@@ -40,7 +42,7 @@ public class Reversion extends JDialog {
             System.err.println("Failed to initialize FlatLaf");
         }
 		
-		setTitle("Reservation");
+		setTitle("");
 		setBounds(450, 180, 497, 371);
 		getContentPane().setLayout(null);
 		setResizable(false);
@@ -48,53 +50,91 @@ public class Reversion extends JDialog {
 		LocalDate announce = LocalDate.parse(endDate);
 		
 		JLabel lblNewLabel = new JLabel("Date");
-		lblNewLabel.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblNewLabel.setBounds(296, 11, 44, 32);
+		lblNewLabel.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNewLabel.setForeground(Color.decode("#3f3b3b"));
+		lblNewLabel.setBounds(309, 11, 44, 32);
 		getContentPane().add(lblNewLabel);
 		
 		JLabel lblDate = new JLabel(date.toString());
-		lblDate.setBorder(blackline);
-		lblDate.setBounds(350, 12, 108, 32);
+		lblDate.setFont(new Font("Arial", Font.PLAIN, 15));
+		//lblDate.setBorder(blackline);
+		lblDate.setBounds(363, 11, 108, 32);
 		getContentPane().add(lblDate);
 		
-		JLabel lblNew_4 = new JLabel("End Date");
-		lblNew_4.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblNew_4.setBounds(36, 367, 102, 30);
-		getContentPane().add(lblNew_4);
+//		JLabel lblNew_4 = new JLabel("End Date");
+//		lblNew_4.setFont(new Font("Arial", Font.BOLD, 15));
+//		lblNew_4.setForeground(Color.decode("#3f3b3b"));
+//		lblNew_4.setBounds(36, 367, 102, 30);
+//		getContentPane().add(lblNew_4);
 		
 		JLabel lblNew_2_1 = new JLabel("Room No");
-		lblNew_2_1.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblNew_2_1.setBounds(22, 92, 102, 30);
+		lblNew_2_1.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNew_2_1.setForeground(Color.decode("#3f3b3b"));
+		lblNew_2_1.setBounds(85, 90, 102, 30);
 		getContentPane().add(lblNew_2_1);
 		
 		JLabel lblRoom = new JLabel(roomNo);
-		lblRoom.setBorder(blackline);
-		lblRoom.setBounds(154, 92, 304, 30);
+		lblRoom.setFont(new Font("Arial", Font.PLAIN, 15));
+		//lblRoom.setBorder(blackline);
+		lblRoom.setBounds(275, 92, 183, 30);
 		getContentPane().add(lblRoom);
 		
 		JLabel lblNew_2_1_1 = new JLabel("Announce Date");
-		lblNew_2_1_1.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblNew_2_1_1.setBounds(22, 145, 131, 30);
+		lblNew_2_1_1.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNew_2_1_1.setForeground(Color.decode("#3f3b3b"));
+		lblNew_2_1_1.setBounds(85, 143, 131, 30);
 		getContentPane().add(lblNew_2_1_1);
 		
 		JLabel lblNew_2_1_1_1 = new JLabel("End Date");
-		lblNew_2_1_1_1.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblNew_2_1_1_1.setBounds(22, 201, 99, 30);
+		lblNew_2_1_1_1.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNew_2_1_1_1.setForeground(Color.decode("#3f3b3b"));
+		lblNew_2_1_1_1.setBounds(88, 199, 99, 30);
 		getContentPane().add(lblNew_2_1_1_1);
 		
 		JLabel lblAnnounce = new JLabel(announce.minusDays(7).toString());
-		lblAnnounce.setBorder(blackline);
-		lblAnnounce.setBounds(154, 145, 304, 30);
+		lblAnnounce.setFont(new Font("Arial", Font.PLAIN, 15));
+		//lblAnnounce.setBorder(blackline);
+		lblAnnounce.setBounds(275, 145, 183, 30);
 		getContentPane().add(lblAnnounce);
+		System.out.println("Announce date"+lblAnnounce.getText());
 		
 		JLabel lblEnd = new JLabel(endDate);
-		lblEnd.setBorder(blackline);
-		lblEnd.setBounds(154, 201, 304, 30);
+		lblEnd.setFont(new Font("Arial", Font.PLAIN, 15));
+		//lblEnd.setBorder(blackline);
+		lblEnd.setBounds(275, 201, 183, 30);
 		getContentPane().add(lblEnd);
 		
+		//for owner btn
+		//  Default colors
+		Color defaultBg = new Color(0, 120, 215);
+		Color defaultFg = Color.WHITE;
+
+		//  Hover colors
+		Color hoverBg = Color.decode("#f0f0f0");
+		Color hoverFg = new Color(0, 120, 215);
+		
 		JButton btnReserve = new JButton("Reserve");
+		
+		btnReserve.setBackground( new Color(0, 120, 215));  // green
+		btnReserve.setForeground(Color.WHITE);
+		
+		btnReserve.addMouseListener(new MouseAdapter() {
+		    
+		    public void mouseEntered(MouseEvent e) {
+		    	btnReserve.setBackground(hoverBg);    // Change background
+		    	btnReserve.setForeground(hoverFg);    // Change text color
+		    }
+
+		    
+		    public void mouseExited(MouseEvent e) {
+		    	btnReserve.setBackground(defaultBg);  // Reset background
+		    	btnReserve.setForeground(defaultFg);  // Reset text color
+		    }
+		});
+		
+		//btnReserve.setEnabled(true);
 		if(count > 0) {
-			System.out.print("Count => "+count);
+			System.out.print("Count -------=> "+count);
 			btnReserve.setEnabled(false);
 		}
 		btnReserve.addActionListener(new ActionListener() {
@@ -132,11 +172,28 @@ public class Reversion extends JDialog {
 		getContentPane().add(btnReserve);
 		
 		JButton btnClose = new JButton("Close");
+		btnClose.setBackground( new Color(0, 120, 215));  // green
+		btnClose.setForeground(Color.WHITE);
+		
+		btnClose.addMouseListener(new MouseAdapter() {
+		    
+		    public void mouseEntered(MouseEvent e) {
+		    	btnClose.setBackground(hoverBg);    // Change background
+		    	btnClose.setForeground(hoverFg);    // Change text color
+		    }
+
+		    
+		    public void mouseExited(MouseEvent e) {
+		    	btnClose.setBackground(defaultBg);  // Reset background
+		    	btnClose.setForeground(defaultFg);  // Reset text color
+		    }
+		});
+		
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?","Confirm Existing",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+				//if(JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?","Confirm Existing",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
 					dispose();			
-				}
+				//}
 			}
 		});
 		btnClose.setBounds(284, 273, 102, 32);

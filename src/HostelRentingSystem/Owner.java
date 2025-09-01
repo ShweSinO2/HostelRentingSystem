@@ -32,6 +32,7 @@ import javax.swing.JTextField;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 public class Owner extends JDialog {
 	private JTable tblHostel;
@@ -48,8 +49,9 @@ public class Owner extends JDialog {
 	DBConnection connect = new DBConnection();
 	Connection con = null;
 	SqlQuery sqlquery = new SqlQuery();
-	List<String[]> freeDataList = new ArrayList<>();
 	List<String[]> allDataList = new ArrayList<>();
+	List<String[]> rentDataList = new ArrayList<>();
+	List<String[]> freeDataList = new ArrayList<>();
 	List<String[]> pendingDataList = new ArrayList<>();
 
 	
@@ -102,14 +104,42 @@ public class Owner extends JDialog {
         tblRent = new JTable();
         scrollPane_2.setViewportView(tblRent);
         
-        //for btn for Rent
+      //for owner btn
+  		//  Default colors
+  		Color defaultBg = new Color(0, 120, 215);
+  		Color defaultFg = Color.WHITE;
+
+  		//  Hover colors
+  		Color hoverBg = Color.decode("#f0f0f0");
+  		Color hoverFg = new Color(0, 120, 215);
+        
+        //for back btn for Rent
         JButton btnNewButton_2 = new JButton("Back");
+        btnNewButton_2.setBackground( new Color(0, 120, 215));  // green
+        btnNewButton_2.setForeground(Color.WHITE);
+		
+        btnNewButton_2.addMouseListener(new MouseAdapter() {
+		    
+		    public void mouseEntered(MouseEvent e) {
+		    	btnNewButton_2.setBackground(hoverBg);    // Change background
+		    	btnNewButton_2.setForeground(hoverFg);    // Change text color
+		    }
+
+		    
+		    public void mouseExited(MouseEvent e) {
+		    	btnNewButton_2.setBackground(defaultBg);  // Reset background
+		    	btnNewButton_2.setForeground(defaultFg);  // Reset text color
+		    }
+		});
+		
+        
         btnNewButton_2.setBounds(20, 488, 87, 27);
         btnNewButton_2.addActionListener(e -> {
         	 HostelRegistration hostelregistration ;
 			
         	 hostelregistration = new HostelRegistration(userId);
         	 hostelregistration.setVisible(true);
+        	 dispose();
         });
         panel3.add(btnNewButton_2);
         
@@ -131,7 +161,7 @@ public class Owner extends JDialog {
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                 if (result == JOptionPane.YES_OPTION) {
-                	String roomId = freeDataList.get(row)[9];
+                	String roomId = freeDataList.get(row)[10];
                 	
                 	updatePrice(roomId,userId);
                 } else if (result == JOptionPane.NO_OPTION) {
@@ -147,14 +177,33 @@ public class Owner extends JDialog {
         });
         scrollPane_3.setViewportView(tblFree);
         
-        //for button on free table
+        //for  back button on free table
         JButton btnNewButton_1 = new JButton("Back");
+        btnNewButton_1.setBackground( new Color(0, 120, 215));  // green
+        btnNewButton_1.setForeground(Color.WHITE);
+		
+        btnNewButton_1.addMouseListener(new MouseAdapter() {
+		    
+		    public void mouseEntered(MouseEvent e) {
+		    	btnNewButton_1.setBackground(hoverBg);    // Change background
+		    	btnNewButton_1.setForeground(hoverFg);    // Change text color
+		    }
+
+		    
+		    public void mouseExited(MouseEvent e) {
+		    	btnNewButton_1.setBackground(defaultBg);  // Reset background
+		    	btnNewButton_1.setForeground(defaultFg);  // Reset text color
+		    }
+		});
+		
+        
         btnNewButton_1.setBounds(20, 488, 87, 27);
         btnNewButton_1.addActionListener(e -> {
         	 HostelRegistration hostelregistration ;
 			
         	 hostelregistration = new HostelRegistration(userId);
         	 hostelregistration.setVisible(true);
+        	 dispose();
         });
       panel4.add(btnNewButton_1);
         
@@ -171,20 +220,42 @@ public class Owner extends JDialog {
         
         getContentPane().add(tabbedPane);
         
-        //for button for All
+      
+        
+        //for back button for All
         JButton btnNewButton = new JButton("Back");
+        btnNewButton.setBackground( new Color(0, 120, 215));  // green
+		btnNewButton.setForeground(Color.WHITE);
+		
+		btnNewButton.addMouseListener(new MouseAdapter() {
+		    
+		    public void mouseEntered(MouseEvent e) {
+		    	btnNewButton.setBackground(hoverBg);    // Change background
+		    	btnNewButton.setForeground(hoverFg);    // Change text color
+		    }
+
+		    
+		    public void mouseExited(MouseEvent e) {
+		    	btnNewButton.setBackground(defaultBg);  // Reset background
+		    	btnNewButton.setForeground(defaultFg);  // Reset text color
+		    }
+		});
+		
+        
         btnNewButton.setBounds(20, 488, 87, 27);
         btnNewButton.addActionListener(e -> {
 	        HostelRegistration hostelregistration ;
                 			
 	        hostelregistration = new HostelRegistration(userId);
 	        hostelregistration.setVisible(true);
+	        dispose();
       	});
                       
        panel1.add(btnNewButton);
         
         JScrollPane scrollPane_4 = new JScrollPane();
-        scrollPane_4.setBounds(10, 11, 859, 411);
+        //scrollPane_4.setBounds(10, 11, 859, 411);
+        scrollPane_4.setBounds(10, 11, 1147, 411);
         panel5.add(scrollPane_4);
         
         tblPending = new JTable();
@@ -192,7 +263,9 @@ public class Owner extends JDialog {
         	@Override
         	public void mouseClicked(MouseEvent e) {
         		int row = tblPending.getSelectedRow();
-        		String roomId = pendingDataList.get(row)[10];
+        		String roomId = pendingDataList.get(row)[12];
+        		System.out.println("UserName= "+ userId +"Roomid is ="+ pendingDataList.get(row)[12]);
+        		
         		Object[] options = {"Accept", "Reject"};
                 int result = JOptionPane.showOptionDialog(null, "What do you want to proceed?", "Confirmation Dialog!!",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
@@ -215,6 +288,36 @@ public class Owner extends JDialog {
         scrollPane_4.setViewportView(tblPending);
         tabbedPane.addTab("Pending", null, panel5, "Pending");
         panel5.setLayout(null);
+        
+        //for back btn for pending 
+        JButton btnNewButton_3 = new JButton("Back");
+        btnNewButton_3.setBackground( new Color(0, 120, 215));  // green
+        btnNewButton_3.setForeground(Color.WHITE);
+		
+        btnNewButton_3.addMouseListener(new MouseAdapter() {
+		    
+		    public void mouseEntered(MouseEvent e) {
+		    	btnNewButton_3.setBackground(hoverBg);    // Change background
+		    	btnNewButton_3.setForeground(hoverFg);    // Change text color
+		    }
+
+		    
+		    public void mouseExited(MouseEvent e) {
+		    	btnNewButton_3.setBackground(defaultBg);  // Reset background
+		    	btnNewButton_3.setForeground(defaultFg);  // Reset text color
+		    }
+		});
+		
+        
+        btnNewButton_3.setBounds(20, 488, 87, 27);;
+        btnNewButton_3.addActionListener(e -> {
+        	 HostelRegistration hostelregistration ;
+			
+        	 hostelregistration = new HostelRegistration(userId);
+        	 hostelregistration.setVisible(true);
+        	 dispose();
+        });       
+        panel5.add(btnNewButton_3);
         
         getContentPane().add(tabbedPane);
 
@@ -241,7 +344,8 @@ public class Owner extends JDialog {
     	tblAllModel.addColumn("City");
     	tblAllModel.addColumn("Street");
     	tblAllModel.addColumn("Gender Type");
-    	tblAllModel.addColumn("Small Room No");
+    	tblAllModel.addColumn("Small Room Count");
+    	
 		tblHostel.setModel(tblAllModel);
 		setColumnWidth(0,50,tblHostel);
 		setColumnWidth(1,30,tblHostel);
@@ -263,9 +367,12 @@ public class Owner extends JDialog {
     	tblRentModel.addColumn("Room No:");
     	tblRentModel.addColumn("Small Room No:");
     	tblRentModel.addColumn("Seeker Name");
-    	tblRentModel.addColumn("Phone No");
-    	tblRentModel.addColumn("Price");
+    	tblRentModel.addColumn("Seeker Phone ");
+    	tblRentModel.addColumn("Price(kyats)");
+    	tblRentModel.addColumn("Start Date");
+    	tblRentModel.addColumn("End Date");
     	tblRentModel.addColumn("Room Status");
+    	
     	tblRent.setModel(tblRentModel);
     	setColumnWidth(0,50,tblRent);
 		setColumnWidth(1,30,tblRent);
@@ -278,6 +385,9 @@ public class Owner extends JDialog {
 		setColumnWidth(8,40,tblRent);
 		setColumnWidth(9,30,tblRent);
 		setColumnWidth(10,40,tblRent);
+		setColumnWidth(11,40,tblRent);
+		setColumnWidth(12,40,tblRent);
+		
 	}
     
     public void createFreeTable() {
@@ -290,7 +400,7 @@ public class Owner extends JDialog {
     	tblFreeModel.addColumn("Room No:");
     	tblFreeModel.addColumn("Small Room No:");
     	tblFreeModel.addColumn("Gender Type");
-    	tblFreeModel.addColumn("Price");
+    	tblFreeModel.addColumn("Price(kyats)");
     	tblFreeModel.addColumn("Room Status");
 
 		tblFree.setModel(tblFreeModel);
@@ -316,7 +426,9 @@ public class Owner extends JDialog {
     	tblPendingModel.addColumn("Room No:");
     	tblPendingModel.addColumn("Small Room No:");
     	tblPendingModel.addColumn("Gender Type");
-    	tblPendingModel.addColumn("Price");
+    	tblPendingModel.addColumn("Seeker Name");
+    	tblPendingModel.addColumn("Seeker Phone No.");
+    	tblPendingModel.addColumn("Price(kyats)");
     	tblPendingModel.addColumn("Room Status");
 
 		tblPending.setModel(tblPendingModel);
@@ -330,6 +442,8 @@ public class Owner extends JDialog {
 		setColumnWidth(7,30,tblPending);
 		setColumnWidth(8,30,tblPending);
 		setColumnWidth(9,30,tblPending);
+		setColumnWidth(10,30,tblPending);
+		setColumnWidth(11,30,tblPending);
 	}
     
 	public void setColumnWidth(int index,int width,JTable tableName) {
@@ -362,11 +476,33 @@ public class Owner extends JDialog {
 		}
 	}
 	
-	public void fillRentData(String ownerId) {		
-		String[] rentData = new String[11];		
+	public void fillRentData(String ownerId) {	
+//		rentDataList.clear();
+		tblRentModel.setRowCount(0);
+
+		String[] rentData = new String[13];		
 		try {
 			Statement ste = con.createStatement();
-			String query = "select hostelname,hostel.state,hostel.city,hostel.street,hostel.buildingno,hostel.roomno,room.smroomno,user.username,user.phoneno,room.price,room.status from renting,rentingdetail,user,room,hostel where room.hostelid=hostel.hostelid and rentingdetail.roomid=room.roomid and renting.rentid=rentingdetail.rentid and renting.userid=user.userid and room.available=false and room.status = 'Accept' and rentingdetail.userid="+ownerId+"";
+			//String query = "select hostelname,hostel.state,hostel.city,hostel.street,hostel.buildingno,hostel.roomno,room.smroomno,user.username,user.phoneno,room.price,room.status from renting,rentingdetail,user,room,hostel where room.hostelid=hostel.hostelid and rentingdetail.roomid=room.roomid and renting.rentid=rentingdetail.rentid and renting.userid=user.userid and room.available=false and room.status = 'Accept' and rentingdetail.userid="+ownerId+"";
+			//String query = "select hostelname,hostel.state,hostel.city,hostel.street,hostel.buildingno,hostel.roomno,room.smroomno,user.username,user.phoneno,room.price,room.status from renting,rentingdetail,user,room,hostel where room.hostelid=hostel.hostelid and rentingdetail.roomid=room.roomid and renting.rentid=rentingdetail.rentid and renting.userid=user.userid and room.available=false and rentingdetail.renting_status = 'Accept' and rentingdetail.userid="+ownerId+"";
+//			select hostelname,hostel.state,hostel.city,hostel.street,hostel.buildingno,hostel.roomno,
+//			room.smroomno,user.username,user.phoneno,room.price,rentingdetail.startdate,
+//			rentingdetail.enddate,rentingdetail.renting_status 
+//			from renting,rentingdetail,user,room,hostel 
+//			where room.hostelid=hostel.hostelid 
+//			  and rentingdetail.roomid=room.roomid 
+//			  and renting.rentid=rentingdetail.rentid 
+//			  and renting.userid=user.userid 
+//			  and room.available=false 
+//			  and rentingdetail.renting_status = 'Accept' 
+//			  and rentingdetail.userid=24;
+//
+//			
+			//String query = "select hostelname,hostel.state,hostel.city,hostel.street,hostel.buildingno,hostel.roomno,room.smroomno,user.username,user.phoneno,room.price,rentingdetail.startdate,rentingdetail.enddate,room.status from renting,rentingdetail,user,room,hostel where room.hostelid=hostel.hostelid and rentingdetail.roomid=room.roomid and renting.rentid=rentingdetail.rentid and renting.userid=user.userid and room.available=false and rentingdetail.renting_status = 'Accept' and rentingdetail.userid="+ownerId+"";
+			//latest query check end date for stay again
+			
+			String query ="SELECT H.hostelname, H.state, H.city, H.street, H.buildingno, H.roomno, R.roomid, R.smroomno, U.username, U.phoneno, R.price, T1.startdate, T1.enddate, R.status FROM rentingdetail AS T1 JOIN (SELECT roomid, MAX(enddate) AS max_enddate FROM rentingdetail WHERE userid = "+ownerId+" AND renting_status = 'Accept' GROUP BY roomid) AS T2 ON T1.roomid = T2.roomid AND T1.enddate = T2.max_enddate JOIN room AS R ON T1.roomid = R.roomid JOIN hostel AS H ON R.hostelid = H.hostelid JOIN renting AS RE ON T1.rentid = RE.rentid JOIN user AS U ON RE.userid = U.userid WHERE R.available = FALSE AND T1.renting_status = 'Accept' AND R.status='Accept' AND T1.userid = "+ownerId+"";
+			
 			ResultSet rs = ste.executeQuery(query);
 			while(rs.next()) {
 				rentData[0] = rs.getString(1);// hostelname
@@ -375,14 +511,20 @@ public class Owner extends JDialog {
 				rentData[3] = rs.getString(4);// street
 				rentData[4] = rs.getString(5);// buildingno
 				rentData[5] = rs.getString(6);// roomno
-				rentData[6] = rs.getString(7);// smroomno
-				rentData[7] = rs.getString(8);// seeker name
-				rentData[8] = rs.getString(9);// seeker phoneno
-				rentData[9] = rs.getString(10);// price
-				rentData[10] = rs.getString(11);// status
+				rentData[6] = rs.getString(8);// smroomno
+				rentData[7] = rs.getString(9);// seeker name
+				rentData[8] = rs.getString(10);// seeker phoneno
+				rentData[9] = rs.getString(11);// price
+				rentData[10] = rs.getString(12);//startdate
+				rentData[11] = rs.getString(13);//enddate
+				rentData[12] = rs.getString(14);// status
+				
+				System.out.println("Seekername "+rentData[7]);
 				tblRentModel.addRow(rentData);
+//				rentDataList.add(rentData);
 			}
 			tblRent.setModel(tblRentModel);
+//			bindRentTableData(rentDataList);
 		}catch(SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
@@ -419,12 +561,30 @@ public class Owner extends JDialog {
 	
 	public void fillPendingData(String ownerId) {	
 		pendingDataList.clear();
+			
 		try {
 			Statement ste = con.createStatement();
-			String query = "select hostelname,hostel.state,hostel.city,hostel.street,hostel.buildingno,hostel.roomno,room.smroomno,hostel.gendertype,room.price,room.roomid,room.hostelid,room.status from user,room,hostel where room.hostelid=hostel.hostelid and hostel.userid=user.userid and room.available=false and room.status = 'Pending' and hostel.userid="+ownerId+"";
+			//String query = "select hostelname,hostel.state,hostel.city,hostel.street,hostel.buildingno,hostel.roomno,room.smroomno,hostel.gendertype,room.price,room.roomid,room.hostelid,room.status from user,room,hostel where room.hostelid=hostel.hostelid and hostel.userid=user.userid and room.available=false and room.status = 'Pending' and hostel.userid="+ownerId+"";
+			//String query = "select hostelname,hostel.state,hostel.city,hostel.street,hostel.buildingno,hostel.roomno,room.smroomno,hostel.gendertype,user.username,user.phoneno,room.price,room.roomid,room.hostelid,room.status from renting,rentingdetail,user,room,hostel where room.hostelid=hostel.hostelid and rentingdetail.roomid=room.roomid and renting.rentid=rentingdetail.rentid and renting.userid=user.userid and room.available=false and room.status = 'Pending' and rentingdetail.userid="+ownerId+"";
+			String query = "select hostelname,hostel.state,hostel.city,hostel.street,hostel.buildingno,hostel.roomno,room.smroomno,hostel.gendertype,user.username,user.phoneno,room.price,room.roomid,room.hostelid,room.status from renting,rentingdetail,user,room,hostel where room.hostelid=hostel.hostelid and rentingdetail.roomid=room.roomid and renting.rentid=rentingdetail.rentid and renting.userid=user.userid and room.available=false and rentingdetail.renting_status = 'Pending' and rentingdetail.userid="+ownerId+"";
 			ResultSet rs = ste.executeQuery(query);
+//			while(rs.next()) {
+//				String[] pendingData = new String[11];		
+//				pendingData[0] = rs.getString(1);// hostelname
+//				pendingData[1] = rs.getString(2);// state
+//				pendingData[2] = rs.getString(3);// city
+//				pendingData[3] = rs.getString(4);// street
+//				pendingData[4] = rs.getString(5);// buildingno
+//				pendingData[5] = rs.getString(6);// roomno
+//				pendingData[6] = rs.getString(7);// smroomno
+//				pendingData[7] = rs.getString(8);//gender type	
+//				pendingData[8] = rs.getString(9);// price
+//				pendingData[9] = rs.getString(12);// room status
+//				pendingData[10] = rs.getString(10);// roomId
+//				pendingDataList.add(pendingData);
+//			}
 			while(rs.next()) {
-				String[] pendingData = new String[11];		
+				String[] pendingData = new String[13];		
 				pendingData[0] = rs.getString(1);// hostelname
 				pendingData[1] = rs.getString(2);// state
 				pendingData[2] = rs.getString(3);// city
@@ -433,9 +593,11 @@ public class Owner extends JDialog {
 				pendingData[5] = rs.getString(6);// roomno
 				pendingData[6] = rs.getString(7);// smroomno
 				pendingData[7] = rs.getString(8);//gender type	
-				pendingData[8] = rs.getString(9);// price
-				pendingData[9] = rs.getString(12);// room status
-				pendingData[10] = rs.getString(10);// roomId
+				pendingData[8] = rs.getString(9);// seeker name
+				pendingData[9] = rs.getString(10);// seeker phone no
+				pendingData[10] = rs.getString(11);// price
+				pendingData[11] = rs.getString(14);//room status
+				pendingData[12] = rs.getString(12);//room id
 				pendingDataList.add(pendingData);
 			}
 			bindPendingTableData(pendingDataList);
@@ -443,15 +605,6 @@ public class Owner extends JDialog {
 		}catch(SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
-	}
-
-	private void bindPendingTableData(List<String[]> pendingDataList) {
-		tblPendingModel.setRowCount(0);
-		// TODO Auto-generated method stub
-		for(String[] data: pendingDataList) {
-			tblPendingModel.addRow(data);
-		}
-		tblPending.setModel(tblPendingModel);
 	}
 	
 	private void bindAllTableData(List<String[]> allDataList) {
@@ -463,6 +616,15 @@ public class Owner extends JDialog {
 		tblHostel.setModel(tblAllModel);
 	}
 	
+	private void bindRentTableData(List<String[]> rentDataList) {
+		tblRentModel.setRowCount(0);
+		// TODO Auto-generated method stub
+		for(String[] data: rentDataList) {
+			tblRentModel.addRow(data);
+		}
+		tblRent.setModel(tblRentModel);
+	}
+	
 	private void bindFreeTableData(List<String[]> freeDataList) {
 		tblFreeModel.setRowCount(0);
 		// TODO Auto-generated method stub
@@ -470,6 +632,15 @@ public class Owner extends JDialog {
 			tblFreeModel.addRow(data);
 		}
 		tblFree.setModel(tblFreeModel);
+	}
+	
+	private void bindPendingTableData(List<String[]> pendingDataList) {
+		tblPendingModel.setRowCount(0);
+		// TODO Auto-generated method stub
+		for(String[] data: pendingDataList) {
+			tblPendingModel.addRow(data);
+		}
+		tblPending.setModel(tblPendingModel);
 	}
 	
 	public void updatePrice(String roomId,String userId) {
@@ -488,7 +659,11 @@ public class Owner extends JDialog {
 	       }
 	       else {
 	    	   sqlquery.updatePrice(price,roomId);
+	    	   
+	    	   System.out.println("Update price is"+ price +"roomid is"+roomId);
+	    	   System.out.println("Update price is ok"+ sqlquery.updatePrice(price,roomId));
 	    	   fillFreeData(userId);
+	    	   //System.out.println("Update price is"+ price);
 	       }
 	       
 	    }
@@ -507,11 +682,8 @@ public class Owner extends JDialog {
 	
 	public void updateRentAndRentingDetail(String roomId,String userId) {
 		sqlquery.updateRentAndRentingDetail(roomId,userId,"Accept","Pending");
+		fillPendingData(userId);
+  	   	fillFreeData(userId);
+  	   	fillRentData(userId);
 	}
-	
-//	public static void main(String[] args) {
-//    	/// TODO Auto-generated method stub
-//    	Owner up = new Owner("24");
-//    			up.setVisible(true);
-//	}
 }

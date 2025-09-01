@@ -43,6 +43,8 @@ public class SqlQuery {
 		} else if(tableName.equals("reversion")) {
 			query = "insert into reversion(roomid,userid,announcedate,reversedate) values('"+data[0]+"','"+data[1]+"','"+data[2]+"','"+data[3]+"')";
 		}
+		
+		System.out.println("Insert Data is"+ query);
 		try {
 			ste = con.createStatement();
 			if(ste.executeUpdate(query) == 1) {
@@ -323,20 +325,23 @@ public class SqlQuery {
 		try {
 			String[] seekerData = new String[11];
 			ste = con.createStatement();
-			query = "select hostelname,buildingno,roomno,smroomno,hostel.state,hostel.city,hostel.street,startdate,enddate,rentingdetail.userid,price,rentingdetail.renting_status,room.roomid from renting,rentingdetail,hostel,room,user where rentingdetail.roomid=room.roomid and room.hostelid=hostel.hostelid and renting.rentid=rentingdetail.rentid and renting.userid=user.userid and phoneno='"+phoneno+"' and password='"+password+"'";
+			query = "select hostelname,buildingno,roomno,smroomno,hostel.state,hostel.city,hostel.street,startdate,enddate,rentingdetail.userid,price,rentingdetail.renting_status,room.roomid from renting,rentingdetail,hostel,room,user where rentingdetail.roomid=room.roomid and room.hostelid=hostel.hostelid and renting.rentid=rentingdetail.rentid and renting.userid=user.userid and phoneno='"+phoneno+"' and password='"+password+"' order by renting.rentid";
 			rs = ste.executeQuery(query);
 			if(rs.last()) {
 				seekerData[0] = rs.getString(1);//hostelname
 				seekerData[1] = rs.getString(2);//buildingno
 				seekerData[2] = rs.getString(3);//roomno
 				seekerData[3] = rs.getString(4);//smroomno
-				seekerData[4] = rs.getString(5) + " State/"+rs.getString(6)+" City/"+rs.getString(7)+"Street";//street/city/state
+				seekerData[4] = rs.getString(5) + " State/ "+rs.getString(6)+" City/ "+rs.getString(7)+" Street";//street/city/state
 				seekerData[5] = rs.getString(8);//startdate
 				seekerData[6] = rs.getString(9);//enddate
 				seekerData[7] = rs.getString(10);//owner id
 				seekerData[8] = rs.getString(11);//price
 				seekerData[9] = rs.getString(12);//renting status
 				seekerData[10] = rs.getString(13);//roomid
+				
+				System.out.println(seekerData[9]);
+				System.out.println(seekerData[10]);
 			} 
 			return seekerData;
 		}catch(SQLException e) {
@@ -354,7 +359,9 @@ public class SqlQuery {
 			ste = con.createStatement();
 			query = "select * from reversion where userId='"+userId+"' and roomId='"+roomId+"' and announcedate='"+sevenDaysBefore+"'";
 			rs = ste.executeQuery(query);
-			if(rs.next()) {
+			if(rs.last()) {
+				System.out.println("Announce"+rs.getString(4));
+				System.out.println("Reverse"+rs.getString(5));
 				return true;
 			} else {
 				return false;

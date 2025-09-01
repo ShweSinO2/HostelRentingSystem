@@ -32,7 +32,8 @@ public class DBConnection {
 		try {
 			Statement ste = getConnection().createStatement();
 			rs = ste.executeQuery("Select distinct "+field+" "
-					+ "from "+table);
+					+ "from "+table+ 
+                    " ORDER BY " + field + " ASC");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -108,9 +108,13 @@ public class RegisterType extends JDialog {
 		
 		btnOwner.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UserRegistration owner = new UserRegistration("3");
-				owner.setVisible(true);
-				setVisible(false);
+//				UserRegistration owner = new UserRegistration("3");
+//				owner.setVisible(true);
+//				setVisible(false);
+				
+				OwnerAgreementForm owneragreement = new OwnerAgreementForm();
+		        owneragreement.setVisible(true);
+		        setVisible(false);
 			}
 		});
 		btnOwner.setBounds(61, 401, 145, 38);
@@ -145,9 +149,13 @@ public class RegisterType extends JDialog {
 
 		btnSeeker.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UserRegistration seeker = new UserRegistration("2");
-				seeker.setVisible(true);
-				setVisible(false);
+//				UserRegistration seeker = new UserRegistration("2");
+//				seeker.setVisible(true);
+//				setVisible(false);
+				
+				SeekerAgreementForm seekeragreement = new SeekerAgreementForm();
+				seekeragreement.setVisible(true);
+		        setVisible(false);
 			}
 		});
 		btnSeeker.setBounds(455, 401, 145, 38);

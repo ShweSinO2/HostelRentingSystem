@@ -5,9 +5,6 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.Font;
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -17,7 +14,7 @@ import com.formdev.flatlaf.FlatIntelliJLaf;
 
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import java.awt.Color;
+
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -36,6 +33,8 @@ public class UserUpdateForm extends JFrame {
     private JRadioButton rdoMale, rdoFemale;
     private JButton btnUpdate, btnCancel;
     private String gender, nrc;
+    private ImageIcon eyeOpen;
+    private ImageIcon eyeClosed;
     private SqlQuery sqlquery = new SqlQuery();
    private Map<Integer, List<String>> map = new HashMap<>();
     private ArrayList<String> listCode = new ArrayList<>();
@@ -57,10 +56,12 @@ public class UserUpdateForm extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(null);
         panel.setBounds(10, 0, 664, 561);
-        panel.setBorder(new TitledBorder("Update Form"));
+        panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Update Form", TitledBorder.CENTER, TitledBorder.TOP, new Font("Arial", Font.PLAIN, 20), Color.decode("#085f63")));
         getContentPane().add(panel);
 
         JLabel lblName = new JLabel("Name:");
+        lblName.setFont(new Font("Arial", Font.PLAIN, 15));
+        lblName.setForeground(Color.decode("#3f3b3b"));
         lblName.setBounds(22, 61, 100, 20);
         panel.add(lblName);
 
@@ -69,6 +70,8 @@ public class UserUpdateForm extends JFrame {
         panel.add(txtName);
 
         JLabel lblPhone = new JLabel("Phone:");
+        lblPhone.setFont(new Font("Arial", Font.PLAIN, 15));
+        lblPhone.setForeground(Color.decode("#3f3b3b"));
         lblPhone.setBounds(22, 109, 100, 20);
         panel.add(lblPhone);
 
@@ -77,15 +80,53 @@ public class UserUpdateForm extends JFrame {
         panel.add(txtPhone);
 
         JLabel lblPass = new JLabel("Password:");
+        lblPass.setFont(new Font("Arial", Font.PLAIN, 15));
+        lblPass.setForeground(Color.decode("#3f3b3b"));
         lblPass.setBounds(22, 160, 100, 20);
         panel.add(lblPass);
 
         txtPass = new JPasswordField();
-        txtPass.setBounds(213, 154, 424, 31);
+        txtPass.setBounds(213, 154, 397, 31);
         panel.add(txtPass);
+        
+        // Load Eye Icons
+        eyeOpen = new ImageIcon(getClass().getResource("/eye-open.png"));   // 👁 Show Icon
+        eyeClosed = new ImageIcon(getClass().getResource("/eye-closed.png")); // ❌ Hide Icon
+
+       // Scale Icons
+       Image eyeOpenImg = eyeOpen.getImage().getScaledInstance(27, 27, Image.SCALE_SMOOTH);
+       Image eyeClosedImg = eyeClosed.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+       eyeOpen = new ImageIcon(eyeOpenImg);
+       eyeClosed = new ImageIcon(eyeClosedImg);
+       
+    // Toggle Button
+       JButton btnToggle = new JButton(eyeClosed);
+       btnToggle.setBounds(608, 155, 30, 30);
+       //btnToggle.setBorder(null);
+       btnToggle.setContentAreaFilled(false);
+       panel.add(btnToggle);
+
+       // Store Default Echo Char
+       char defaultEchoChar = txtPass.getEchoChar();
+
+       // Toggle Logic
+       btnToggle.addActionListener(new ActionListener() {
+           public void actionPerformed(ActionEvent e) {
+               if (txtPass.getEchoChar() != (char) 0) {
+                   txtPass.setEchoChar((char) 0);  // Show password
+                   btnToggle.setIcon(eyeOpen);
+               } else {
+                   txtPass.setEchoChar(defaultEchoChar);  // Hide password
+                   btnToggle.setIcon(eyeClosed);
+               }
+           }
+       });
+
 
         JLabel lblNrc = new JLabel("NRC:");
-        lblNrc.setBounds(22, 216, 100, 20);
+        lblNrc.setFont(new Font("Arial", Font.PLAIN, 15));
+        lblNrc.setForeground(Color.decode("#3f3b3b"));
+        lblNrc.setBounds(18, 210, 100, 20);
         panel.add(lblNrc);
 
         cboCode = new JComboBox(new String[] {"", "1/", "2/", "3/", "4/", "5/", "6/", "7/", "8/", "9/", "10/", "11/", "12/", "13/", "14/"});
@@ -106,6 +147,8 @@ public class UserUpdateForm extends JFrame {
         panel.add(txtNRCno);
 
         JLabel lblState = new JLabel("State:");
+        lblState.setFont(new Font("Arial", Font.PLAIN, 15));
+        lblState.setForeground(Color.decode("#3f3b3b"));
         lblState.setBounds(22, 268, 100, 20);
         panel.add(lblState);
 
@@ -114,6 +157,8 @@ public class UserUpdateForm extends JFrame {
         panel.add(txtState);
 
         JLabel lblCity = new JLabel("City:");
+        lblCity.setFont(new Font("Arial", Font.PLAIN, 15));
+        lblCity.setForeground(Color.decode("#3f3b3b"));
         lblCity.setBounds(22, 319, 100, 20);
         panel.add(lblCity);
 
@@ -122,6 +167,8 @@ public class UserUpdateForm extends JFrame {
         panel.add(txtCity);
 
         JLabel lblStreet = new JLabel("Street:");
+        lblStreet.setFont(new Font("Arial", Font.PLAIN, 15));
+        lblStreet.setForeground(Color.decode("#3f3b3b"));
         lblStreet.setBounds(22, 382, 100, 20);
         panel.add(lblStreet);
 
@@ -130,6 +177,8 @@ public class UserUpdateForm extends JFrame {
         panel.add(txtStreet);
 
         JLabel lblGender = new JLabel("Gender:");
+        lblGender.setFont(new Font("Arial", Font.PLAIN, 15));
+        lblGender.setForeground(Color.decode("#3f3b3b"));
         lblGender.setBounds(22, 432, 100, 20);
         panel.add(lblGender);
 
@@ -144,18 +193,61 @@ public class UserUpdateForm extends JFrame {
         ButtonGroup group = new ButtonGroup();
         group.add(rdoMale);
         group.add(rdoFemale);
+        
+      //for owner btn
+		//  Default colors
+		Color defaultBg = new Color(0, 120, 215);
+		Color defaultFg = Color.WHITE;
+		
+		//  Hover colors
+		Color hoverBg = Color.decode("#f0f0f0");
+		Color hoverFg = new Color(0, 120, 215);
 
         btnUpdate = new JButton("Update");
-        btnUpdate.setBounds(305, 492, 97, 36);
+        btnUpdate.setBounds(175, 492, 97, 36);
+        btnUpdate.setBackground( new Color(0, 120, 215));  // green
+        btnUpdate.setForeground(Color.WHITE);
+		
+        btnUpdate.addMouseListener(new MouseAdapter() {
+		    
+		    public void mouseEntered(MouseEvent e) {
+		    	btnUpdate.setBackground(hoverBg);    // Change background
+		    	btnUpdate.setForeground(hoverFg);    // Change text color
+		    }
+
+		    
+		    public void mouseExited(MouseEvent e) {
+		    	btnUpdate.setBackground(defaultBg);  // Reset background
+		    	btnUpdate.setForeground(defaultFg);  // Reset text color
+		    }
+		});
         panel.add(btnUpdate);
 
-        btnCancel = new JButton("Cancel");
-        btnCancel.setBounds(493, 492, 97, 36);
+        btnCancel = new JButton("Close");
+        btnCancel.setBounds(397, 492, 97, 36);
+        btnCancel.setBackground( new Color(0, 120, 215));  // green
+        btnCancel.setForeground(Color.WHITE);
+		
+        btnCancel.addMouseListener(new MouseAdapter() {
+		    
+		    public void mouseEntered(MouseEvent e) {
+		    	btnCancel.setBackground(hoverBg);    // Change background
+		    	btnCancel.setForeground(hoverFg);    // Change text color
+		    }
+
+		    
+		    public void mouseExited(MouseEvent e) {
+		    	btnCancel.setBackground(defaultBg);  // Reset background
+		    	btnCancel.setForeground(defaultFg);  // Reset text color
+		    }
+		});
+        
         btnCancel.addActionListener(e -> {
-        	Seeker userallinfo;
-			
-			userallinfo = new Seeker(txtPhone.getText(),txtPass.getText());
-			userallinfo.setVisible(true);
+//        	Seeker userallinfo;
+//			
+//			userallinfo = new Seeker(txtPhone.getText(),txtPass.getText());
+//			userallinfo.setVisible(true);
+			dispose();
         });
         panel.add(btnCancel);
 
@@ -207,35 +299,49 @@ public class UserUpdateForm extends JFrame {
 				txtName.requestFocus();
 				txtName.selectAll();
 			}
-			else if(Checking.IsNull(txtPhone.getText()) || Checking.IsLetter(txtPhone.getText()) || !Checking.IsPhoneNo(txtPhone.getText()))
+//			else if(Checking.IsNull(txtPhone.getText()) || Checking.IsLetter(txtPhone.getText()) || !Checking.IsPhoneNo(txtPhone.getText()))
+//			{
+//				JOptionPane.showMessageDialog(null, "You must enter valid Phone Number");
+//				txtPhone.requestFocus();
+//				txtPhone.selectAll();
+//			}
+			else if (txtPhone.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please enter your phone number.");
+                txtPhone.requestFocus();
+                txtPhone.selectAll();
+            }
+			else if (Checking.IsLetter(txtPhone.getText())) {
+                JOptionPane.showMessageDialog(null, "Phone Number must be Numbers");
+                txtPhone.requestFocus();
+                txtPhone.selectAll();
+            }
+			else if (!Checking.IsPhoneNo(txtPhone.getText())) {
+                JOptionPane.showMessageDialog(null, "Phone Number should be between 6 and 11 numbers");
+                txtPhone.requestFocus();
+                txtPhone.selectAll();
+            }
+		    else if(duplicate)
 			{
-				JOptionPane.showMessageDialog(null, "You must enter valid Phone Number");
-				txtPhone.requestFocus();
-				txtPhone.selectAll();
+				JOptionPane.showMessageDialog(null, "Registration PhoneNo is already exist!!");	
 			}
-			else if(!Checking.IsPassNo(txtPass.getText()))
+//			else if(!Checking.IsPassNo(txtPass.getText()))
+//			{
+//				JOptionPane.showMessageDialog(null, "Your password should be at least 8, 1 number,1 uppercase,1 lowercase and 1 special caracter ");
+//				txtPass.requestFocus();
+//				txtPass.selectAll();					
+//			}
+		    else if(txtPass.getText().isEmpty())
 			{
-				JOptionPane.showMessageDialog(null, "Your password should be at least 8, 1 number,1 uppercase,1 lowercase and 1 special caracter ");
+				JOptionPane.showMessageDialog(null, "Please enter your password");
 				txtPass.requestFocus();
 				txtPass.selectAll();					
 			}
-			else if(Checking.IsNull(txtState.getText()))
+			
+			else if(!Checking.IsPassNo(txtPass.getText()))
 			{
-				JOptionPane.showMessageDialog(null, "You must enter valid State");
-				txtState.requestFocus();
-				txtState.selectAll();
-			}
-			else if(Checking.IsNull(txtCity.getText()))
-			{
-				JOptionPane.showMessageDialog(null, "You must enter valid City");
-				txtCity.requestFocus();
-				txtCity.selectAll();
-			}
-			else if(Checking.IsNull(txtStreet.getText()))
-			{
-				JOptionPane.showMessageDialog(null, "You must enter valid Street");
-				txtStreet.requestFocus();
-				txtStreet.selectAll();
+				JOptionPane.showMessageDialog(null, "Your password should be at least 8, 1 number,1 uppercase,1 lowercase and 1 special character ");
+				txtPass.requestFocus();
+				txtPass.selectAll();					
 			}
 			else if(cboCode.getSelectedIndex() == 0)
 			{
@@ -258,12 +364,54 @@ public class UserUpdateForm extends JFrame {
 				JOptionPane.showMessageDialog(null, "You must enter valid NRC Code");
 				txtNRCno.requestFocus();
 				txtNRCno.selectAll();
-			} else if(duplicate)
-			{
-				JOptionPane.showMessageDialog(null, "Registration PhoneNo is already exist!!");	
-			} else if(duplicateNrc) {
-				JOptionPane.showMessageDialog(null, "Registration NRC is already exist!!");	
 			} 
+			else if(duplicateNrc) {
+				JOptionPane.showMessageDialog(null, "Registration NRC is already exist!!");	
+			}
+			
+//			else if(Checking.IsNull(txtState.getText()))
+//			{
+//				JOptionPane.showMessageDialog(null, "You must enter valid State");
+//				txtState.requestFocus();
+//				txtState.selectAll();
+//			}
+			else if(Checking.IsNull(txtState.getText()))
+			{
+				JOptionPane.showMessageDialog(null, "You must enter valid State");
+				txtState.requestFocus();
+				txtState.selectAll();
+			}
+			else if(!Checking.IsLetter(txtState.getText()))
+			{
+				JOptionPane.showMessageDialog(null, "State should be only words");
+				txtState.requestFocus();
+				txtState.selectAll();
+			}
+//			else if(Checking.IsNull(txtCity.getText()))
+//			{
+//				JOptionPane.showMessageDialog(null, "You must enter valid City");
+//				txtCity.requestFocus();
+//				txtCity.selectAll();
+//			}
+			else if(Checking.IsNull(txtCity.getText()))
+			{
+				JOptionPane.showMessageDialog(null, "You must enter valid City");
+				txtCity.requestFocus();
+				txtCity.selectAll();
+			}
+			else if(!Checking.IsLetter(txtCity.getText()))
+			{
+				JOptionPane.showMessageDialog(null, "City should be only words");
+				txtCity.requestFocus();
+				txtCity.selectAll();
+			}
+			else if(Checking.IsNull(txtStreet.getText()))
+			{
+				JOptionPane.showMessageDialog(null, "You must enter valid Street");
+				txtStreet.requestFocus();
+				txtStreet.selectAll();
+			}
+			 
 			else {
 				String nrcStr = cboCode.getSelectedItem() +""+ cboCity.getSelectedItem() + "(" + cboNation.getSelectedItem() + ")" + txtNRCno.getText();
 	            String[] updatedData = new String[8];
@@ -278,7 +426,7 @@ public class UserUpdateForm extends JFrame {
 
 	            if (sqlquery.updateUser(userid, updatedData)) {
 	                JOptionPane.showMessageDialog(this, "Profile updated successfully.");
-	                dispose();
+	                //dispose();
 	            } else {
 	                JOptionPane.showMessageDialog(this, "Update failed. Try again.");
 	            }

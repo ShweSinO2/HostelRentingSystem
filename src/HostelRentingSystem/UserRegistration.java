@@ -3,6 +3,8 @@ package HostelRentingSystem;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Image;
+
 //import com.formdev.flatlaf.FlatIntelliJLaf;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -11,14 +13,14 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.border.TitledBorder;
-
 import com.formdev.flatlaf.FlatIntelliJLaf;
-
 import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -30,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
-
+import org.jdesktop.swingx.prompt.PromptSupport;
 
 
 
@@ -52,6 +54,8 @@ public class UserRegistration extends JDialog {
 	private JComboBox cboCity;
 	private JButton btnRegister;
 	private JPanel panel;
+	private ImageIcon eyeOpen;
+    private ImageIcon eyeClosed;
 	Map<Integer,List<String>> map = new HashMap<>();
 	CityShortName shortName = new CityShortName();
 	ArrayList listCode = new ArrayList();
@@ -86,7 +90,7 @@ public class UserRegistration extends JDialog {
 		panel.setForeground(new Color(0, 191, 255));
 		panel.setBackground(new Color(255,255,255));
 		
-		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Register Form", TitledBorder.CENTER, TitledBorder.TOP, new Font("Arial", Font.PLAIN, 20), new Color(135, 206, 235)));
+		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Register Form", TitledBorder.CENTER, TitledBorder.TOP, new Font("Arial", Font.PLAIN, 20), Color.decode("#085f63")));
 		//panel.setFont((new Font("Arial", Font.PLAIN, 20)));
 		panel.setBounds(10, 0, 664, 561);
 		getContentPane().add(panel);
@@ -94,76 +98,119 @@ public class UserRegistration extends JDialog {
 		
 		lblNewLabel = new JLabel("Name:");
 		lblNewLabel.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblNewLabel.setForeground(new Color(0, 191, 255));
+		lblNewLabel.setForeground(Color.decode("#3f3b3b"));
 		lblNewLabel.setBounds(22, 61, 46, 21);
 		panel.add(lblNewLabel);
 		
 		lblPhone = new JLabel("Phone:");
 		lblPhone.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblPhone.setForeground(new Color(0, 191, 255));
+		lblPhone.setForeground(Color.decode("#3f3b3b"));
 		lblPhone.setBounds(22, 109, 46, 14);
 		panel.add(lblPhone);
 		
 		lblPassowrd = new JLabel("Password:");
 		lblPassowrd.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblPassowrd.setForeground(new Color(0, 191, 255));
-		lblPhone.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblPhone.setForeground(new Color(0, 191, 255));
+		lblPassowrd.setForeground(Color.decode("#3f3b3b"));
 		lblPassowrd.setBounds(22, 160, 82, 14);
 		panel.add(lblPassowrd);
 		
 		lblNrc = new JLabel("NRC:");
 		lblNrc.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblNrc.setForeground(new Color(0, 191, 255));
+		lblNrc.setForeground(Color.decode("#3f3b3b"));
 		lblNrc.setBounds(22, 216, 46, 14);
 		panel.add(lblNrc);
 		
 		lblState = new JLabel("State:");
 		lblState.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblState.setForeground(new Color(0, 191, 255));
+		lblState.setForeground(Color.decode("#3f3b3b"));
 		lblState.setBounds(22, 268, 46, 14);
 		panel.add(lblState);
 		
 		lblCity = new JLabel("City:");
 		lblCity.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblCity.setForeground(new Color(0, 191, 255));
+		lblCity.setForeground(Color.decode("#3f3b3b"));
 		lblCity.setBounds(22, 319, 46, 21);
 		panel.add(lblCity);
 		
 		lblStreet = new JLabel("Street:");
 		lblStreet.setFont(new Font("Arial", Font.PLAIN, 15));
-		lblStreet.setForeground(new Color(0, 191, 255));
+		lblStreet.setForeground(Color.decode("#3f3b3b"));
 		lblStreet.setBounds(22, 382, 46, 14);
 		panel.add(lblStreet);
 		
 		txtName = new JTextField();
 		txtName.setBounds(213, 58, 424, 31);
 		panel.add(txtName);
+		PromptSupport.setPrompt("Enter your Name(e.g.Kyaw Kyaw)", txtName);
+		PromptSupport.setForeground(Color.GRAY, txtName);
 		txtName.setColumns(10);
 		
 		txtPhone = new JTextField();
 		txtPhone.setBounds(213, 103, 424, 31);
 		panel.add(txtPhone);
+		PromptSupport.setPrompt("Enter your Phone Number(e.g.0754312/09777777777)", txtPhone);
+		PromptSupport.setForeground(Color.GRAY, txtPhone);
 		txtPhone.setColumns(10);
 		
 		txtPass = new JPasswordField();
-		txtPass.setBounds(213, 154, 424, 31);
+		txtPass.setBounds(213, 154, 396, 31);
 		panel.add(txtPass);
+		PromptSupport.setPrompt("Enter your email(e.g.kyaw12345@)", txtPass);
+		PromptSupport.setForeground(Color.GRAY, txtPass);
 		txtPass.setColumns(10);
+		
+		// Load Eye Icons
+        eyeOpen = new ImageIcon(getClass().getResource("/eye-open.png"));   // 👁 Show Icon
+        eyeClosed = new ImageIcon(getClass().getResource("/eye-closed.png")); // ❌ Hide Icon
+
+       // Scale Icons
+       Image eyeOpenImg = eyeOpen.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+       Image eyeClosedImg = eyeClosed.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+       eyeOpen = new ImageIcon(eyeOpenImg);
+       eyeClosed = new ImageIcon(eyeClosedImg);
+       
+    // Toggle Button
+       JButton btnToggle = new JButton(eyeClosed);
+       btnToggle.setBounds(612, 154, 30, 30);
+       btnToggle.setBorder(null);
+       btnToggle.setContentAreaFilled(false);
+       panel.add(btnToggle);
+
+       // Store Default Echo Char
+       char defaultEchoChar = txtPass.getEchoChar();
+
+       // Toggle Logic
+       btnToggle.addActionListener(new ActionListener() {
+           public void actionPerformed(ActionEvent e) {
+               if (txtPass.getEchoChar() != (char) 0) {
+                   txtPass.setEchoChar((char) 0);  // Show password
+                   btnToggle.setIcon(eyeOpen);
+               } else {
+                   txtPass.setEchoChar(defaultEchoChar);  // Hide password
+                   btnToggle.setIcon(eyeClosed);
+               }
+           }
+       });
 		
 		txtState = new JTextField();
 		txtState.setBounds(213, 262, 424, 31);
 		panel.add(txtState);
+		PromptSupport.setPrompt("Enter your State(e.g.Yangon)", txtState);
+		PromptSupport.setForeground(Color.GRAY, txtState);
 		txtState.setColumns(10);
 		
 		txtCity = new JTextField();
 		txtCity.setBounds(213, 316, 424, 31);
 		panel.add(txtCity);
+		PromptSupport.setPrompt("Enter your City(e.g.Kamayut)", txtCity);
+		PromptSupport.setForeground(Color.GRAY, txtCity);
 		txtCity.setColumns(10);
 		
 		txtStreet = new JTextField();
 		txtStreet.setBounds(213, 376, 424, 31);
 		panel.add(txtStreet);
+		PromptSupport.setPrompt("Enter your Street(e.g.SanYeikNyein)", txtStreet);
+		PromptSupport.setForeground(Color.GRAY, txtStreet);
 		txtStreet.setColumns(10);
 		
 		cboCode = new JComboBox();
@@ -177,7 +224,7 @@ public class UserRegistration extends JDialog {
 		cboCode.setBackground(Color.WHITE);
 		cboCode.setForeground(Color.BLACK);
 		cboCode.setFont(new Font("Arial", Font.PLAIN, 14));
-		cboCode.setBounds(214, 208, 82, 31);
+		cboCode.setBounds(214, 208, 73, 31);
 		panel.add(cboCode);
 		
 		cboCity = new JComboBox();
@@ -186,7 +233,7 @@ public class UserRegistration extends JDialog {
 		cboCity.setBackground(Color.WHITE);
 		cboCity.setForeground(Color.BLACK);
 		cboCity.setFont(new Font("Arial", Font.PLAIN, 14));
-		cboCity.setBounds(320, 208, 95, 31);
+		cboCity.setBounds(305, 208, 122, 31);
 		panel.add(cboCity);
 		
 		cboNation = new JComboBox();
@@ -195,7 +242,7 @@ public class UserRegistration extends JDialog {
 		cboNation.setBackground(Color.WHITE);
 		cboNation.setForeground(Color.BLACK);
 		cboNation.setFont(new Font("Arial", Font.PLAIN, 14));
-		cboNation.setBounds(439, 208, 93, 31);
+		cboNation.setBounds(450, 208, 82, 31);
 		panel.add(cboNation);
 		
 		txtNRCno = new JTextField();
@@ -204,12 +251,12 @@ public class UserRegistration extends JDialog {
 		txtNRCno.setColumns(10);
 		
 	//  Default colors
-			Color defaultBg = new Color(0, 191, 255);
-			Color defaultFg = new Color(255, 255, 255);
+			Color defaultBg = new Color(0, 120, 215);
+			Color defaultFg = Color.WHITE;
 
 			//  Hover colors
-			Color hoverBg = new Color(230, 230, 250);
-			Color hoverFg = new Color(0, 191, 255);
+			Color hoverBg = Color.decode("#f0f0f0");
+			Color hoverFg = new Color(0, 120, 215);
 		
 		
 		btnRegister = new JButton("Register");
@@ -217,8 +264,8 @@ public class UserRegistration extends JDialog {
 		btnRegister.setContentAreaFilled(true);           // MUST be true to fill background
 		btnRegister.setBorderPainted(false);              // optional: remove border
 		btnRegister.setFocusPainted(false);               // optional: remove focus outline
-		btnRegister.setBackground(new Color(0, 191, 255));  // green
-		btnRegister.setForeground(new Color(255, 255, 255));
+		btnRegister.setBackground(new Color(0, 120, 215));  // green
+		btnRegister.setForeground(Color.WHITE);
 		
 		btnRegister.addMouseListener(new MouseAdapter() {
 		    
@@ -234,44 +281,61 @@ public class UserRegistration extends JDialog {
 		});
 		btnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				 String phoneno = txtPhone.getText().trim();
 				boolean duplicate = sqlquery.isPhonenoDuplicate(txtPhone.getText());
 				boolean duplicateNrc = sqlquery.isNrcDuplicate(cboCode.getSelectedItem().toString(),cboCity.getSelectedItem().toString(),cboNation.getSelectedItem().toString(),txtNRCno.getText());
 				
-				if(Checking.IsNull(txtName.getText()) || Checking.IsValidName(txtName.getText()))
+				if(Checking.IsNull(txtName.getText()))
 				{
 					JOptionPane.showMessageDialog(null, "You must enter valid Name");
 					txtName.requestFocus();
 					txtName.selectAll();
 				}
-				else if(Checking.IsNull(txtPhone.getText()) || Checking.IsLetter(txtPhone.getText()) || !Checking.IsPhoneNo(txtPhone.getText()))
+				/////
+				else if(Checking.IsValidName(txtName.getText()))
 				{
-					JOptionPane.showMessageDialog(null, "You must enter valid Phone Number");
-					txtPhone.requestFocus();
-					txtPhone.selectAll();
+					JOptionPane.showMessageDialog(null, "You must enter///// valid Phone Number");
+					txtName.requestFocus();
+					txtName.selectAll();
 				}
-				else if(!Checking.IsPassNo(txtPass.getText()))
+//				else if(Checking.IsNull(txtPhone.getText()) || Checking.IsLetter(txtPhone.getText()) || !Checking.IsPhoneNo(txtPhone.getText()))
+//				{
+//					JOptionPane.showMessageDialog(null, "You must enter valid Phone Number");
+//					txtPhone.requestFocus();
+//					txtPhone.selectAll();
+//				}
+				/////
+				else if (phoneno.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Please enter your phone number.");
+                    txtPhone.requestFocus();
+                    txtPhone.selectAll();
+                }
+				else if (!Checking.IsAllDigit(phoneno)) {
+                    JOptionPane.showMessageDialog(null, "Phone Number must be Numbers");
+                    txtPhone.requestFocus();
+                    txtPhone.selectAll();
+                }
+				else if (!Checking.IsPhoneNo(phoneno)) {
+                    JOptionPane.showMessageDialog(null, "Phone Number should be between 6 and 11 numbers");
+                    txtPhone.requestFocus();
+                    txtPhone.selectAll();
+                }
+			    else if(duplicate)
 				{
-					JOptionPane.showMessageDialog(null, "Your password should be at least 8, 1 number,1 uppercase,1 lowercase and 1 special caracter ");
+					JOptionPane.showMessageDialog(null, "Registration PhoneNo is already exist!!");	
+				}
+				else if(txtPass.getText().isEmpty())
+				{
+					JOptionPane.showMessageDialog(null, "Please enter your password");
 					txtPass.requestFocus();
 					txtPass.selectAll();					
 				}
-				else if(Checking.IsNull(txtState.getText()))
+				
+				else if(!Checking.IsPassNo(txtPass.getText()))
 				{
-					JOptionPane.showMessageDialog(null, "You must enter valid State");
-					txtState.requestFocus();
-					txtState.selectAll();
-				}
-				else if(Checking.IsNull(txtCity.getText()))
-				{
-					JOptionPane.showMessageDialog(null, "You must enter valid City");
-					txtCity.requestFocus();
-					txtCity.selectAll();
-				}
-				else if(Checking.IsNull(txtStreet.getText()))
-				{
-					JOptionPane.showMessageDialog(null, "You must enter valid Street");
-					txtStreet.requestFocus();
-					txtStreet.selectAll();
+					JOptionPane.showMessageDialog(null, "Your password should be at least 8, 1 number,1 uppercase,1 lowercase and 1 special character ");
+					txtPass.requestFocus();
+					txtPass.selectAll();					
 				}
 				else if(cboCode.getSelectedIndex() == 0)
 				{
@@ -294,12 +358,47 @@ public class UserRegistration extends JDialog {
 					JOptionPane.showMessageDialog(null, "You must enter valid NRC Code");
 					txtNRCno.requestFocus();
 					txtNRCno.selectAll();
-				} else if(duplicate)
-				{
-					JOptionPane.showMessageDialog(null, "Registration PhoneNo is already exist!!");	
-				} else if(duplicateNrc) {
+				} 
+				else if(duplicateNrc) {
 					JOptionPane.showMessageDialog(null, "Registration NRC is already exist!!");	
 				} 
+				else if(Checking.IsNull(txtState.getText()))
+				{
+					JOptionPane.showMessageDialog(null, "You must enter valid State");
+					txtState.requestFocus();
+					txtState.selectAll();
+				}
+				else if(!Checking.IsLetter(txtState.getText()))
+				{
+					JOptionPane.showMessageDialog(null, "State should be only words");
+					txtState.requestFocus();
+					txtState.selectAll();
+				}
+				else if(Checking.IsNull(txtCity.getText()))
+				{
+					JOptionPane.showMessageDialog(null, "You must enter valid City");
+					txtCity.requestFocus();
+					txtCity.selectAll();
+				}
+				else if(!Checking.IsLetter(txtCity.getText()))
+				{
+					JOptionPane.showMessageDialog(null, "City should be only words");
+					txtCity.requestFocus();
+					txtCity.selectAll();
+				}
+				else if(Checking.IsNull(txtStreet.getText()))
+				{
+					JOptionPane.showMessageDialog(null, "You must enter valid Street");
+					txtStreet.requestFocus();
+					txtStreet.selectAll();
+				}
+				else if(!rdoMale.isSelected() && !rdoFemale.isSelected())
+				{
+					JOptionPane.showMessageDialog(null, "You must Choose Gender Type");
+					//txtStreet.requestFocus();
+					//txtStreet.selectAll();
+				}
+				
 				else {
 					String code,city,nation,number;
 					code = (String) cboCode.getSelectedItem();
@@ -319,15 +418,13 @@ public class UserRegistration extends JDialog {
 					userData[7] = roleId;
 					userData[8] = "pending";
 					userData[9] = gender;//gender
-					
-					
+										
 					boolean save = sqlquery.insertData("user", userData);
 					if(save) {
 						JOptionPane.showMessageDialog(null, "Thank You for Registration. Admin will approve account in a few day!!!");
 						clear();
 					}				
-				}
-				
+				}				
 			}
 			private Object String(String text) {
 				// TODO Auto-generated method stub
@@ -337,6 +434,8 @@ public class UserRegistration extends JDialog {
 		btnRegister.setBounds(305, 492, 97, 36);
 		panel.add(btnRegister);
 		
+		
+		
 		//for cancel btn
 		btnCancel = new JButton("Cancel");
 		
@@ -344,8 +443,8 @@ public class UserRegistration extends JDialog {
 		btnCancel.setContentAreaFilled(true);           // MUST be true to fill background
 		btnCancel.setBorderPainted(false);              // optional: remove border
 		btnCancel.setFocusPainted(false);               // optional: remove focus outline
-		btnCancel.setBackground(new Color(0, 191, 255));  // green
-		btnCancel.setForeground(new Color(255, 255, 255));
+		btnCancel.setBackground(new Color(0, 120, 215));  // green
+		btnCancel.setForeground(Color.WHITE);
 		
 		btnCancel.addMouseListener(new MouseAdapter() {
 		    
@@ -377,8 +476,8 @@ public class UserRegistration extends JDialog {
 		btnClose.setContentAreaFilled(true);           // MUST be true to fill background
 		btnClose.setBorderPainted(false);              // optional: remove border
 		btnClose.setFocusPainted(false);               // optional: remove focus outline
-		btnClose.setBackground(new Color(0, 191, 255));  // green
-		btnClose.setForeground(new Color(255, 255, 255));
+		btnClose.setBackground(new Color(0, 120, 215));  // green
+		btnClose.setForeground(Color.WHITE);
 		
 		btnClose.addMouseListener(new MouseAdapter() {
 		    
@@ -392,19 +491,21 @@ public class UserRegistration extends JDialog {
 		    	btnClose.setForeground(defaultFg);  // Reset text color
 		    }
 		});
+		
+		
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(JOptionPane.showConfirmDialog(null,"Are you sure you want to exit?","Confrim",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==JOptionPane.YES_OPTION)
-				{	
+				//if(JOptionPane.showConfirmDialog(null,"Are you sure you want to exit?","Confrim",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==JOptionPane.YES_OPTION)
+				//{	
 					dispose();
-				}
+				//}
 			}
 		});
 		btnClose.setBounds(493, 492, 89, 36);
 		panel.add(btnClose);
 		
 		JLabel lblGender = new JLabel("Gender:");
-		lblGender.setForeground(new Color(0, 191, 255));
+		lblGender.setForeground(Color.decode("#3f3b3b"));
 		lblGender.setFont(new Font("Arial", Font.PLAIN, 15));
 		lblGender.setBounds(22, 432, 82, 14);
 		panel.add(lblGender);
@@ -415,6 +516,7 @@ public class UserRegistration extends JDialog {
 		rdoMale.setBorderPainted(false);              // optional: remove border
 		rdoMale.setFocusPainted(false);               // optional: remove focus outline
 		rdoMale.setBackground(new Color(255, 255, 255));
+		rdoMale.setForeground(Color.decode("#3f3b3b"));
 		rdoMale.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(rdoMale.isSelected()) {
@@ -432,6 +534,7 @@ public class UserRegistration extends JDialog {
 		rdoFemale.setBorderPainted(false);              // optional: remove border
 		rdoFemale.setFocusPainted(false);               // optional: remove focus outline
 		rdoFemale.setBackground(new Color(255, 255, 255));
+		rdoFemale.setForeground(Color.decode("#3f3b3b"));
 		rdoFemale.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(rdoFemale.isSelected()) {
@@ -611,7 +714,10 @@ public class UserRegistration extends JDialog {
 		txtPhone.setText("");
 		txtPass.setText("");
 		cboCode.setSelectedIndex(0);
-		cboCity.setSelectedIndex(0);
+		// Reset cboCity to only blank
+	    cboCity.removeAllItems();
+	    cboCity.addItem("");
+		//cboCity.setSelectedIndex(0);
 		cboNation.setSelectedIndex(0);
 		txtNRCno.setText("");
 		txtState.setText("");
